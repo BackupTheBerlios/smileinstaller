@@ -22,6 +22,18 @@
 				}
 				$pagenum++;
 			}
+			if ( $this->config['languageSet'] 
+				&& $this->config['system']['pageerror'] == -1 )
+			{
+				if ( isset ( $settings['root']['pages']['installer']['finish']['action'] ) )
+				{
+					$settings['root']['pages']['installer']['finish']	= array ( $settings['root']['pages']['installer']['finish'] );
+				}
+				if ( $this->finishActions ( $settings['root']['pages']['installer']['finish'] ) )
+				{
+					$this->setFinish ( $settings['root']['pages']['installer']['redirectTo'] );
+				}
+			}
 			$this->setPage ();
 		}
 		function loadConfig ()
@@ -214,18 +226,20 @@
 					} else {
 						$usePage		= $this->config['system']['pageerror'];
 					}
+					$tpl		= $this->config['files']['installertemplate'];
 				} else {
 					if ( $this->config['system']['canFinish'] == 1 
 						&& $usePage == -1 )
 					{
-						$this->tpl		= new smarttemplate ( $this->config['files']['finishtemplate'] );
+						$tpl		= $this->config['files']['finishtemplate'];
 					} else {
+						$tpl		= $this->config['files']['installertemplate'];
 						$usePage		= $this->config['system']['pageerror'];
 					}
 				}
 				$this->config['system']['smarttemplate']['allPages'][$usePage]['isCurrent']	= 1;
 				$this->config['system']['smarttemplate']['displayPage']	= $this->config['system']['smarttemplate']['allPages'][$usePage];
-				$this->tpl		= new smarttemplate ( $this->config['files']['installertemplate'] );
+				$this->tpl		= new smarttemplate ( $tpl );
 			} else {
 				foreach ( $this->config['system']['installerlanguages'] as $language => $text ) {
 					$this->config['system']['smarttemplate']['installerlanguages'][]		= array (
@@ -242,6 +256,42 @@
 			$this->config['system']['smarttemplate']['installer']			= $this->config['installer']['info'];
 			$this->config['system']['smarttemplate']['installer']['name']	= $this->config['system']['installer'];			
 			$this->tpl->assign ( 'var', $this->config['system']['smarttemplate'] );
+		}
+		function finishActions ( $checks, $pagenum = 0, $varnum = 0 )
+		{
+			$return	= true;
+			if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'checkVariable', "$pagenum, $varnum, $selectedValue" );
+			foreach ( $checks as $check )
+			{
+				$value		= "";
+				$evalcode	= "\$return = \$this->config['extension'] -> " . $this->parseItem ( $check['action'] );
+				if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'checkVariable', "execute $evalcode" );
+				$return		= $this->execute ( $evalcode, $pagenum, $varnum );
+				$value		= $return['value'];
+				$ok			= $return['isset'];
+				if ( !$ok )
+				{
+					if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'checkVariable', "check false" );
+					$return		= false;
+					$this->_setError ( $pagenum, $varnum, $check['errormessage'] );
+					break;
+				} else {
+					if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'checkVariable', "check true" );
+				}					
+			}
+			return $return;
+		}
+		function setFinish ( $redirectTo )
+		{
+			$code		= array (
+				'code'		=> "\$return = \$this->config['extension']->",
+				'var'		=> array (
+					'pagenum'	=> 0,
+					'varnum'	=> 0
+				)
+			);			
+			$return		= $this->parseItem ( $redirectTo, false, $code );
+			$this->config['installer']['info']['redirectTo']	= $this->config['system']['smarttemplate']['installer']['redirectTo']		= $return;
 		}
 	}
 ?>
