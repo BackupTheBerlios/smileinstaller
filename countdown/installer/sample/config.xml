@@ -9,14 +9,14 @@
 			</errormessage>
 		</finish>
 		<finish>
-			<action>	!_writeToFile:$path,config.php,dbhost+dbname</action>
+			<action>	!_writeToFile:$path,adodb/config.php,dbhost+dbname</action>
 			<required>	1</required>
 			<errormessage>
 				[Konnte Variablen nicht speichern]
 			</errormessage>
 		</finish>
 		<finish>
-			<action>	!_writeToFile:$path,config.all.php</action>
+			<action>	!_writeToFile:$path,adodb/config.all.php</action>
 			<required>	1</required>
 			<errormessage>
 				[Konnte Variablen nicht speichern]
@@ -25,6 +25,7 @@
 		<nextstring>[Weiter]</nextstring>
 		<finishstring>[Fertigstellen]</finishstring>
 		<finishedstring>Installation abgeschlossen</finishedstring>
+		<redirectTo>!_redirectTo:$url,adodb/index.php</redirectTo>
 	</installer>
 	<page>
 		<title>	[Lizenz]</title>

@@ -756,6 +756,13 @@
 				}
 			}
 			$this->config['finishSet']	= $return['isset'];
+			if ( $return['isset'] )
+			{
+				$action		= substr ( $this->config['installer']['info']['redirectTo'], 1 );
+				$evalcode	= "\$return = \$this->config['extension']->" . $this->parseValueAsFunction ( $action );
+				$return		= $this->executeFinishenvironment ( $evalcode );
+				$this->config['installer']['info']['redirectTo']		= $return['value'];
+			}
 		}
 		function _setError ( $pagenum, $varnum, $errormessage )
 		{

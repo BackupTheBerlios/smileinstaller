@@ -180,6 +180,7 @@
 				$this->config['installer']['info']['nextstring']	= $this->lang ( $installer['nextstring'] );
 				$this->config['installer']['info']['finishstring']	= $this->lang ( $installer['finishstring'] );
 				$this->config['installer']['info']['finishedstring']	= $this->lang ( $installer['finishedstring'] );
+				$this->config['installer']['info']['redirectTo']	= $this->lang ( $installer['redirectTo'] );
 				if ( isset ( $installer['finish'] ) )
 				{
 					foreach ( $installer['finish'] as $action )
