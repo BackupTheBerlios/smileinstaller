@@ -1,6 +1,7 @@
 <?
 class installer extends smileinstaller_variable
-{	function installer ( $installer, $isExtension = false )
+{
+	// Erstellt alle Variablen die benoetigt werden. Keine Aktionen.	function installer ( $installer, $isExtension = false )
 	{
 		$this->config		= array 		(			'system' => array
 			(
@@ -46,28 +47,31 @@ class installer extends smileinstaller_variable
 				),
 			), 			'files' => array 			(				'languageitems' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/languages/available', 				'extension' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/index.php', 				'config' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/config.xml', 				'installertemplate' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/tpl/installer.html', 				'languagetemplate' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/tpl/language.html', 				'completetemplate' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/tpl/complete.html', 				'finishtemplate' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/tpl/finish.html',			), 			'varpattern' => '/^'.'([0-9]{1,10})\s{1,}'.'([12]{1})\s{1,}'.'([0-9]{1,})\s{1,}'.'([01]{1})\s{1,}'.'([01]{1})\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'varrequirepattern' => '/^'.'([0-9]{1,10})\s{1,}'.'([12]{1})\s{1,}'.'([0-9]{1,})\s{1,}'.'([01]{1})\s{1,}'.'([01]{1})\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'pagetextpattern' => '/^'.'([0-9]{1,})\s{1,}'.'"(pagetitle|pagename|pagedesc{1})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'pageactionpattern' => '/^'.'([0-9]{1,10})\s{1,}'.'([12]{1})\s{1,}'.'([0-9]{1,10})\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'languagelinepattern' => '/^'.'([^=]{1,})=(.*)'.'$/',		);
 	}
+	// Startet die Installation. Keine Aktionen.
 	function go()
 	{
-		if ($this->config['system']['debug'] >= 5)
-			$this->_setError('DEBUG', 'go', 'begin installation');
-		if ($this->config['system']['isExtension'])
-			die('not an installer');
-		$this->loadLanguageitems();
-		$this->initializeExtension();
-		$this->checkLanguagepage();
-		$return= $this->setConfig();
-		$return= $this->tpl->result();
+		if ( $this->config['system']['debug'] >= 5 ) $this->_setError('DEBUG', 'go', 'begin installation');
+		if ( $this->config['system']['isExtension'] )
+			die ( 'not an installer' );
+		$this->loadLanguageitems ();
+		$this->initializeExtension ();
+		$this->checkLanguagepage ();
+		$return		= $this->setConfig ();
+		$return		= $this->tpl->result ();
 		return $return;
 	}
+	// Erstellt eine neue Instanz von Erweiterungen
 	function initializeExtension()
 	{
 		if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( 0, 0, 'initializeExtension ' . $this->config['files']['extension'], false );
-		require_once ($this->config['files']['extension']);
-		$evalcode= "\$this->config['extension'] = new ".$this->config['system']['classname']." ( \$this->config['system']['installer'], true );";
-		eval ($evalcode);
-		$this->config['extension']->config= & $this->config;
+		require_once ( $this->config['files']['extension'] );
+		$evalcode	= "\$this->config['extension'] = new " 
+			. $this->config['system']['classname']
+			. " ( \$this->config['system']['installer'], true );";
+		eval ( $evalcode );
+		$this->config['extension']->config		= &$this->config;
 	}
-	function setPageAfter($pagenum)
+	function checkPageAfter($pagenum)
 	{
 		$return['isset']= true;
 		if (isset ($this->config['pages'][$pagenum]['action']))

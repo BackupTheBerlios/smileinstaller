@@ -1,4 +1,5 @@
 <?
+
 error_reporting(1);
 error_reporting(E_PARSE+E_ERROR);
 set_magic_quotes_runtime ( 0 );
@@ -10,9 +11,9 @@ define ( 'ROOTPATH',			dirname ( dirname ( __FILE__ ) . '*' ) );
 define ( 'INSTALLERPATH',		dirname ( __FILE__ ) );
 define ( 'SMARTTEMPLATEDIR',	dirname ( __FILE__ ) . '/../smarttemplate' );
 define ( 'INDEXFILE',			basename( __FILE__ ) );
-$_CONFIG['smarttemplate_compiled']= addslashes(dirname(__FILE__)).'/tmp';
-$_CONFIG['cache_lifetime']= 1;
-$catchedErrors	= array
+$_CONFIG['smarttemplate_compiled']	= addslashes ( dirname ( __FILE__ ) ) . '/tmp';
+$_CONFIG['cache_lifetime']			= 1;
+$catchedErrors						= array
 (
 	'counts' => array
 	(
@@ -30,8 +31,8 @@ if ( !is_dir ( "./tmp" ) )
 
 require_once "./include/functions.php";			
 
-$originalEh= set_error_handler("onError");
-stripPostvariables();
+$originalEh		= set_error_handler("onError");
+stripPostvariables ();
 
 require_once "./../adodb/adodb.inc.php";
 require_once "./../smarttemplate/class.smarttemplate.php";
@@ -58,23 +59,31 @@ require_once "./include/extensions/class.extensions.values.finish.php";
 require_once "./include/extensions/class.extensions.values.form.php";
 require_once "./include/class.extensions.php";
 
-$install= new installer ( $configuration );
-$content= $install->go();
-unset ($_top);
-$tpl= new smarttemplate('./include/templates/debug.html');
-$tpl->assign('var', array ('errors' => $catchedErrors, 'content' => $content));
-$debug= $tpl->result();
-unset ($_top);
+$install		= new installer ( $configuration );
+$content		= $install->go();
+// $_top entfernen um Smarttemplate ein weiteres Template erstellen zu lassen
+unset ( $_top );
+$tpl			= new smarttemplate ( './include/templates/debug.html' );
+$tpl			->assign 
+(
+	'var', array 
+	(
+		'errors'	=> $catchedErrors,
+		'content'	=> $content
+	)
+);
+$debug			= $tpl->result();
+// $_top entfernen um Smarttemplate ein weiteres Template erstellen zu lassen
+unset ( $_top );
+// Debugtemplate in Template einfuegen sofern noetig und moeglich
 if ( preg_match ( '|<body([^>]{1,})>|', $content, $result ) )
 {
-	$content	= str_replace
+	$content		= str_replace
 	( 
 		'<body' . $result[1] . '>',
 		'<body' . $result[1] . '>' . $debug,
 		$content
 	);
-} else {
-	$content		.= 'no debug added';
 }
 echo $content;
 ?>

@@ -26,7 +26,7 @@ class configparser
 				}
 				if ($this->config['system']['pageerror'] == -1)
 				{
-					$this->setPageAfter($pagenum);
+					$this->checkPageAfter($pagenum);
 				}
 			}
 			$pagenum ++;
