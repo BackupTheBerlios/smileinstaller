@@ -21,6 +21,13 @@ class configparser
 			$this->setPageinfos($pagenum, $page);
 			if ($this->config['system']['pageerror'] == -1)
 			{
+				$this->config['setValue'][]		= array
+				(
+					'isTitle'		=> 1,
+					'info'			=> $this->config['system']['smarttemplate']['allPages'][$pagenum]['info']
+				);					
+
+
 				$this->config['system']['smarttemplate']['allPages'][$pagenum]['isActive']= 1;
 				$this->setPageactions($pagenum, $page['check']);
 				$this->setPagevariables($pagenum, $page['variable']);
@@ -301,11 +308,23 @@ class configparser
 				{
 					if ($formtype == 'box' || $formtype == 'html')
 					{
-						$this->config['hiddenValue'][]= array ('htmlname' => $this->lang($htmlname), 'varname' => $varname, 'varvalue' => '',);
+						$hiddenValue	= array
+						(
+							'htmlname'	=> $this->lang($htmlname),
+							'htmldesc'	=> $this->lang($htmldesc),
+							'varname'	=> $varname,
+							'varvalue' => ''
+						);
 					}
 					else
 					{
-						$this->config['hiddenValue'][]= array ('htmlname' => $this->lang($htmlname), 'varname' => $varname, 'varvalue' => $_POST[$varname],);
+						$hiddenValue	= array 
+						(
+							'htmlname' => $this->lang($htmlname), 
+							'htmldesc' => $this->lang($htmldesc), 
+							'varname' => $varname, 
+							'varvalue' => $_POST[$varname]
+						);
 					}
 					$form= $this->genForm($varname, $formtype, $tempdefaultvalue, $_POST[$varname]);
 				}
@@ -324,6 +343,8 @@ class configparser
 				$form= $defaultform;
 			}
 			$this->config['pages'][$pagenum]['data'][$position]['form']= $form;
+			$this->config['hiddenValue'][]	= $hiddenValue;
+			$this->config['setValue'][]		= $hiddenValue;
 		}
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]['data']= $this->config['pages'][$pagenum]['data'];
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]['hiddenValue']= & $this->config['hiddenValue'];
@@ -370,7 +391,7 @@ class configparser
 						$tpl= $this->config['files']['installertemplate'];
 						$usePage= $this->config['system']['totalPages'] + 1;
 						$this->config['system']['smarttemplate']['setCompletepage']= 1;
-						$this->config['system']['smarttemplate']['setValues']= $this->config['hiddenValue'];
+						$this->config['system']['smarttemplate']['setValues']= $this->config['setValue'];
 					}
 					else
 					{

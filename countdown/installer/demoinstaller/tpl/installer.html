@@ -4,7 +4,27 @@
 		<meta name="GENERATOR" content="PHPEclipse 1.0" />
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<title>{htmlentities:var.installer.title}</title>
-		<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.css" type="text/css"><link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.tab.side.css" type="text/css"><link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.tab.top.css" type="text/css"><link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.document.css" type="text/css"><link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.contenttable.css" type="text/css"><script type="text/javascript" language="javascript" src="./include/templates/domtt/domlib.js"></script><script type="text/javascript" language="javascript" src="./include/templates/domtt/domtt.js"></script><script language="JavaScript" type="text/javascript"> <!-- BEGIN var.displayPage.data --><!-- IF htmldesc>"" -->var htmldesc_{ROWCNT} = '{addslashes_javascript:htmldesc}'; <!-- ENDIF htmldesc>"" --> <!-- END var.displayPage.data --> <!-- BEGIN var.allPages --> <!-- IF info.pagedesc>"" --> var pagedesc_{ROWCNT} = '{addslashes_javascript:info.pagedesc}'; <!-- ENDIF info.pagedesc>"" --> <!-- END var.allPages --> </script>
+		<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.css" type="text/css">
+		<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.tab.side.css" type="text/css">
+		<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.tab.top.css" type="text/css">
+		<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.document.css" type="text/css">
+		<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.contenttable.css" type="text/css">
+		<script type="text/javascript" language="javascript" src="./include/templates/domtt/domlib.js"></script>
+		<script type="text/javascript" language="javascript" src="./include/templates/domtt/domtt.js"></script>
+		<script language="JavaScript" type="text/javascript">
+			<!-- BEGIN var.displayPage.data -->
+				<!-- IF htmldesc>"" -->var htmldesc_{ROWCNT} = '{addslashes_javascript:htmldesc}'; 
+				<!-- ENDIF htmldesc>"" --> 
+			<!-- END var.displayPage.data -->
+			<!-- BEGIN var.setValues -->
+				<!-- IF htmldesc>"" -->var finishhtmldesc_{ROWCNT} = '{addslashes_javascript:htmldesc}'; 
+				<!-- ENDIF htmldesc>"" -->
+			<!-- END var.setValues -->
+			<!-- BEGIN var.allPages -->
+				<!-- IF info.pagedesc>"" --> var pagedesc_{ROWCNT} = '{addslashes_javascript:info.pagedesc}';
+				<!-- ENDIF info.pagedesc>"" -->
+			<!-- END var.allPages -->
+		</script>
 	</head>
 	<body bgcolor="#FFFFFF" text="#000000" link="#FF9966" vlink="#FF9966" alink="#FFCC99">
 		<br>
@@ -66,11 +86,17 @@
 									<form action="index.php" method="post">
 									<input type="hidden" name="_installerlanguage" value="{var.installerlanguage}">
 									<!-- BEGIN var.setValues -->
-									<tr  class="contenttable_row_{ROWBIT}" <!-- IF htmldesc>"" -->onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{htmlname}', 'content', htmldesc_{ROWCNT}, 'trail', true ) );"><!-- ENDIF htmldesc>"" -->
-										<td>{htmlname}
-											<br>{varname}</td>
-										<td>{varvalue}</td>
-									</tr>
+									<!-- IF isTitle="1" -->
+										<tr>
+											<td class="contenttable_head" colspan="2">{info.pagetitle}</td>
+										</tr>
+									<!-- ELSE -->
+										<tr class="contenttable_row_{ROWBIT}" <!-- IF htmldesc>"" -->onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{htmlname}', 'content', finishhtmldesc_{ROWCNT}, 'trail', true ) );"><!-- ENDIF htmldesc>"" -->
+											<td>{htmlname}
+												<br>({varname})</td>
+											<td>{varvalue}</td>
+										</tr>
+									<!-- ENDIF isTitle="1" -->
 									<!-- END var.setValues -->
 								</table>
 							<!-- ELSE -->
