@@ -1,6 +1,6 @@
 <?
 class installer extends smileinstaller_variable
-{	function installer($installer, $isExtension= false)
+{	function installer ( $installer, $isExtension = false )
 	{
 		$this->config		= array 		(			'system' => array
 			(

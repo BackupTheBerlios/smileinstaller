@@ -1,17 +1,17 @@
 <?
 error_reporting(1);
-error_reporting(E_ALL);
-#define ( 'display_errors', '1' );
-#define ( 'ADODB_ERROR_LOG_TYPE', 2);
-define ( 'ROOTPATH', dirname(dirname(__FILE__).'*'));
-define ( 'INSTALLERPATH', dirname(__FILE__));
-// Ziparchiv des Scripts muss den neuen Pfad enthalten!
-///////////////////////////////////////////////////////
-// Nichts quoten. Ganz schlecht!
-set_magic_quotes_runtime(0);
-// Benoetigt fuer Debugging (spaeter nicht vergessen)
-// Eigene Fehlerbehandlung setzen
-$originalEh= set_error_handler("onError");
+error_reporting(E_PARSE+E_ERROR);
+set_magic_quotes_runtime ( 0 );
+////////////////////////////////////////////
+// Welcher Installer soll verwendet werden?
+	$configuration		= 'configgenerator';
+////////////////////////////////////////////
+define ( 'ROOTPATH',			dirname ( dirname ( __FILE__ ) . '*' ) );
+define ( 'INSTALLERPATH',		dirname ( __FILE__ ) );
+define ( 'SMARTTEMPLATEDIR',	dirname ( __FILE__ ) . '/../smarttemplate' );
+define ( 'INDEXFILE',			basename( __FILE__ ) );
+$_CONFIG['smarttemplate_compiled']= addslashes(dirname(__FILE__)).'/tmp';
+$_CONFIG['cache_lifetime']= 1;
 $catchedErrors	= array
 (
 	'counts' => array
@@ -22,77 +22,17 @@ $catchedErrors	= array
 		'other' => 0,
 	)
 );
-/* Faengt alle abfangbaren Fehler ab ;) */
-function onError($errno, $errstr, $errfile= false, $errline= false, $context= false)
+if ( !is_dir ( "./tmp" ) )
 {
-	global $catchedErrors;
-	if ($errno == E_NOTICE)
-		$errno= 'notice';
-	elseif ($errno == E_PARSE) $errno= 'parse';
-	elseif ($errno == E_ERROR) $errno= 'main';
-	else
-		$errno= 'other';
-	$catchedErrors['counts'][$errno]++;
-	$filelen= strlen($errfile);
-	$newfile= "";
-	$maxlen= 50;
-	$shortfile= substr($errfile, $maxlen);
-	if ($filelen > $maxlen)
-	{
-		while ($filelen > $maxlen)
-		{
-			$newfile .= substr($errfile, 0, $maxlen)."\n";
-			$errfile= substr($errfile, $maxlen);
-			$filelen= strlen($errfile);
-		}
-		$newfile .= $errfile;
-		$errfile= $newfile;
-	}
-	$catchedErrors[$errno][]= array ('str' => $errstr, 'shortfile' => $shortfile, 'file' => $errfile, 'line' => $errline);
+	mkdir ( 'tmp', 0777 );
+	chmod ( 'tmp', 0777 );
 }
-/* Erstellt das Templateverzeichniss (CVS mag keine leeren Verzeichnisse) */
-function genTemplatedir()
-{
-	if (!is_dir("./tmp"))
-	{
-		mkdir("tmp", 0777);
-		chmod('tmp', 0777 );
-	}
-}
-/* Setzt alle noetigen Variablen fuer Smarttemplate */
-function setTemplatevariables()
-{
-	global $_CONFIG;
-	$_CONFIG['smarttemplate_compiled']= addslashes(dirname(__FILE__)).'/tmp';
-	$_CONFIG['cache_lifetime']= 1;
-	define('SMARTTEMPLATEDIR', dirname(__FILE__).'/../smarttemplate');
-	define('INDEXFILE', basename(__FILE__));
-}
-/* Entfernt alles sinnlose aus den POSTs */
-function stripPostvariables()
-{
-	global $_POST;
-	if (isset ($_POST) && is_array($_POST))
-	{
-		foreach ($_POST as $key => $value)
-		{
-			$_POST[$key]= stripslashes($_POST[$key]);
-		}
-	}
-}
-/* Loescht das Templateverzeichniss (Entwicklung braucht das) */
-function removeTemplatedir()
-{
-	$dir= dir("./tmp");
-	while ($value= $dir->read())
-	{
-		if ($value != ".." && $value != ".")
-		{
-			@ unlink("./tmp/$value");
-		}
-	}
-	$dir->close();
-}
+
+require_once "./include/functions.php";			
+
+$originalEh= set_error_handler("onError");
+stripPostvariables();
+
 require_once "./../adodb/adodb.inc.php";
 require_once "./../smarttemplate/class.smarttemplate.php";
 require_once "./include/class.configparser.php";
@@ -117,11 +57,8 @@ require_once "./include/extensions/class.extensions.values.file.php";
 require_once "./include/extensions/class.extensions.values.finish.php";
 require_once "./include/extensions/class.extensions.values.form.php";
 require_once "./include/class.extensions.php";
-// Start
-genTemplatedir();
-setTemplatevariables();
-stripPostvariables();
-$install= new installer('configgenerator');
+
+$install= new installer ( $configuration );
 $content= $install->go();
 unset ($_top);
 $tpl= new smarttemplate('./include/templates/debug.html');
@@ -139,6 +76,5 @@ if ( preg_match ( '|<body([^>]{1,})>|', $content, $result ) )
 } else {
 	$content		.= 'no debug added';
 }
-removeTemplatedir();
 echo $content;
 ?>
