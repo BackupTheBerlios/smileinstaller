@@ -1,20 +1,17 @@
 <?
-
-	class extensions_checks_db extends extensions_checks
+class extensions_checks_db extends extensions_checks
+{
+	function _check_SQLConnection($pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass)
 	{
-		function _check_SQLConnection ( $pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass )
-		{
-			$return = array (
-				'value'		=> '',
-				'isset'		=> false
-			);
-			$this->_setError ( $pagenum, $varnum, 'No types supported now' );
-			if ( $link = mysql_connect ( $dbhost, $dbuser, $dbpass ) )
-			{
-				$return['isset']	= true;
-			}
-			return $return;
-		}
+		$this->_setError($pagenum, $varnum, '[no code]');
 	}
-
+	function _check_SQLDatabaseExists($pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbdatabase)
+	{
+		$this->_setError($pagenum, $varnum, '[no code]');
+	}
+	function _check_SQLTableExists($pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbdatabase, $dbtable)
+	{
+		$this->_setError($pagenum, $varnum, '[no code]');
+	}
+}
 ?>

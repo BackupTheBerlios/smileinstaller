@@ -88,7 +88,7 @@
 			</check>
 			<check>		
 				<required>	1</required>
-				<action>	!_check_Installdir</action>
+				<action>	!_check_isInstalldirOk</action>
 				<errormessage>
 					[Can not install in this directory]
 				</errormessage>

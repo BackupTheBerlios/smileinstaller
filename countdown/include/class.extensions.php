@@ -1,7 +1,5 @@
 <?
-
-	class extensions extends extensions_values_form
-	{
-	}
-	
+class extensions extends extensions_values_form
+{
+}
 ?>

@@ -1,32 +1,28 @@
 <?
-	class extensions_output_db extends extensions_checks_form
+class extensions_output_db extends extensions_checks_form
+{
+	function _outputSQL($pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbname, $dbname_user, $tableprefix, $sqlfile)
 	{
-		function _outputSQL ( $pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbname, $dbname_user, $tableprefix, $sqlfile )
+		$return= array ('value' => '', 'isset' => false);
+		if ($dbname_user > "")
 		{
-			$return		= array (
-				'value'		=> '',
-				'isset'		=> false
-			);
-			if ( $dbname_user > "" )
+			$dbname= $dbname_user;
+		}
+		$userquery= implode("", file($this->config['system']['directories']['scriptdir'].'/'.$sqlfile));
+		eval ("\$userquery = \"$userquery\";");
+		if ($link= mysql_connect($dbhost, $dbuser, $dbpass))
+		{
+			$query= "CREATE DATABASE IF NOT EXISTS $dbname";
+			if (mysql_query($query))
 			{
-				$dbname		= $dbname_user;
-			}
-			$userquery	= implode ( "", file ( $this->config['system']['directories']['scriptdir'] . '/' . $sqlfile ) );
-			eval ( "\$userquery = \"$userquery\";" );
-			if ( $link = mysql_connect ( $dbhost, $dbuser, $dbpass ) )
-			{
-				$query		= "CREATE DATABASE IF NOT EXISTS $dbname";
-				if ( mysql_query ( $query ) )
+				mysql_select_db($dbname, $link);
+				if (@ mysql_query($userquery))
 				{
-					mysql_select_db ( $dbname, $link );
-					if ( @mysql_query ( $userquery ) )
-					{
-						$return['isset']		= true;
-					}
+					$return['isset']= true;
 				}
 			}
-			return $return;
 		}
+		return $return;
 	}
-
+}
 ?>
