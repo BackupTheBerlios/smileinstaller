@@ -1,0 +1,217 @@
+smic_pma_absolute_uri
+smic_blowfish_secret //The 'cookie' auth_type uses blowfish algorithm to encrypt the password. If at least one server configuration uses 'cookie' auth_type, enter here a passphrase that will be used by blowfish.
+smic_host// MySQL hostname or IP address
+smic_port// MySQL port - leave blank for default port
+smic_socket// Path to the socket - leave blank for default socket
+smic_connect_type// How to connect to MySQL server ('tcp' or 'socket')
+smic_extension// The php MySQL extension to use ('mysql' or 'mysqli')
+smic_compress// Use compressed protocol for the MySQL connection// (requires PHP >= 4.3.0)
+smic_controluser// MySQL control user settings// (this user must have read-only
+smic_controlpass// access to the "mysql/user"// and "mysql/db" tables).// The controluser is also// used for all relational// features (pmadb)
+smic_auth_type// Authentication method (config, http or cookie based)?
+smic_user// MySQL user
+smic_password// MySQL password (only needed// with 'config' auth_type)
+smic_only_db// If set to a db-name, only// this db is displayed in left frame// It may also be an array of db-names, where sorting order is relevant.
+smic_verbose// Verbose name for this host - leave blank to show the hostname
+smic_pmadb// Database used for Relation, Bookmark and PDF Features// (see scripts/create_tables.sql)//   - leave blank for no support//     DEFAULT: 'phpmyadmin'
+smic_bookmarktable// Bookmark table//   - leave blank for no bookmark support//     DEFAULT: 'pma_bookmark'
+smic_relation// table to describe the relation between links (see doc)//   - leave blank for no relation-links support//     DEFAULT: 'pma_relation'
+smic_table_info// table to describe the display fields//   - leave blank for no display fields support//     DEFAULT: 'pma_table_info'
+smic_table_coords// table to describe the tables position for the PDF schema//   - leave blank for no PDF schema support//     DEFAULT: 'pma_table_coords'
+smic_pdf_pages// table to describe pages of relationpdf//   - leave blank if you don't want to use this//     DEFAULT: 'pma_pdf_pages'
+smic_column_info// table to store column information//   - leave blank for no column comments/mime types//     DEFAULT: 'pma_column_info'
+smic_history// table to store SQL history//   - leave blank for no SQL query history//     DEFAULT: 'pma_history'
+<pages>
+	<installer>
+		<title>[Beispiel installieren]</title>
+		<finish>
+			<action>	!_unpackScript:$path</action>
+			<required>	1</required>
+			<errormessage>
+				[Konnte Skript nicht entpacken]
+			</errormessage>
+		</finish>
+		<finish>
+			<action>	!_writeToFile:$path,adodb/config.php,dbhost+dbname</action>
+			<required>	1</required>
+			<errormessage>
+				[Konnte Variablen nicht speichern]
+			</errormessage>
+		</finish>
+		<finish>
+			<action>	!_writeToFile:$path,adodb/config.all.php</action>
+			<required>	1</required>
+			<errormessage>
+				[Konnte Variablen nicht speichern]
+			</errormessage>
+		</finish>
+		<nextstring>[Weiter]</nextstring>
+		<finishstring>[Fertigstellen]</finishstring>
+		<finishedstring>Installation abgeschlossen</finishedstring>
+		<redirectTo>!_redirectTo:$url,adodb/index.php</redirectTo>
+	</installer>
+	<page>
+		<title>	[Lizenz]</title>
+		<name>	</name>
+		<desc>	Beispiel fuer den ersten Schritt</desc>
+		<variable>
+			<name>			none1</name>
+			<htmlname>		[Lizenz]</htmlname>				
+			<required>		0</required>
+			<newline>		1</newline>
+			<recheckable>	0</recheckable>
+			<formtype>		box</formtype>
+			<defaultvalue>	.license.txt</defaultvalue>
+		</variable>
+		<variable>
+			<name>			accept_license</name>
+			<htmlname>		[Ich akzeptiere die Lizenz]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	0</recheckable>
+			<formtype>		select</formtype>
+			<defaultvalue>	=[Nein],[Ja]</defaultvalue>
+			<check>
+				<required>	1</required>
+				<action>	!_checkFormspecific:[Ja]</action>
+				<errormessage>
+					[Sie koennen dieses Skript nicht installieren wenn sie die Lizenz nicht akzeptieren]
+				</errormessage>
+			</check>
+		</variable>
+	</page>
+	<page>
+		<title>	[Pfad waehlen]</title>
+		<name>	[]</name>
+		<desc>	[]</desc>
+		<variable>
+			<name>			path</name>
+			<htmlname>		[Pfad]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	1</recheckable>
+			<formtype>		input</formtype>
+			<defaultvalue>	!_value_rootdir</defaultvalue>
+			<check>		
+				<required>	1</required>
+				<action>	!_checkInstalldir</action>
+				<errormessage>
+					[Kann in dieses Verzeichnis nicht installieren]
+				</errormessage>
+			</check>
+		</variable>
+		<variable>
+			<name>			url</name>
+			<htmlname>		[URL]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	1</recheckable>
+			<formtype>		input</formtype>
+			<defaultvalue>	=</defaultvalue>
+			<check>
+				<required>	1</required>
+				<action>	!_notNull</action>
+				<errormessage>[Url falsch?]</errormessage>
+			</check>
+		</variable>
+	</page>
+	<page>
+		<title>	[Datenbankserver auswaehlen]</title>
+		<name>	[]</name>
+		<desc>	[]</desc>
+		<variable>
+			<name>			dbhost</name>
+			<htmlname>		[Datenbankserver]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	0</recheckable>
+			<formtype>		input</formtype>
+			<defaultvalue>	=localhost</defaultvalue>
+		</variable>
+		<variable>
+			<name>			dbuser</name>
+			<htmlname>		[Benutzername]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	0</recheckable>
+			<formtype>		input</formtype>
+			<defaultvalue>	=</defaultvalue>
+		</variable>
+		<variable>
+			<name>			dbpass</name>
+			<htmlname>		[Passwort]</htmlname>
+			<required>		0</required>
+			<newline>		1</newline>
+			<recheckable>	0</recheckable>
+			<formtype>		password</formtype>
+			<defaultvalue>	=</defaultvalue>
+		</variable>
+		<check>
+			<required>	1</required>
+			<action>	!_checkConnection:mysql,$dbhost,$dbuser,$dbpass</action>
+			<errormessage>
+				[Verbindung zur Datenbank konnte nicht hergestellt werden]
+			</errormessage>
+		</check>
+	</page>
+	<page>
+		<title>	[Datenbank auswaehlen]</title>
+		<name>	[]</name>
+		<desc>	[]</desc>
+		<variable>
+			<name>			dbname</name>
+			<htmlname>		[Datenbank]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	0</recheckable>
+			<formtype>		select</formtype>
+			<defaultvalue>	!_getTables:mysql,$dbhost,$dbuser,$dbpass</defaultvalue>
+			<check>			
+				<required>	1</required>
+				<action>	!_checkFormspecific</action>
+				<errormessage>
+					[Tabellen konnten nicht gelesen werden]
+				</errormessage>
+			</check>
+		</variable>
+	</page>
+	<page>
+		<title>	[Administrator anlegen]</title>
+		<name>	[]</name>
+		<desc>	[]</desc>
+		<variable>
+			<name>			adminname</name>
+			<htmlname>		[Name des Administrators]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	1</recheckable>
+			<formtype>		input</formtype>
+			<defaultvalue>	=root</defaultvalue>
+		</variable>
+		<variable>
+			<name>			adminpass</name>
+			<htmlname>		[Passwort]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	1</recheckable>
+			<formtype>		password</formtype>
+			<defaultvalue>	=</defaultvalue>
+		</variable>
+		<variable>
+			<name>			adminpass_2</name>
+			<htmlname>		[Passwort wiederholen]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	1</recheckable>
+			<formtype>		password</formtype>
+			<defaultvalue>	=</defaultvalue>
+		</variable>
+		<check>
+			<required>	1</required>
+			<action>	!_newPasswordcheck:$adminpass,$adminpass_2</action>
+			<errormessage>
+				[Angegebene Passwoerter stimmen nicht ueberein]
+			</errormessage>
+		</check>
+	</page>
+</pages>

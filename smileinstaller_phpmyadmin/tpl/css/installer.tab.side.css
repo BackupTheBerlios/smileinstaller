@@ -1,0 +1,98 @@
+td.tabhead {
+	font-size:				20px;
+	color:					#000000;
+	white-space:			nowrap;
+	background:				#ffaa3b;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 0px solid;
+	BORDER-BOTTOM:			#000000 0px solid;
+	BORDER-LEFT:			#000000 0px solid;
+	BORDER-RIGHT:			#000000 3px solid;
+	padding:				0px;
+	text-align:				center;
+	font-weight:			bold;
+	height:					20px;
+	width:					200px;
+}
+td.tabfoot, div.tabfoot {
+	font-size:				20px;
+	color:					#000000;
+	white-space:			nowrap;
+	background:				#ffaa3b;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 0px solid;
+	BORDER-BOTTOM:			#000000 0px solid;
+	BORDER-LEFT:			#000000 0px solid;
+	BORDER-RIGHT:			#000000 3px solid;
+	padding:				0px;
+	width:					200px;
+}
+
+td.current_tab_side {
+	font-size:				15px;
+	color:					#000000;
+	white-space:			nowrap;
+	background:				#ffbb3b;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 3px solid;
+	BORDER-BOTTOM:			#000000 3px solid;
+	BORDER-LEFT:			#000000 3px solid;
+	BORDER-RIGHT:			#000000 0px solid;
+	height:					50px;
+	max-height:				50px;
+	vertical-align:			middle;
+	font-weight:			bold;
+	padding:				3px;
+	cursor:					wait;
+}
+td.available_tab_side {
+	font-size:				14px;
+	color:					#FFFFFF;
+	white-space:			nowrap;
+	background:				#ffaa3b;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 1px solid;
+	BORDER-BOTTOM:			#000000 1px solid;
+	BORDER-LEFT:			#000000 1px solid;
+	BORDER-RIGHT:			#000000 3px solid;
+	height:					50px;
+	max-height:				50px;
+	vertical-align:			middle;
+	text-align:				center;
+	padding:				3px;
+	cursor:					pointer;
+}
+td.available_tab_side:hover {
+	font-size:				14px;
+	color:					#FFFFFF;
+	white-space:			nowrap;
+	background:				#ffbb3b;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 1px solid;
+	BORDER-BOTTOM:			#000000 1px solid;
+	BORDER-LEFT:			#000000 1px solid;
+	BORDER-RIGHT:			#000000 3px solid;
+	height:					50px;
+	max-height:				50px;
+	vertical-align:			middle;
+	text-align:				right;
+	padding:				3px;
+	cursor:					pointer;
+}
+
+td.unavailable_tab_side {
+	font-size:				14px;
+	color:					#FFFFFF;
+	white-space:			nowrap;
+	background:				#abaaa8;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 1px solid;
+	BORDER-BOTTOM:			#000000 1px solid;
+	BORDER-LEFT:			#000000 1px solid;
+	BORDER-RIGHT:			#000000 3px solid;
+	height:					50px;
+	max-height:				50px;
+	vertical-align:			middle;
+	padding:				3px;
+	cursor:					wait;
+}
