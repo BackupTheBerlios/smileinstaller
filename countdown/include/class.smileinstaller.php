@@ -101,7 +101,7 @@ class installer extends smileinstaller_variable
 		{
 			case 'box' :
 				{
-					$form= '<textarea readonly style="white-space: nowrap; width: 100%; height: 300px">'.$defaultValues.'</textarea>';
+					$form= '<textarea readonly style="white-space: nowrap; width: 600; height: 300px">'.$defaultValues.'</textarea>';
 					$this->config['executeEnvironment'][$formname]= $defaultValues;
 					break;
 				}
@@ -838,7 +838,7 @@ class installer extends smileinstaller_variable
 				}
 			}
 		}
-
+		$this->config['system']['smarttemplate']['allPages'][$usePage]['isActive']	= 2;
 		$this->config['system']['smarttemplate']['currentPage']		= $this->config['system']['pageerror'];
 		$this->config['system']['smarttemplate']['errormessage']	= $this->config['system']['errormessage'];
 		$this->config['system']['smarttemplate']['totalPages']		= sizeof($this->config['system']['smarttemplate']['allPages']);

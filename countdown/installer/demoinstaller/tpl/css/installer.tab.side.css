@@ -1,98 +1,59 @@
-td.tabhead {
-	font-size:				20px;
-	color:					#000000;
-	white-space:			nowrap;
-	background:				#c6c6c6;
-	white-space:			nowrap;
-	BORDER-TOP:				#000000 0px solid;
-	BORDER-BOTTOM:			#000000 0px solid;
-	BORDER-LEFT:			#000000 0px solid;
-	BORDER-RIGHT:			#000000 3px solid;
-	padding:				0px;
-	text-align:				center;
-	font-weight:			bold;
-	height:					20px;
+table.installersteptable {
+	width:					200px;
+	background-color:		#d5d2cd;
+	border-right:			#000000 0px solid;
+	border-bottom:			#000000 0px solid;
+	border-left:			#FFFFFF 0px solid;
+	border-top:				#FFFFFF 0px solid;
+}
+td.installersteptable {
 	width:					200px;
 }
-td.tabfoot, div.tabfoot {
-	font-size:				20px;
-	color:					#000000;
-	white-space:			nowrap;
-	background:				#c6c6c6;
-	white-space:			nowrap;
-	BORDER-TOP:				#000000 0px solid;
-	BORDER-BOTTOM:			#000000 0px solid;
-	BORDER-LEFT:			#000000 0px solid;
-	BORDER-RIGHT:			#000000 3px solid;
-	padding:				0px;
-	width:					200px;
+td.installersteprow {
+	height:					40px;
 }
 
-td.current_tab_side {
+a.installersteptable_current_step {
+	text-decoration:		none;
 	font-size:				15px;
-	color:					#000000;
-	white-space:			nowrap;
-	background:				#ffbb3b;
-	white-space:			nowrap;
-	BORDER-TOP:				#000000 3px solid;
-	BORDER-BOTTOM:			#000000 3px solid;
-	BORDER-LEFT:			#000000 3px solid;
-	BORDER-RIGHT:			#000000 0px solid;
-	height:					50px;
-	max-height:				50px;
-	vertical-align:			middle;
-	font-weight:			bold;
-	padding:				3px;
-	cursor:					wait;
-}
-td.available_tab_side {
-	font-size:				14px;
 	color:					#FFFFFF;
-	white-space:			nowrap;
-	background:				#ffaa3b;
-	white-space:			nowrap;
-	BORDER-TOP:				#000000 1px solid;
-	BORDER-BOTTOM:			#000000 1px solid;
-	BORDER-LEFT:			#000000 1px solid;
-	BORDER-RIGHT:			#000000 3px solid;
-	height:					50px;
-	max-height:				50px;
-	vertical-align:			middle;
-	text-align:				center;
-	padding:				3px;
+	height:					20px;
+	background:				#d5d2cd;
+	text-align:				left;
+	font-weight:			bold;
 	cursor:					pointer;
 }
-td.available_tab_side:hover {
-	font-size:				14px;
+a.installersteptable_available_step {
+	text-decoration:		none;
+	font-size:				15px;
+	height:					20px;
+	color:					#000000;
+	white-space:			nowrap;
+	background:				#d5d2cd;
+	text-align:				left;
+	font-weight:			bold;
+	cursor:					pointer;
+}
+a.installersteptable_available_step:hover {
+	text-decoration:		none;
+	font-size:				15px;
+	height:					20px;
 	color:					#FFFFFF;
 	white-space:			nowrap;
-	background:				#ffbb3b;
-	white-space:			nowrap;
-	BORDER-TOP:				#000000 1px solid;
-	BORDER-BOTTOM:			#000000 1px solid;
-	BORDER-LEFT:			#000000 1px solid;
-	BORDER-RIGHT:			#000000 3px solid;
-	height:					50px;
-	max-height:				50px;
-	vertical-align:			middle;
-	text-align:				right;
-	padding:				3px;
+	background:				#d5d2cd;
+	text-align:				left;
+	font-weight:			bold;
 	cursor:					pointer;
 }
 
-td.unavailable_tab_side {
-	font-size:				14px;
-	color:					#FFFFFF;
+a.installersteptable_unavailable_step {
+	text-decoration:		none;
+	font-size:				15px;
+	height:					20px;
+	color:					#777777;
 	white-space:			nowrap;
-	background:				#abaaa8;
+	background:				#d5d2cd;
 	white-space:			nowrap;
-	BORDER-TOP:				#000000 1px solid;
-	BORDER-BOTTOM:			#000000 1px solid;
-	BORDER-LEFT:			#000000 1px solid;
-	BORDER-RIGHT:			#000000 3px solid;
-	height:					50px;
-	max-height:				50px;
-	vertical-align:			middle;
-	padding:				3px;
+	text-align:				left;
 	cursor:					wait;
 }

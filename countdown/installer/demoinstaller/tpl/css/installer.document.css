@@ -1,9 +1,28 @@
+table.maintable {
+	padding:				2px;
+	text-align:				2px;
+	min-height:				100%;
+	background-color:		#d5d2cd;
+	border-right:			#000000 2px solid;
+	border-bottom:			#000000 2px solid;
+	border-left:			#FFFFFF 2px solid;
+	border-top:				#FFFFFF 2px solid;
+}
+td.maintable_installertitle {
+	font-size:				20px;
+	color:					#000000;
+	background:				#d5d2cd;
+	text-align:				right;
+	font-weight:			bold;
+	height:					40px;
+	padding:				3px;
+}
 a:link {
 	color:					#000000;
 }
 body {
 	margin:					0px;
-	background:				#c6c6c6;
+	background:				#d5d2cd;
 }
 div.error {
 	white-space:			normal;

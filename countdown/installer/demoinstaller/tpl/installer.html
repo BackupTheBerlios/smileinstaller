@@ -27,185 +27,129 @@
 		</script>
 	</head>
 	<body bgcolor="#FFFFFF" text="#000000" link="#FF9966" vlink="#FF9966" alink="#FFCC99">
-<!--			<table cellspacing="0" cellpadding="0" border="0" style="width: 100%;height: 95%">
-				<tr>
-					<td style="width:10px;height:9px;max-height:10px; background-image:url('./installer/{var.installer.name}/tpl/images/border_top_left.png');background-repeat: no-repeat;font-size:1px;">&nbsp;</td>
-					<td style="width:100%;height:9px;max-height:10px; background-image:url('./installer/{var.installer.name}/tpl/images/border_top.png');background-repeat:repeat-x;font-size:1px;">&nbsp;</td>
-					<td style="width:10px;height:9px;max-height:10px; background-image:url('./installer/{var.installer.name}/tpl/images/border_top_right.png');background-repeat: no-repeat;font-size:1px;">&nbsp;</td>
-				</tr>
-				<tr>
-					<td style="width:10px;min-width:10px;height:90%;background-image:url('./installer/{var.installer.name}/tpl/images/border_left.png');background-repeat:repeat-y;">&nbsp;</td>
-					<td style="width:100%;height:100%;">
-	-->					
-			<table cellspacing="0" cellpadding="0" border="0" class="gfxborder" width="100%" height="100%">
-				<tr>
-					<td colspan="2" class="content_title">{htmlentities:var.installer.title}</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<div align="center">
-							<table cellspacing="1" cellpadding="2" border="0">
-								<tr valign="top" >
-									<!-- BEGIN var.allPages -->
-									<form action="index.php" name="gotopage2_{ROWCNT}" method="post">
-									<input type="hidden" name="_installerlanguage" value="{installerlanguage}">
-									<input type="hidden" name="explicit_page" value="{pagenum}">
-									<!-- BEGIN hiddenValue -->
-										<input type="hidden" name="{varname}" value="{varvalue}">
-									<!-- END hiddenValue -->
-									<td 
-										<!-- IF info.pagedesc>"" -->
-										onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{pagetitle}', 'content', pagedesc_{ROWCNT}, 'trail', true ) );"
-										<!-- ENDIF info.pagedesc>"" -->
-										class="
-										<!-- IF isActive=="0" -->
-										unavailable_tab_top
-										<!-- ELSEIF isActive=="1" -->
-										available_tab_top" onclick="document.gotopage2_{ROWCNT}.submit ()
-										<!-- ELSEIF isActive=="2" -->
-										current_tab_top
-										<!-- ENDIF isActive=="1" -->
-										">
-										{info.pagetitle}
+		<table cellspacing="0" cellpadding="0" border="0" class="maintable" width="100%" height="100%">
+			<tr valign="top">
+				<td colspan="2" class="maintable_installertitle">{htmlentities:var.installer.title}</td>
+			</tr>
+			<tr valign="top">
+				<td class="installersteptable">
+					<br><br><br>
+					<table cellspacing="0" cellpadding="0" border="0" class="installersteptable">
+					<!-- BEGIN var.allPages -->
+						<form action="index.php" name="gotopage2_{ROWCNT}" method="post">
+						<input type="hidden" name="_installerlanguage" value="{installerlanguage}">
+						<input type="hidden" name="explicit_page" value="{pagenum}">
+						<!-- BEGIN hiddenValue -->
+							<input type="hidden" name="{varname}" value="{varvalue}">
+						<!-- END hiddenValue -->
+						<tr valign="middle">
+							<td class="installersteprow">&nbsp;*&nbsp;</td>
+							<td><a href="#" 
+								<!-- IF info.pagedesc>"" -->
+									onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{pagetitle}', 'content', pagedesc_{ROWCNT}, 'trail', true ) );"
+								<!-- ENDIF info.pagedesc>"" -->
+								class="
+								<!-- IF isActive=="0" -->
+								installersteptable_unavailable_step
+								<!-- ELSEIF isActive=="1" -->
+								installersteptable_available_step" onclick="document.gotopage2_{ROWCNT}.submit ()
+								<!-- ELSEIF isActive=="2" -->
+								installersteptable_current_step
+								<!-- ENDIF isActive=="1" -->
+								">{info.pagetitle}</a></td>
+							</td>
+						</tr>
+						</form>
+					<!-- END var.allPages -->
+					</table>
+				</td>
+				<td class="contenttable">
+					<div align="center">
+						<br><br><br>
+						<!-- IF var.setCompletepage="1" -->
+							<table cellspacing="0" cellpadding="0" border="0" class="contenttable">
+								<tr>
+									<td class="contenttable_head" colspan="2">
+										{var.displayPage.info.pagename}<font class="contenttable_head_description">
+										<br>{var.displayPage.info.pagedesc}</font>
 									</td>
-									</form>
-									<!-- END var.allPages -->
 								</tr>
-							</table>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2" class="empty">
-						&nbsp;
-					</td>
-				</tr>
-				<tr>
-					<td class="tabhead">{htmlentities:var.installer.progress}&nbps;</td>
-					<td class="contenttable" rowspan="{calc:var.totalPages,3}">
-						<div align="center">
-							<!-- CONTENT -->
-							<br>
-							<!-- IF var.setCompletepage="1" -->
-								<table cellspacing="1" cellpadding="2" border="0" class="contenttable">
+								<tr>
+									<td colspan="2">
+										<br>&nbsp;
+									</td>
+								</tr>
+								<form action="index.php" method="post">
+								<input type="hidden" name="_installerlanguage" value="{var.installerlanguage}">
+								<!-- BEGIN var.setValues -->
+								<!-- IF isTitle="1" -->
 									<tr>
 										<td class="contenttable_head" colspan="2">
-											{var.displayPage.info.pagename}
-											<br><font class="contenttable_head_description">{var.displayPage.info.pagedesc}</font>
+											{info.pagetitle}<font class="contenttable_head_description">
+											<br>&nbsp;{info.pagedesc}</font>
 										</td>
 									</tr>
-									<form action="index.php" method="post">
-									<input type="hidden" name="_installerlanguage" value="{var.installerlanguage}">
-									<!-- BEGIN var.setValues -->
-									<!-- IF isTitle="1" -->
-										<tr>
-											<td class="contenttable_head" colspan="2">{info.pagetitle}</td>
+								<!-- ELSE -->
+									<input type="hidden" name="{varname}" value="{varvalue}">
+									<!-- IF noDisplay="0" -->
+										<tr <!-- IF htmldesc>"" -->onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{htmlname}', 'content', finishhtmldesc_{ROWCNT}, 'trail', true ) );"><!-- ENDIF htmldesc>"" -->
+											<td class="contenttable_row_{ROWBIT}_1">&nbsp;{htmlname}&nbsp;
+												<br>&nbsp;({varname})&nbsp;</td>
+											<td class="contenttable_row_{ROWBIT}_3">&nbsp;{varvalue}&nbsp;</td>
 										</tr>
-									<!-- ELSE -->
-										<input type="hidden" name="{varname}" value="{varvalue}">
-										<!-- IF noDisplay="0" -->
-											<tr class="contenttable_row_{ROWBIT}" <!-- IF htmldesc>"" -->onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{htmlname}', 'content', finishhtmldesc_{ROWCNT}, 'trail', true ) );"><!-- ENDIF htmldesc>"" -->
-												<td>{htmlname}
-													<br>({varname})</td>
-												<td>{varvalue}</td>
-											</tr>
-										<!-- ENDIF noDisplay="0" -->
-									<!-- ENDIF isTitle="1" -->
-									<!-- END var.setValues -->
-									<tr>
-										<td class="contenttable_foot" colspan="2"><input class="pagesubmitactivepage" type="submit" value="{var.displayPage.info.button}"></td>
-									</tr>
-									</form>
-								</table>
-							<!-- ELSE -->
-								<table cellspacing="1" cellpadding="2" border="0" class="contenttable">
-									<form action="index.php" method="post">
-									<input type="hidden" name="_installerlanguage" value="{var.installerlanguage}">
-									<tr>
-										<td class="contenttable_head" colspan="3">
-									<!-- BEGIN var.displayPage.hiddenValue -->
-										{htmlentities:varname}:{htmlentities:varvalue}<br>
-										<input type="hidden" name="{varname}" value="{varvalue}">
-									<!-- END var.displayPage.hiddenValue -->
-										</td>
-									</tr>
-									<tr>
-										<td class="contenttable_head" colspan="3">
-											{var.displayPage.info.pagetitle}
-											<br><font class="contenttable_head_description">{var.displayPage.info.pagedesc}</font>
-										</td>
-									</tr>
-									<!-- BEGIN var.displayPage.data -->
-									<tr  class="contenttable_row_{ROWBIT}" <!-- IF htmldesc>"" -->onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{htmlname}', 'content', htmldesc_{ROWCNT}, 'trail', true ) );"><!-- ENDIF htmldesc>"" -->
-										<td>{htmlname}<!-- IF error="1" -->*<!-- ENDIF error --></td>
-										<td>{form}</td>
-										<td class="contenttable_row_disabled_{ROWBIT}">{autovalue}</td>
-									</tr>
-									<!-- END var.displayPage.data -->
-									</tr>
-									<tr>
-										<td class="contenttable_foot" colspan="3"><input class="pagesubmitactivepage" type="submit" value="{var.installer.nextstring}"></td>
-									</tr>
-									</form>
-								</table>
-							<!-- ENDIF var.setCompletepage=="1" -->
+									<!-- ENDIF noDisplay="0" -->
+								<!-- ENDIF isTitle="1" -->
+								<!-- END var.setValues -->
+								<tr>
+									<td class="contenttable_foot" colspan="2"><input class="pagesubmitactivepage" type="submit" value="{var.displayPage.info.button}"></td>
+								</tr>
+								</form>
+							</table>
+						<!-- ELSE -->
+							<table cellspacing="0" cellpadding="0" border="0" class="contenttable">
+								<form action="index.php" method="post">
+								<input type="hidden" name="_installerlanguage" value="{var.installerlanguage}">
+								<!-- BEGIN var.displayPage.hiddenValue -->
+									<input type="hidden" name="{varname}" value="{varvalue}">
+								<!-- END var.displayPage.hiddenValue -->
+								<tr>
+									<td class="contenttable_head" colspan="3">
+										{var.displayPage.info.pagetitle}<font class="contenttable_head_description">
+										<br>&nbsp;{var.displayPage.info.pagedesc}</font>
+										<br><br>
+									</td>
+								</tr>
+								<!-- BEGIN var.displayPage.data -->
+								<tr <!-- IF htmldesc>"" -->onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{htmlname}', 'content', htmldesc_{ROWCNT}, 'trail', true ) );"><!-- ENDIF htmldesc>"" -->
+									<td class="contenttable_row_{ROWBIT}_1">&nbsp;{htmlname}<!-- IF error="1" -->*<!-- ENDIF error -->&nbsp;</td>
+									<td class="contenttable_row_{ROWBIT}_2">&nbsp;{form}</td>
+									<td class="contenttable_row_disabled_{ROWBIT}">&nbsp;{autovalue}</td>
+								</tr>
+								<!-- END var.displayPage.data -->
+								</tr>
+								<tr>
+									<td class="contenttable_foot" colspan="3"><input class="pagesubmitactivepage" type="submit" value="{var.installer.nextstring}"></td>
+								</tr>
+								</form>
+							</table>
+						<!-- ENDIF var.setCompletepage=="1" -->
+						<br>
+						<!-- IF var.errormessage>"" -->
+							<div class="error">
+								<ol>
+									<!-- BEGIN var.errormessage -->
+										<li>{htmlentities:text}</li>
+									<!-- END var.errormessage -->
+								</ol>
+							</div>
 							<br>
-							<!-- IF var.errormessage>"" -->
-								<div class="error">
-									<ol>
-										<!-- BEGIN var.errormessage -->
-											<li>{htmlentities:text}</li>
-										<!-- END var.errormessage -->
-									</ol>
-								</div>
-								<br>
-							<!-- ENDIF var.errormessage -->
-							<br><br><hr style="border-bottom: #FFFFFF 1px solid;border-top: #FFFFFF 0px solid;border-left: #FFFFFF 0px solid;border-right: #FFFFFF 0px solid;width: 90%;">
-							<hr style="border-bottom: #FFFFFF 1px solid;border-top: #FFFFFF 0px solid;border-left: #FFFFFF 0px solid;border-right: #FFFFFF 0px solid;width: 60%;">
-						</div>
-					</td>
-				</tr>
-				<!-- BEGIN var.allPages -->
-					<form action="index.php" name="gotopage_{ROWCNT}" method="post">
-					<input type="hidden" name="_installerlanguage" value="{installerlanguage}">
-					<input type="hidden" name="explicit_page" value="{pagenum}">
-					<!-- BEGIN hiddenValue -->
-						<input type="hidden" name="{varname}" value="{varvalue}">
-					<!-- END hiddenValue -->
-					<tr valign="top">
-						<td 
-							<!-- IF info.pagedesc>"" -->
-								onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{pagetitle}', 'content', pagedesc_{ROWCNT}, 'trail', true ) );"
-							<!-- ENDIF info.pagedesc>"" -->
-							class="
-							<!-- IF isActive=="0" -->
-							unavailable_tab_side
-							<!-- ELSEIF isActive=="1" -->
-							available_tab_side" onclick="document.gotopage2_{ROWCNT}.submit ()
-							<!-- ELSEIF isActive=="2" -->
-							current_tab_side
-							<!-- ENDIF isActive=="1" -->
-							">{info.pagetitle}</td>
-						</td>
-					</tr>
-					</form>
-				<!-- END var.allPages -->
-				<tr valign="top">
-					<td class="tabfoot">
-						<table ><tr><td>&nbsp;</td></tr></table>
-					</td>
-				</tr>
-			</table>
-<!--					</td>
-					<td style="width:10px;min-width:10px;height:90%;background-image:url('./installer/{var.installer.name}/tpl/images/border_right.png');background-repeat:repeat-y;">&nbsp;</td>
-				</tr>
-				<tr class="gfxborder">
-					<td style="width:10px;height:10px;"><img src="./installer/{var.installer.name}/tpl/images/border_bottom_left.png"></td>
-					<td style="width:100%;height:10px;background-image:url('./installer/{var.installer.name}/tpl/images/border_bottom.png');background-repeat:repeat-x;"></td>
-					<td style="width:10px;height:10px;"><img src="./installer/{var.installer.name}/tpl/images/border_bottom_right.png"></td>
-				</tr>
-			</table>
-			-->
+						<!-- ENDIF var.errormessage -->
+						<br><br><hr style="border-bottom: #FFFFFF 1px solid;border-top: #FFFFFF 0px solid;border-left: #FFFFFF 0px solid;border-right: #FFFFFF 0px solid;width: 90%;">
+						<hr style="border-bottom: #FFFFFF 1px solid;border-top: #FFFFFF 0px solid;border-left: #FFFFFF 0px solid;border-right: #FFFFFF 0px solid;width: 60%;">
+					</div>
+				</td>
+			</tr>
+		</table>
 	</body>
 </html>
   
