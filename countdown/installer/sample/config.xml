@@ -6,6 +6,13 @@
 		<finishedstring>Installation complete</finishedstring>
 		<redirectTo>!_redirectTo:$url,/index.php</redirectTo>
 		<finish>
+			<action>	!_createDirectory:$path</action>
+			<required>	1</required>
+			<errormessage>
+				[Could not extract script]
+			</errormessage>
+		</finish>
+		<finish>
 			<action>	!_unpackScript:$path</action>
 			<required>	1</required>
 			<errormessage>
@@ -52,13 +59,11 @@
 	</page>
 	<page>
 		<title>		[Installation directory]</title>
-		
 		<variable>
 			<name>			path</name>
 			<htmlname>		[Path for PHPMyAdmin]</htmlname>
 			<required>		1</required>
 			<newline>		1</newline>
-			<recheckable>	1</recheckable>
 			<formtype>		input</formtype>
 			<defaultvalue>	!_value_rootdir</defaultvalue>
 			<check>		
@@ -149,6 +154,13 @@
 			<newline>		1</newline>
 			<formtype>		select</formtype>
 			<defaultvalue>	=tcp,socket</defaultvalue>
+			<check>
+				<required>	1</required>
+				<action>	!_checkFormspecific</action>
+				<errormessage>
+					[Selected value is not an available value]
+				</errormessage>
+			</check>
 		</variable>
 		<variable>
 			<name>			smic_extension</name>
@@ -158,6 +170,13 @@
 			<newline>		1</newline>
 			<formtype>		select</formtype>
 			<defaultvalue>	=mysql,mysqli</defaultvalue>
+			<check>
+				<required>	1</required>
+				<action>	!_checkFormspecific</action>
+				<errormessage>
+					[Selected value is not an available value]
+				</errormessage>
+			</check>
 		</variable>
 		<variable>
 			<name>			smic_compress</name>
@@ -167,6 +186,13 @@
 			<newline>		1</newline>
 			<formtype>		select</formtype>
 			<defaultvalue>	=Yes,No</defaultvalue>
+			<check>
+				<required>	1</required>
+				<action>	!_checkFormspecific</action>
+				<errormessage>
+					[Selected value is not an available value]
+				</errormessage>
+			</check>
 		</variable>
 	</page>
 	<page>
@@ -176,7 +202,7 @@
 			<name>			smic_controluser</name>
 			<htmlname>		[Read-Only user]</htmlname>
 			<htmldesc>		[MySQL control user settings (this user must have read-only)]</htmldesc>
-			<required>		0</required>
+			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		input</formtype>
 			<defaultvalue>	=</defaultvalue>
@@ -185,7 +211,7 @@
 			<name>			smic_controlpass</name>
 			<htmlname>		[Read-Only user pass]</htmlname>
 			<htmldesc>		[access to the "mysql/user" and "mysql/db" tables). The controluser is also used for all relational features (pmadb)]</htmldesc>
-			<required>		0</required>
+			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		password</formtype>
 			<defaultvalue>	=</defaultvalue>
@@ -198,6 +224,13 @@
 			<newline>		1</newline>
 			<formtype>		select</formtype>
 			<defaultvalue>	=config,http,cookie</defaultvalue>
+			<check>
+				<required>	1</required>
+				<action>	!_checkFormspecific</action>
+				<errormessage>
+					[Selected value is not an available value]
+				</errormessage>
+			</check>
 		</variable>
 		<variable>
 			<name>			smic_user</name>
@@ -207,11 +240,18 @@
 			<newline>		1</newline>
 			<formtype>		input</formtype>
 			<defaultvalue>	=</defaultvalue>
+			<check>
+				<required>	1</required>
+				<action>	!_notNull</action>
+				<errormessage>
+					[Username is not set]
+				</errormessage>
+			</check>
 		</variable>
 		<variable>
 			<name>			smic_password</name>
 			<htmlname>		[MySQL-Password]</htmlname>
-			<htmldesc>		[MySQL password (only needed// with 'config' auth_type)]</htmldesc>
+			<htmldesc>		[MySQL password (only needed with 'config' auth_type)]</htmldesc>
 			<required>		0</required>
 			<newline>		1</newline>
 			<formtype>		password</formtype>
@@ -221,7 +261,7 @@
 			<required>	1</required>
 			<action>	!_checkConnection:mysql,$smic_host,$smic_user,$smic_password</action>
 			<errormessage>
-				[Verbindung zur Datenbank konnte nicht hergestellt werden]
+				[Could not connect to MySQL database]
 			</errormessage>
 		</check>
 	</page>
@@ -236,6 +276,13 @@
 			<newline>		1</newline>
 			<formtype>		select</formtype>
 			<defaultvalue>	!_getTables:$smic_extension,$smic_dbhost:$smic_dbport,$smic_user,$smic_password</defaultvalue>
+			<check>
+				<required>	1</required>
+				<action>	!_checkFormspecific</action>
+				<errormessage>
+					[Selected value is not an available value]
+				</errormessage>
+			</check>
 		</variable>
 		<variable>
 			<name>			smic_verbose</name>

@@ -9,9 +9,6 @@
 			{
 				$settings['root']['pages']['page']	= array ( $settings['root']['pages']['page'] );
 			}
-#			echo "<pre>";
-#			print_r ( $settings );
-#			echo "</pre>";
 			foreach ( $settings['root']['pages']['page'] as $page )
 			{
 				if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setConfig', 'Set page' );
@@ -25,7 +22,10 @@
 					{
 						$this->config['system']['totalPages']	= $pagenum;
 					}
-					$this->setPageAfter ( $pagenum );
+					if ( $this->config['system']['pageerror'] == -1 )
+					{
+						$this->setPageAfter ( $pagenum );
+					}
 				}
 				$pagenum++;
 			}

@@ -8,13 +8,15 @@
 				'value'		=> $_POST[$this->config['pages'][$pagenum]['data'][$varnum]['varname']],
 				'isset'		=> false
 			);
-			@mkdir ( $return['value'], 0777 );
-			if ( is_dir ( $return['value'] ) )
+			if ( !is_dir ( $return['value'] ) )
 			{
-				$return['isset']		= true;
+				if ( mkdir ( $return['value'], 0777 ) )
+				{
+					rmdir ( $return['value'] );
+					$return['isset']		= true;
+				}
 			}
 			return $return;
-			
 		}
 	}
 
