@@ -68,17 +68,17 @@
 							<!-- BEGIN var.installerlanguages -->
 								<tr>
 									<td class="installeritem_{ROWBIT}">
+										<form action="index.php" name="language_{ROWCNT}" method="post">
+										<input type="hidden" name="_installerlanguage" value="{language}">
+										</form>
 										<div align="right">
-											<img src="./include/templates/images/languages/{language}.png" ALT="{text}">
+											<a href="javascript: document.language_{ROWCNT}.submit()"><img src="./include/templates/images/languages/{language}.png" ALT="{text}" BORDER="0"></a>
 										</div>
 									</td>
 									<td class="installeritem_{ROWBIT}">
-										<form action="index.php" name="language_{ROWCNT}_2" method="post">
-										<input type="hidden" name="_installerlanguage" value="{language}">
-											<div class="installersteptable_available_step_shadow" onclick="document.language_{ROWCNT}_2.submit()">{text}</div>
-											<div class="installersteptable_available_step"  onclick="document.language_{ROWCNT}_2.submit()"
+											<div class="installersteptable_available_step_shadow" onclick="document.language_{ROWCNT}.submit()">{text}</div>
+											<div class="installersteptable_available_step"  onclick="document.language_{ROWCNT}.submit()"
 										>{text}</div>
-										</form>
 									</td>
 								</tr>
 								<tr>
