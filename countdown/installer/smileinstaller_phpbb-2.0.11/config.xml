@@ -151,7 +151,7 @@
 			<newline>		1</newline>
 			<formtype>		input</formtype>
 			<defaultvalue>	=localhost</defaultvalue>
-			<autovalue>		!_value_Servername</autovalue>
+			<autovalue>		=localhost</autovalue>
 			<check>
 				<action>	!_check_NotNull</action>
 				<required>	1</required>
@@ -201,13 +201,13 @@
 			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		input</formtype>
-			<defaultvalue>	=</defaultvalue>
-			<autovalue>		=[In demo: test]</autovalue>
+			<defaultvalue>	=smileinstallerdemo_test</defaultvalue>
+			<autovalue>		=[In demo: smileinstallerdemo_test]</autovalue>
 			<check>
-				<action>	!_check_Formspecific:test</action>
+				<action>	!_check_Formspecific:smileinstallerdemo_test</action>
 				<required>	1</required>
 				<errormessage>
-					[Allowed testdb is test]
+					[Allowed testdb is smileinstallerdemo_test]
 				</errormessage>
 			</check>
 		</variable>
