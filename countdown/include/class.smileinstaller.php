@@ -831,6 +831,7 @@ class installer
 	}
 	function getInstallerUsepage ()
 	{
+		$usePage		= -1;
 		if ($this->config['system']['pageerror'] == -1)
 		{
 			$this->config['system']['canFinish']= 1;
@@ -872,7 +873,7 @@ class installer
 				die ( "EXECUTEFINISHACTIONS!" );
 			}
 		}
-		if ( !isset ( $usePage ) )
+		if ( $usePage == -1 )
 		{
 			$usePage= $this->config['system']['pageerror'];
 		}
