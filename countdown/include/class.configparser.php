@@ -13,7 +13,7 @@ class configparser
 		$this->setAllInstallerpages ( $settings['root']['pages']['page'] );
 		$this->setAllRuntimeGeneratedInstallerpages ();
 		$this->setFinishInstallerpage ( $settings['root']['pages']['installer']['onFinish'] );
-		$this->checkFinishOrComplete ();
+		$this->setFinishOrComplete ();
 		$this->setPage();
 	}
 	function setTotalPages ( $pages )
@@ -31,12 +31,12 @@ class configparser
 		{
 			if ($this->config['system']['debug'] >= 5)
 				$this->_setError($pagenum, 'setConfig', 'Set page');
-			$this->setPageinfos($pagenum, $page);
+			$this->setPagedataInfos($pagenum, $page);
 			if ($this->config['system']['pageerror'] == -1)
 			{
 				$this->setFinishvalueTitle ( $this->config['system']['smarttemplate']['allPages'][$pagenum]['info'] );
 				$this->setInstallerpageActive ( $pagenum );
-				$this->setPageactions($pagenum, $page['check']);
+				$this->setPagedataChecks ($pagenum, $page['check']);
 				$this->setPagevariables($pagenum, $page['variable']);
 				if ($this->config['system']['pageerror'] == -1)
 				{
@@ -53,6 +53,10 @@ class configparser
 			'isTitle'		=> 1,
 			'info'			=> $pageinfo
 		);					
+	}
+	function setFinishvalue ( $valueinfo )
+	{
+		$this->config['setValue'][]		= $valueinfo;					
 	}
 	function setInstallerpageActive ( $pagenum, $activate = true )
 	{
@@ -89,24 +93,12 @@ class configparser
 		}
 		if ( isset ( $settings['root']['pages']['installer']['onComplete'] ) )
 		{
-			$this->setInstallerdataOnComplete ( $infos['onComplete'] ),
+			$this->setInstallerdataOnComplete ( $settings['root']['pages']['installer']['onComplete'] );
 		}
 		if ( isset ( $settings['root']['pages']['installer']['onFinish'] ) )
 		{
+			$this->setInstallerOnFinish ( $settings['root']['pages']['installer']['onFinish'] );
 		}
-			'onComplete'			=> 
-				$this->setInstallerOnComplete ( $infos['onComplete'] ),
-			'onFinish'			=> 
-				$this->setInstallerOnFinish ( $infos['onFinish'] ),
-			'redirectTo'		=> $infos['onComplete']['redirectTo']
-		);
-
-		if ( isset ( $settings['root']['pages']['installer']['onFinish'] ) )
-		{
-			$this->setInstalldataOnFinish ( $settings['root']['pages']['installer']['onFinish'] );
-			
-		}
-
 	}
 	function setInstallerdataInfos($infos)
 	{
@@ -178,10 +170,10 @@ class configparser
 		{
 			if ($this->config['system']['debug'] >= 5)
 				$this->_setError($pagenum, 'setConfig', 'Set page');
-			$this->setPageinfos($pagenum, $page);
+			$this->setPagedataInfos($pagenum, $page);
 			if ($this->config['system']['pageerror'] == -1)
 			{
-				$this->config['system']['smarttemplate']['allPages'][$pagenum]['isActive']= 1;
+				$this->setInstallerpageActive ( $pagenum );
 				foreach ( $page['check'] as $checknum => $check )
 				{
 					if ( is_array ( $check['option'] ) )
@@ -208,15 +200,14 @@ class configparser
 					$this->checkPageAfter($pagenum);
 				}
 			}
-			#$pagenum ++;
 		}
 	}
 	function setFinishInstallerpage ( $pageinfo )
 	{
 		$this->config['system']['totalPages']++;
-		$this->setPageinfos($this->config['system']['totalPages'], $pageinfo );
+		$this->setPagedataInfos( $this->config['system']['totalPages'], $pageinfo );
 	}
-	function checkFinishOrComplete ()
+	function setFinishOrComplete ()
 	{
 		if ( $this->config['languageSet'] 
 			&& $this->config['system']['pageerror'] == -1 )
@@ -239,7 +230,7 @@ class configparser
 			}
 		}
 	}
-	function setPageinfos($pagenum, $settings)
+	function setPagedataInfos($pagenum, $settings)
 	{
 		if ($this->config['system']['debug'] >= 5)
 			$this->_setError($pagenum, 'setPageinfos', 'Set pageinfos');
@@ -260,7 +251,7 @@ class configparser
 		if ($this->config['system']['debug'] >= 5)
 			$this->_setError($pagenum, 'setPageinfos', print_r($this->config['system']['smarttemplate']['allPages'][$pagenum], 1));
 	}
-	function setPageactions($pagenum, $settings)
+	function setPagedataChecks ($pagenum, $settings)
 	{
 		if ($this->config['system']['debug'] >= 5)
 			$this->_setError($pagenum, 'setPageactions', 'Set pageactions');
@@ -413,7 +404,7 @@ class configparser
 			$this->config['hiddenValue'][]	= $hiddenValue;
 			if ($formtype != 'box' && $formtype != 'html')
 			{
-				$this->config['setValue'][]		= $hiddenValue;
+				$this->setFinishvalue ( $hiddenValue );
 			}
 		}
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]['data']= $this->config['pages'][$pagenum]['data'];
