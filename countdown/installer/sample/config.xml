@@ -2,7 +2,6 @@
 	<installer>
 		<title>[Install PHPMyAdmin 2.24.2.1 2005/01/24 01:11:42]</title>
 		<nextstring>[next]</nextstring>
-		<finishstring>[finish]</finishstring>
 		<finishedstring>Installation complete</finishedstring>
 		<redirectTo>!_redirectTo:$url,/index.php</redirectTo>
 		<finish>
