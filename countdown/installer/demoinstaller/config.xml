@@ -9,7 +9,7 @@
 			<title>	[Setup complete.]</title>
 			<name>	[Setup complete.]</name>
 			<desc>	[Setup complete.]</desc>
-			
+			<redirectTo>!_value_redirectTo:$installdir/index.php</redirectTo>
 		</onComplete>
 		<onFinish>
 			<title>	[Setup finished.]</title>
@@ -42,36 +42,6 @@
 				</function>
 			</outputfunctions>
 		</onFinish>
-		<finishedstring>[Installation complete]</finishedstring>
-		<finish>
-			<action>	!_output_createInstalldirectory:$installdir</action>
-			<required>	1</required>
-			<errormessage>
-				[Installation failed. Could not create directory.]
-			</errormessage>
-		</finish>
-		<finish>
-			<action>	!_output_unpackScript:$installdir</action>
-			<required>	1</required>
-			<errormessage>
-				[Installation failed. Could not extract script.]
-			</errormessage>
-		</finish>
-		<finish>
-			<action>	!_output_VarToFile:$installdir/democonfig.php,dbms+dbhost+dbname+dbuser+dbpasswd+table_prefix</action>
-			<required>	1</required>
-			<errormessage>
-				[Installation failed. Could not write variables.]
-			</errormessage>
-		</finish>
-		<finish>
-			<action>	!_finish</action>
-			<required>	1</required>
-			<errormessage>
-				[Installation failed. Could not finish installation.]
-			</errormessage>
-		</finish>
-		<redirectTo>!_value_redirectTo:$installdir/index.php</redirectTo>
 	</installer>
 	<page>
 		<title>	[License]</title>
