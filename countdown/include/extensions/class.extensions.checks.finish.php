@@ -1,31 +1,29 @@
 <?
 
-	class extensions_finish extends installer {
+	class extensions_checks_finish extends extensions_checks_file {
 		
-		function _copyScriptTo ( $path )
-		{
-			$return		= false;
-			if ( is_dir ( $path ) )
-			{
-#
-			}
-		}
 		function _createDirectory ( $path, $newDir, $mode )
 		{
-			$return		= false;
+			$return		= array (
+				'value'		=> '',
+				'isset'		=> false
+			);
 			if ( is_dir ( $path ) )
 			{
 				if ( @mkdir ( "$path/$newDir", $mode ) 
 				|| is_dir ( "$path/$newDir" ) )
 				{
-					$return		= true;
+					$return['isset']		= true;
 				}
 			}
 			return $return;
 		}
 		function _writeToFile ( $filename, $allowOnlyVariables = false )
 		{
-			$return		= false;
+			$return		= array (
+				'value'		=> '',
+				'isset'		=> false
+			);
 			$fh		= fopen ( $this->config['system']['directories']['scriptdir'] . '/files/script/' . $filename, 'w+' );
 			if ( $fh )
 			{
@@ -51,7 +49,7 @@
 				}
 				fputs ( $fh, "?>" );
 				fclose ( $fh );
-				$return		= true;
+				$return['isset']		= true;
 			}
 			return $return;
 		}

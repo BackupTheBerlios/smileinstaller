@@ -2,9 +2,20 @@
 	<installer>
 		<title>[Beispiel installieren]</title>
 		<finish>
-			<action>_createDirectory:$path,$dir,0777</action>
-			<action>_writeToFile:config.php,dbhost+dbname</action>
+			<action>	!_unpackScript:$path</action>
+			<required>	1</required>
+			<errormessage>
+				[Konnte Skript nicht entpacken]
+			</errormessage>
 		</finish>
+		<finish>
+			<action>	_writeToFile:config.php,dbhost+dbname</action>
+			<required>	1</required>
+			<errormessage>
+				[Konnte Variablen nicht speichern]
+			</errormessage>
+		</finish>
+
 		<nextstring>[Weiter]</nextstring>
 		<finishstring>[Fertigstellen]</finishstring>
 	</installer>
@@ -32,6 +43,9 @@
 			<check>
 				<required>	1</required>
 				<action>	!_checkFormspecific:[Ja]</action>
+				<errormessage>
+					[Sie koennen dieses Skript nicht installieren wenn sie die Lizenz nicht akzeptieren]
+				</errormessage>
 			</check>
 		</variable>
 	</page>
@@ -47,21 +61,23 @@
 			<recheckable>	1</recheckable>
 			<formtype>		input</formtype>
 			<defaultvalue>	!_value_rootdir</defaultvalue>
-			<check>			!_checkDirExists</check>
+			<check>			
+				<required>	1</required>
+				<action>	!_checkInstalldir</action>
+				<errormessage>
+					[Kann in dieses Verzeichnis nicht installieren]
+				</errormessage>
+			</check>
 		</variable>
 		<variable>
-			<name>			dir</name>
-			<htmlname>		[(Neues) Verzeichniss fuer das Skript]</htmlname>
+			<name>			url</name>
+			<htmlname>		[URL]</htmlname>
 			<required>		1</required>
 			<newline>		1</newline>
 			<recheckable>	1</recheckable>
 			<formtype>		input</formtype>
-			<defaultvalue>	=sample</defaultvalue>
+			<defaultvalue>	!_notNull</defaultvalue>
 		</variable>
-		<checkafter>
-			<required>		1</required>
-			<action>		!_checkWriteable:$path</action>
-		</checkafter>
 	</page>
 	<page>
 		<title>	[Datenbankserver auswaehlen]</title>
@@ -101,6 +117,9 @@
 		<checkafter>
 			<required>	1</required>
 			<action>	!_checkConnection:mysql,$dbhost,$dbuser,$dbpass</action>
+			<errormessage>
+				[Verbindung zur Datenbank konnte nicht hergestellt werden]
+			</errormessage>
 		</checkafter>
 	</page>
 	<page>
@@ -115,7 +134,13 @@
 			<recheckable>	0</recheckable>
 			<formtype>		select</formtype>
 			<defaultvalue>	!_getTables:mysql,$dbhost,$dbuser,$dbpass</defaultvalue>
-			<check>			!_checkFormspecific</check>
+			<check>			
+				<required>	1</required>
+				<action>	!_checkFormspecific</action>
+				<errormessage>
+					[Tabellen konnten nicht gelesen werden]
+				</errormessage>
+			</check>
 		</variable>
 	</page>
 	<page>
@@ -152,6 +177,9 @@
 		<checkafter>
 			<required>	1</required>
 			<action>	!_newPasswordcheck:$adminpass,$adminpass_2</action>
+			<errormessage>
+				[Angegebene Passwoerter stimmen nicht ueberein]
+			</errormessage>
 		</checkafter>
 	</page>
 </pages>

@@ -19,3 +19,4 @@ Name des Administrators=Adminname
 Passwort wiederholen=repeat password
 Weiter=Next
 Fertigstellen=Finish
+Sie koennen dieses Skript nicht installieren wenn sie die Lizenz nicht akzeptieren=You can't install this script without accepting the license

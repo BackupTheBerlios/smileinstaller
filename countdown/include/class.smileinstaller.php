@@ -119,10 +119,6 @@
 		{
 			foreach ( $this->config['pages'] as $pagenum => $pagedata )
 			{
-				if ( !$this->setPagebefore ( $pagenum ) )
-				{
-					break;
-				}
 				foreach ( $this->config['pages'][$pagenum]['data'] as $varnum => $var )
 				{
 					$this->setVariable ( $pagenum, $varnum );
@@ -148,49 +144,27 @@
 				}
 			}
 		}
-		function setPagebefore ( $pagenum )
-		{
-			$return	= true;
-			if ( isset ( $this->config['pages'][$pagenum]['action']['checkbefore'] ) )
-			{
-				foreach ( $this->config['pages'][$pagenum]['action']['checkbefore'] as $check )
-				{
-					$evalcode	= "\$return = \$this->config['extension']->" . substr ( $check['action'], 1 );
-					$return		= $this->executePageenvironment ( $evalcode, $pagenum, 0 );
-					if ( !$return )
-					{
-						if ( $this->config['system']['pageerror'] == 0 
-						|| $this->config['system']['pageerror'] > $pagenum )
-						{
-							$this->config['system']['pageerror']	= $pagenum;
-							$this->_setError ( $pagenum, 0, "Fehler gefunden in precheck", "$evalcode" );
-						}
-					}
-				}
-			}
-			return $return;
-		}
 		function setPageAfter ( $pagenum )
 		{
-			$return	= true;
+			$return['isset']	= true;
 			if ( isset ( $this->config['pages'][$pagenum]['action']['checkafter'] ) )
 			{
 				foreach ( $this->config['pages'][$pagenum]['action']['checkafter'] as $check )
 				{
 					$evalcode	= "\$return = \$this->config['extension']->" . substr ( $check['action'], 1 );
 					$return		= $this->executePageenvironment ( $evalcode, $pagenum, 0 );
-					if ( !$return )
+					if ( !$return['isset'] )
 					{
+						$this->_setError ( $pagenum, 0, $check['errormessage'] );
 						if ( $this->config['system']['pageerror'] == 0 
 						|| $this->config['system']['pageerror'] > $pagenum )
 						{
 							$this->config['system']['pageerror']	= $pagenum;
-							$this->_setError ( $pagenum, 0, "Fehler gefunden in postcheck", "$evalcode" );
 						}
 					}
 				}
 			}
-			return $return;
+			return $return['isset'];
 		}
 		function unsetPage ( $pagenum )
 		{
@@ -218,7 +192,7 @@
 		}
 		function setVariable ( $pagenum, $varnum )
 		{
-			$var['defaultvalue']		= $this->setDefaultValue ( $pagenum, $varnum );
+			$this->setDefaultValue ( $pagenum, $varnum );
 			$var						= $this->config['pages'][$pagenum]['data'][$varnum];
 			$postSet	= false;
 			$valueIsSet		= false;
@@ -265,6 +239,7 @@
 							}
 							if ( $valueIsSet == false )
 							{
+								$this->_setError ( $pagenum, $varnum, $check['errormessage'] );
 								if ( $check['required'] == 1 )
 								{
 									break;
@@ -679,6 +654,12 @@
 				{
 					$evalcode		= "\$return = \$this->config['extension']->" . $this->parseValueAsFunction ( substr ( $var['defaultvalue'], 1 ) );
 					$return	= $this->executeEnvironment ( $evalcode, $pagenum, $varnum );
+					if ( $return['isset'] )
+					{
+						$return		= $return['value'];
+					} else {
+						$return 	= '';
+					}
 					break;
 				}
 				case '=' :
@@ -700,6 +681,7 @@
 				}
 			}
 			$this->config['pages'][$pagenum]['data'][$varnum]['defaultvalue'] = $return;
+			return $return;
 		}
 		function setAnyValue ( $value, $pagenum, $varnum )
 		{
@@ -755,7 +737,7 @@
 			}
 			$this->tpl		= new smarttemplate ( $this->config['system']['directories']['scriptdir'] . "/files/templates/finish.html" );
 		}
-		function _setError ( $pagenum, $varnum, $errormessage, $value = "" )
+		function _setError ( $pagenum, $varnum, $errormessage )
 		{
 			if ( $varnum == 0 )
 			{
@@ -763,7 +745,8 @@
 			} else {
 				$htmlname		= $this->config['pages'][$pagenum]['data'][$varnum]['htmlname'];
 			}
-			$this->config['system']['errormessage'][]['text']		= $htmlname . ": " . $errormessage . "\n" . $value;
+			$errormessage		= $this->lang ( $errormessage );
+			$this->config['system']['errormessage'][]['text']		= $htmlname . ": " . $errormessage;
 		}
 	}
 ?>

@@ -1,4 +1,8 @@
 <?
+
+	define ( 'ROOTPATH', dirname ( dirname ( __FILE__ ) . '*' ) );
+	// Ziparchiv des Scripts muss den neuen Pfad enthalten!
+	///////////////////////////////////////////////////////
 	// Nichts quoten. Ganz schlecht!
 	set_magic_quotes_runtime ( 0 );
 	// Benoetigt fuer Debugging (spaeter nicht vergessen)
@@ -94,10 +98,16 @@
 	require_once "./../smarttemplate/class.smarttemplate.php";
 	require_once "./include/class.configparser.php";
 	require_once "./include/class.smileinstaller.php";
-	require_once "./include/class.extensions.finish.php";
-	require_once "./include/class.extensions.db.php";
-	require_once "./include/class.extensions.formspecific.php";
-	require_once "./include/class.extensions.file.php";
+	require_once "./include/extensions/class.extensions.checks._.php";
+	require_once "./include/extensions/class.extensions.checks.db.php";
+	require_once "./include/extensions/class.extensions.checks.file.php";
+	require_once "./include/extensions/class.extensions.checks.finish.php";
+	require_once "./include/extensions/class.extensions.checks.form.php";
+	require_once "./include/extensions/class.extensions.values._.php";
+	require_once "./include/extensions/class.extensions.values.db.php";
+	require_once "./include/extensions/class.extensions.values.file.php";
+	require_once "./include/extensions/class.extensions.values.finish.php";
+	require_once "./include/extensions/class.extensions.values.form.php";
 	require_once "./include/class.extensions.php";
 
 	// Start

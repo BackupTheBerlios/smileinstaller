@@ -26,21 +26,6 @@
 				{
 					$page['checkafter']		= array ( $page['checkafter'] );
 				}
-				if ( isset ( $page['checkbefore']['required'] ) )
-				{
-					$page['checkbefore']		= array ( $page['checkbefore'] );
-				}
-				if ( isset ( $page['checkbefore'] )
-					&& is_array ( $page['checkbefore'] ) )
-				{
-					foreach ( $page['checkbefore'] as $check )
-					{
-						$this->config['pages'][$pagenum]['action']['checkbefore'][]		= array (
-							'required'		=> $check['required'],
-							'action'		=> $this->parseValue ( $check['action'] )
-						);
-					}
-				}
 				if ( isset ( $page['checkafter'] )
 					&& is_array ( $page['checkafter'] ) )
 				{
@@ -48,7 +33,8 @@
 					{
 						$this->config['pages'][$pagenum]['action']['checkafter'][]		= array (
 							'required'		=> $check['required'],
-							'action'		=> $this->parseValue ( $check['action'] )
+							'action'		=> $this->parseValue ( $check['action'] ),
+							'errormessage'	=> $check['errormessage'],
 						);
 					}
 				}

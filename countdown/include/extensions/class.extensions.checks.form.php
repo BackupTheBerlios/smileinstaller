@@ -1,6 +1,6 @@
 <?
 
-	class extensions_formspecific	extends extensions_db
+	class extensions_checks_form extends extensions_checks_finish
 	{
 		function _checkFormspecific ( $pagenum, $varnum, $requireValue = false )
 		{
@@ -32,7 +32,6 @@
 					die ( 'no checkable element ' . $this->config['pages'][$pagenum]['data'][$varnum]['form'] );
 				}
 			}
-			if ( $return['isset'] == false ) $this->_setError ( $pagenum, $varnum, 'ungueltiger Wert', $_POST[$this->config['pages'][$pagenum]['data'][$varnum]['varname']] );
 			
 			return $return;
 		}
