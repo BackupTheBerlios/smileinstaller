@@ -2,7 +2,7 @@
 
 	class extensions_checks_finish extends extensions_checks_file {
 		
-		function _createDirectory ( $path, $newDir, $mode )
+		function _createDirectory ( $pagenum, $varnum, $path, $newDir, $mode )
 		{
 			$return		= array (
 				'value'		=> '',
