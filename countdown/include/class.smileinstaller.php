@@ -20,6 +20,7 @@ class installer extends smileinstaller_variable
 	}
 	function initializeExtension()
 	{
+		if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( 0, 0, 'initializeExtension ' . $this->config['files']['extension'], false );
 		require_once ($this->config['files']['extension']);
 		$evalcode= "\$this->config['extension'] = new ".$this->config['system']['classname']." ( \$this->config['system']['installer'], true );";
 		eval ($evalcode);
