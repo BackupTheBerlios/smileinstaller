@@ -136,9 +136,9 @@ class installer extends smilelog
 				{
 					if ( $check['required'] == 1 )
 					{
-						$this->setError ( $pagenum, 0, __METHOD__ . " " . $check['errormessage'] );
+						$this->setError ( $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . $check['errormessage'] );
 					} else {
-						$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . $check['errormessage'] );
+						$this->_setError ( DEBUGINFO, $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . $check['errormessage'] );
 					}
 				}
 			}
@@ -156,14 +156,14 @@ class installer extends smilelog
 			if ( $this->config['pages'][$pagenum]['data'][$varnum]['formtype'] != 'box'
 				&& $this->config['pages'][$pagenum]['data'][$varnum]['formtype'] != 'html' )
 			{
-				$this->_setError( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . "$pagenum, $varnum, $selectedValue" );
+				$this->_setError( DEBUGINFO, $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . "$pagenum, $varnum, $selectedValue" );
 				// Alle Checks durchlaufen
 				foreach ( $checks as $check )
 				{
 					$value		= "";
 					$evalcode	= "\$return = \$this->config['extension'] -> " 
 						. $this->parseItem ( $check['action'] );
-					$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "execute $evalcode" );
+					$this->_setError ( DEBUGINFO, $pagenum, $varnum, __CLASS__ . "::" . __FUNCTION__ . " " . "execute $evalcode" );
 					$return		= $this->execute ( $evalcode, $pagenum, $varnum );
 					$value		= $return['value'];
 					$ok			= $return['isset'];
@@ -174,18 +174,18 @@ class installer extends smilelog
 					// Wenn Prüfung nicht OK
 					if (!$ok)
 					{
-						$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "checkVariable: check false" );
+						$this->_setError ( DEBUGINFO, $pagenum, $varnum, __CLASS__ . "::" . __FUNCTION__ . " " . "checkVariable: check false" );
 						if ( $check['required'] == 1 )
 						{ 
 							$return		= false;
 							$this		->setError ( $pagenum, $varnum, "checkVariable: " . $check['errormessage'] );
 						} else {
-							$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "... but its ok" );
+							$this->_setError ( DEBUGINFO, $pagenum, $varnum, __CLASS__ . "::" . __FUNCTION__ . " " . "... but its ok" );
 						}
 							
 						break;
 					} else {
-						$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "check true");
+						$this->_setError ( DEBUGINFO, $pagenum, $varnum, __CLASS__ . "::" . __FUNCTION__ . " " . "check true");
 					}
 				}
 			}
@@ -207,12 +207,12 @@ class installer extends smilelog
 	function executeFinishActions($checks, $pagenum= 0, $varnum= 0)
 	{
 		$return= true;
-		$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "$pagenum, $varnum, $selectedValue");
+		$this->_setError ( DEBUGINFO, $pagenum, $varnum, __CLASS__ . "::" . __FUNCTION__ . " " . "$pagenum, $varnum, $selectedValue");
 		foreach ($checks as $check)
 		{
 			$value= "";
 			$evalcode= "\$return = \$this->config['extension'] -> ".$this->parseItem($check['action']);
-			$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "execute $evalcode");
+			$this->_setError ( DEBUGINFO, $pagenum, $varnum, __CLASS__ . "::" . __FUNCTION__ . " " . "execute $evalcode");
 			$return= $this->execute($evalcode, $pagenum, $varnum);
 			$value= $return['value'];
 			$ok= $return['isset'];
@@ -220,14 +220,14 @@ class installer extends smilelog
 				$this->lang($check['errormessage']);
 			if (!$ok)
 			{
-				$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "check false");
+				$this->_setError ( DEBUGINFO, $pagenum, $varnum, __CLASS__ . "::" . __FUNCTION__ . " " . "check false");
 				$return		= false;
-				$this->_setError( ERRORINFO, $pagenum, $varnum, __METHOD__ . " " . $check['errormessage']);
+				$this->_setError( ERRORINFO, $pagenum, $varnum, __CLASS__ . "::" . __FUNCTION__ . " " . $check['errormessage']);
 				break;
 			}
 			else
 			{
-				$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "check true");
+				$this->_setError ( DEBUGINFO, $pagenum, $varnum, __CLASS__ . "::" . __FUNCTION__ . " " . "check true");
 			}
 		}
 		return $return;
@@ -396,7 +396,7 @@ class installer extends smilelog
 	}
 	function initializeExtension()
 	{
-		$this->_setError ( DEBUGINFO, -1, -1, __METHOD__ . " " . $this->config['files']['extension'], false );
+		$this->_setError ( DEBUGINFO, -1, -1, __CLASS__ . "::" . __FUNCTION__ . " " . $this->config['files']['extension'], false );
 		require_once ( $this->config['files']['extension'] );
 		$evalcode	= "\$this->config['extension'] = new " 
 			. $this->config['system']['classname']
@@ -406,7 +406,7 @@ class installer extends smilelog
 	}
 	function go()
 	{
-		$this->_setError ( DEBUGINFO, -1, -1, __METHOD__ . " " . 'begin installation' );
+		$this->_setError ( DEBUGINFO, -1, -1, __CLASS__ . "::" . __FUNCTION__ . " " . 'begin installation' );
 		if ( $this->config['system']['isExtension'] )
 		{
 			die ( 'not an installer' );
@@ -422,21 +422,21 @@ class installer extends smilelog
 	{
 		if (!is_string($key))
 		{
-			$this->_setError ( DEBUGINFO, -1, -1, __METHOD__ . " " . 'not a string: ". '.print_r($key, 1).'"', false);
+			$this->_setError ( DEBUGINFO, -1, -1, __CLASS__ . "::" . __FUNCTION__ . " " . 'not a string: ". '.print_r($key, 1).'"', false);
 		}
 		else
 		{
 			if (!preg_match('|^\[(.*)\]$|', trim($key), $result))
 			{
 				$return= $key;
-				$this->_setError ( DEBUGINFO, -1, -1, __METHOD__ . " " . 'No languagestring "'.$return.'"', false);
+				$this->_setError ( DEBUGINFO, -1, -1, __CLASS__ . "::" . __FUNCTION__ . " " . 'No languagestring "'.$return.'"', false);
 			}
 			else
 			{
 				if (!isset ($this->config['language'][$result[1]]) || $this->config['language'][$result[1]] == "")
 				{
 					$return= $result[1];
-					$this->_setError ( DEBUGINFO, -1, -1, __METHOD__ . " " . 'No languagedefinition "'.$return.'"', false);
+					$this->_setError ( DEBUGINFO, -1, -1, __CLASS__ . "::" . __FUNCTION__ . " " . 'No languagedefinition "'.$return.'"', false);
 				}
 				else
 				{
@@ -448,7 +448,7 @@ class installer extends smilelog
 	}
 	function loadConfig ()
 	{
-		$this->_setError ( DEBUGINFO, -1, -1, __METHOD__ 
+		$this->_setError ( DEBUGINFO, -1, -1, __CLASS__ . "::" . __FUNCTION__ 
 			. ' begin installation' );
 		if (!file_exists($this->config['files']['config']) || !is_readable($this->config['files']['config']))
 		{
@@ -565,7 +565,7 @@ class installer extends smilelog
 		$pagenum	= 0;
 		foreach ( $pages as $page )
 		{
-			$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . 'Set page' );
+			$this->_setError ( DEBUGINFO, $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . 'Set page' );
 			$this->setInstallerpageDataInfos ( $pagenum, $page );
 			if ( $this->config['system']['pageerror'] == -1 )
 			{
@@ -585,7 +585,7 @@ class installer extends smilelog
 	{
 		foreach ( $this->config['pagesToAdd'] as $pagenum => $page)
 		{
-			$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . 'Set runtimepage');
+			$this->_setError ( DEBUGINFO, $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . 'Set runtimepage');
 			$this->setInstallerpageDataInfos($pagenum, $page);
 			if ($this->config['system']['pageerror'] == -1)
 			{
@@ -706,18 +706,18 @@ class installer extends smilelog
 	}
 	function setInstallerpageDataInfos ( $pagenum, $settings )
 	{
-		$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . 'Set pageinfos');
+		$this->_setError ( DEBUGINFO, $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . 'Set pageinfos');
 		if ( !isset ($settings['title'] ) )
 		{
-			$this->setError ( $pagenum, 0, __METHOD__ . " " . 'No pagetitle' );
+			$this->setError ( $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . 'No pagetitle' );
 		}
 		if ( !isset ( $settings['name'] ) )
 		{
-			$this->setError ( $pagenum, 0, __METHOD__ . " " . 'No pagename' );
+			$this->setError ( $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . 'No pagename' );
 		}
 		if ( !isset ( $settings['desc'] ) )
 		{
-			$this->setError ( $pagenum, 0, __METHOD__ . " " . 'No pagedescription');
+			$this->setError ( $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . 'No pagedescription');
 		}
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]	= array
 		(
@@ -733,11 +733,11 @@ class installer extends smilelog
 			'isActive' => 0,
 		);
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]['installerlanguage']= $this->config['system']['installerlanguage'];
-		$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . print_r($this->config['system']['smarttemplate']['allPages'][$pagenum], 1));
+		$this->_setError ( DEBUGINFO, $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . print_r($this->config['system']['smarttemplate']['allPages'][$pagenum], 1));
 	}
 	function setInstallerpageDataChecks ( $pagenum, $settings )
 	{
-		$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . 'Set pageactions');
+		$this->_setError ( DEBUGINFO, $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . 'Set pageactions');
 		if (isset ($settings['required']))
 		{
 			$settings= array ($settings);
@@ -748,15 +748,15 @@ class installer extends smilelog
 			{
 				if (!isset ($check['required']))
 				{
-					$this->setError ( $pagenum, 0, __METHOD__ . " " . 'No required for action');
+					$this->setError ( $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . 'No required for action');
 				}
 				if (!isset ($check['action']))
 				{
-					$this->setError ( $pagenum, 0, __METHOD__ . " " . 'No action for action?!?');
+					$this->setError ( $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . 'No action for action?!?');
 				}
 				if (!isset ($check['errormessage']))
 				{
-					$this->setError ( $pagenum, 0, __METHOD__ . " " . 'No errormessage for action');
+					$this->setError ( $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . 'No errormessage for action');
 				}
 				if ($this->config['system']['debug'] >= 3)
 					$this->lang($check['errormessage']);
@@ -766,7 +766,7 @@ class installer extends smilelog
 	}
 	function setInstallerpageDataVariables ( $pagenum, $settings )
 	{
-		$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . 'Set pagevariables');
+		$this->_setError ( DEBUGINFO, $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . 'Set pagevariables');
 		if (isset ($settings['name']))
 		{
 			$settings= array ($settings);
@@ -774,35 +774,35 @@ class installer extends smilelog
 		foreach ($settings as $variable)
 		{
 			$varcount= sizeof($this->config['pages'][$pagenum]['data']);
-			$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . 'Set variable '.$varcount);
+			$this->_setError ( DEBUGINFO, $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . 'Set variable '.$varcount);
 			if (!isset ($variable['name']))
 			{
-				$this->setError ( $pagenum, 0, __METHOD__ . " " . 'No name for variable ' . $variable['varname'] );
+				$this->setError ( $pagenum, 0, __CLASS__ . "::" . __FUNCTION__ . " " . 'No name for variable ' . $variable['varname'] );
 				$variable['name']= "";
 			}
 			if ( !isset ($variable['required'] ) )
 			{
-				$this->setError ( $pagenum, $varcount, __METHOD__ . " " . 'No required for variable ' . $variable['varname'] );
+				$this->setError ( $pagenum, $varcount, __CLASS__ . "::" . __FUNCTION__ . " " . 'No required for variable ' . $variable['varname'] );
 			}
 			if (!isset ($variable['newline']))
 			{
-				$this->setError ( $pagenum, $varcount, __METHOD__ . " " . 'No newline for variable ' . $variable['varname'] );
+				$this->setError ( $pagenum, $varcount, __CLASS__ . "::" . __FUNCTION__ . " " . 'No newline for variable ' . $variable['varname'] );
 			}
 			if (!isset ($variable['htmlname']))
 			{
-				$this->setError ( $pagenum, $varcount, __METHOD__ . " " . 'No htmlname for variable ' . $variable['varname'] );
+				$this->setError ( $pagenum, $varcount, __CLASS__ . "::" . __FUNCTION__ . " " . 'No htmlname for variable ' . $variable['varname'] );
 			}
 			if (!isset ($variable['htmldesc']))
 			{
-				$this->setError ( $pagenum, $varcount, __METHOD__ . " " . 'No htmldesc for variable ' . $variable['varname'] );
+				$this->setError ( $pagenum, $varcount, __CLASS__ . "::" . __FUNCTION__ . " " . 'No htmldesc for variable ' . $variable['varname'] );
 			}
 			if (!isset ($variable['formtype']))
 			{
-				$this->setError ( $pagenum, $varcount, __METHOD__ . " " . 'No formtype for variable ' . $variable['varname'] );
+				$this->setError ( $pagenum, $varcount, __CLASS__ . "::" . __FUNCTION__ . " " . 'No formtype for variable ' . $variable['varname'] );
 			}
 			if (!isset ($variable['autovalue']))
 			{
-				$this->_setError ( ERRORINFO, $pagenum, $varcount, __METHOD__ . " " . 'No autovalue for variable ' . $variable['varname'] );
+				$this->_setError ( ERRORINFO, $pagenum, $varcount, __CLASS__ . "::" . __FUNCTION__ . " " . 'No autovalue for variable ' . $variable['varname'] );
 			}
 			$required= $variable['required'];
 			$position= $varcount;
@@ -840,7 +840,7 @@ class installer extends smilelog
 			if (isset ($_POST[$varname]))
 			{
 				$this->config['pages'][$pagenum]['data'][$position]['checks']= $variable['check'];
-				$this->_setError ( DEBUGINFO, $pagenum, $varcount, __METHOD__ . " " . 'check variable = "'.$_POST[$varname].'"');
+				$this->_setError ( DEBUGINFO, $pagenum, $varcount, __CLASS__ . "::" . __FUNCTION__ . " " . 'check variable = "'.$_POST[$varname].'"');
 				if ($this->checkVariable($pagenum, $varcount, $variable['check'], $_POST[$varname]))
 				{
 					if ($formtype == 'box' || $formtype == 'html')
@@ -867,7 +867,7 @@ class installer extends smilelog
 				}
 				else
 				{
-					$this->setError ( $pagenum, $varcount, __METHOD__ . " " . 'checks failed for ' . $varname );
+					$this->setError ( $pagenum, $varcount, __CLASS__ . "::" . __FUNCTION__ . " " . 'checks failed for ' . $varname );
 					$form= $defaultform;
 				}
 
@@ -877,7 +877,7 @@ class installer extends smilelog
 			{
 				if ($formtype != 'box' && $formtype != 'html')
 				{
-					$this->setError ( $pagenum, $varcount, __METHOD__ . " " . 'not posted ' . $varname );
+					$this->setError ( $pagenum, $varcount, __CLASS__ . "::" . __FUNCTION__ . " " . 'not posted ' . $varname );
 				}
 				$form= $defaultform;
 			}
@@ -911,7 +911,7 @@ class installer extends smilelog
 	function setInstallerdataInfos ( $infos )
 	{
 		
-		$this->_setError ( DEBUGINFO, -1, -1, __METHOD__ . " " . 'Set installerinfo');
+		$this->_setError ( DEBUGINFO, -1, -1, __CLASS__ . "::" . __FUNCTION__ . " " . 'Set installerinfo');
 		$this->config['installer']['info']		= array
 		(
 			'title'				=> $this->lang ( $infos['title'] ),
@@ -938,15 +938,15 @@ class installer extends smilelog
 	{
 		if ( !isset ( $settings['title'] ) )
 		{
-			$this->_setError ( ERRORINFO , -1, -1, __METHOD__ . " " . 'title not set' );
+			$this->_setError ( ERRORINFO , -1, -1, __CLASS__ . "::" . __FUNCTION__ . " " . 'title not set' );
 		}
 		if ( !isset ( $settings['name'] ) )
 		{
-			$this->_setError ( ERRORINFO, -1, -1, __METHOD__ . " " . 'name not set' );
+			$this->_setError ( ERRORINFO, -1, -1, __CLASS__ . "::" . __FUNCTION__ . " " . 'name not set' );
 		}
 		if ( !isset ( $settings['desc'] ) )
 		{
-			$this->_setError ( ERRORINFO, -1, -1, __METHOD__ . " " . 'desc not set' );
+			$this->_setError ( ERRORINFO, -1, -1, __CLASS__ . "::" . __FUNCTION__ . " " . 'desc not set' );
 		}
 		if ( isset ( $settings['check'] ) )
 		{
@@ -970,7 +970,7 @@ class installer extends smilelog
 				#echo "IN";
 			}
 		} else {
-			$this->_setError ( ERRORINFO, -1, -1, __METHOD__ . " " . 'no finishactions for check' );
+			$this->_setError ( ERRORINFO, -1, -1, __CLASS__ . "::" . __FUNCTION__ . " " . 'no finishactions for check' );
 		}
 	}
 	function setInstallerdataOnFinishActionOutput ( $functions )
@@ -982,7 +982,7 @@ class installer extends smilelog
 				#echo "IN";
 			}
 		} else {
-			$this->_setError ( ERRORINFO, -1, -1, __METHOD__ . " " . 'no finishactions for output' );
+			$this->_setError ( ERRORINFO, -1, -1, __CLASS__ . "::" . __FUNCTION__ . " " . 'no finishactions for output' );
 		}
 	}
 	function setInstallerdataOnFinishActionValue ( $functions )
@@ -994,7 +994,7 @@ class installer extends smilelog
 				#echo "IN";
 			}
 		} else {
-			$this->_setError ( ERRORINFO, -1, -1, __METHOD__ . " " . 'no finishactions for value' );
+			$this->_setError ( ERRORINFO, -1, -1, __CLASS__ . "::" . __FUNCTION__ . " " . 'no finishactions for value' );
 		}
 	}
 	function setHTMLPage()
