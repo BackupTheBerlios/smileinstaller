@@ -167,6 +167,11 @@
 					if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, $varcount, 'check variable = "' . $_POST[$varname] . '"' );
 					if ( $this->checkVariable ( $pagenum, $varcount, $variable['check'], $_POST[$varname] ) )
 					{
+						$this->config['hiddenValue'][]		= array
+						(
+							'varname'		=> $varname,
+							'varvalue'		=> $_POST[$varname],
+						);
 						$form		= $this->genForm ( $varname, $formtype, $tempdefaultvalue, $_POST[$varname] );
 					} else {
 						$this->setErrorpage ( $pagenum );
@@ -181,7 +186,8 @@
 				}
 				$this->config['pages'][$pagenum]['data'][$position]['form']		= $form;
 			}
-			$this->config['system']['smarttemplate']['allPages'][$pagenum]['data']	= $this->config['pages'][$pagenum]['data']; 
+			$this->config['system']['smarttemplate']['allPages'][$pagenum]['data']	= $this->config['pages'][$pagenum]['data'];
+			$this->config['system']['smarttemplate']['allPages'][$pagenum]['hiddenValue']	= &$this->config['hiddenValue']; 
 		}
 		function setPage ()
 		{
@@ -207,13 +213,14 @@
 					} else {
 						$usePage		= $this->config['system']['pageerror'];
 					}
-				}
-				if ( $this->config['system']['canFinish'] == 1 
-					&& $usePage == -1 )
-				{
-					$this->tpl		= new smarttemplate ( $this->config['files']['finishtemplate'] );
 				} else {
-					$usePage		= $this->config['system']['pageerror'];
+					if ( $this->config['system']['canFinish'] == 1 
+						&& $usePage == -1 )
+					{
+						$this->tpl		= new smarttemplate ( $this->config['files']['finishtemplate'] );
+					} else {
+						$usePage		= $this->config['system']['pageerror'];
+					}
 				}
 				$this->config['system']['smarttemplate']['allPages'][$usePage]['isCurrent']	= 1;
 				$this->config['system']['smarttemplate']['displayPage']	= $this->config['system']['smarttemplate']['allPages'][$usePage];
