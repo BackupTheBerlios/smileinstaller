@@ -1,16 +1,6 @@
 <?
 class extensions_checks_form extends extensions_checks_finish
 {
-	function __check_string($pagenum, $varnum)
-	{
-		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '__check_string' );		$return= array ('value' => $var['defaultvalue'], 'isset' => false);
-		@ mkdir($return['value'], 0777);
-		if ($_POST[$var['varname']] > "")
-		{
-			$return['isset']= true;
-		}
-		return $return;
-	}
 	function _check_Formspecific($pagenum, $varnum, $requireValue= false)
 	{
 		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_check_Formspecific' );		$var= $this->config['pages'][$pagenum]['data'][$varnum];

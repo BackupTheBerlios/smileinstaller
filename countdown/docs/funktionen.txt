@@ -30,6 +30,3 @@ Funktionen für das Dateisystem
 		_output_VarToFile:Pfad,Dateiname[,NurBestimmteVariablen]
 		_output_CreateDirectory:Pfad,Mode
 		_output_UnpackScript:Pfad
-
-		
-		
