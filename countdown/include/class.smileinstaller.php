@@ -300,11 +300,14 @@
 			$errormessage		= $this->lang ( $errormessage );
 			$this->config['system']['errormessage'][]['text']		= $htmlname . ": " . $errormessage;
 		}
-		function setErrorpage ( $pagenum )
+		function setErrorpage ( $pagenum, $varnum = false, $errormessage = false )
 		{
 			if ( $this->config['system']['pageerror'] < $pagenum )
 			{
 				$this->config['system']['pageerror'] = $pagenum;
+			}
+			if ( $errormessage || $varnum ) {
+				$this->_setError ( $pagenum, $varnum, $errormessage );
 			}
 		}
 	}

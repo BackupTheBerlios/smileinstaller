@@ -31,6 +31,7 @@
 	<page>
 		<title>	[License]</title>
 		<name>	[License agreement]</name>
+		<desc>	[]</desc>
 		<variable>
 			<name>			none1</name>
 			<htmlname>		[License]</htmlname>				
@@ -59,9 +60,12 @@
 	</page>
 	<page>
 		<title>		[Installation directory]</title>
+		<name>	[Installation directory]</name>
+		<desc>	[]</desc>
 		<variable>
 			<name>			path</name>
 			<htmlname>		[Path for PHPMyAdmin]</htmlname>
+			<htmldesc>		[]</htmldesc>
 			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		input</formtype>
@@ -78,9 +82,11 @@
 	<page>
 		<title>	[Security settings]</title>
 		<name>	[Security settings]</name>
+		<desc>	[]</desc>
 		<variable>
 			<name>			smic_pma_absolute_uri</name>
 			<htmlname>		[Correct url to phpmyadmindir/index.php]</htmlname>				
+			<htmldesc>		[]</htmldesc>
 			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		input</formtype>
@@ -115,6 +121,7 @@
 	<page>
 		<title>	[MySQL-Server]</title>
 		<name>	[MySQL-Server]</name>
+		<desc>	[]</desc>
 		<variable>
 			<name>			smic_host</name>
 			<htmlname>		[MySQL-Host]</htmlname>
@@ -146,6 +153,7 @@
 	<page>
 		<title>	[Verbindungseinstellungen]</title>
 		<name>	[Verbindungseinstellungen]</name>
+		<desc>	[]</desc>
 		<variable>
 			<name>			smic_connect_type</name>
 			<htmlname>		[Connectiontype]</htmlname>
@@ -198,6 +206,7 @@
 	<page>
 		<title>	[MySQL-Benutzer]</title>
 		<name>	[Benutzer einstellen]</name>
+		<desc>	[]</desc>
 		<variable>
 			<name>			smic_controluser</name>
 			<htmlname>		[Read-Only user]</htmlname>
@@ -268,6 +277,7 @@
 	<page>
 		<title>	[MySQL-Tabellen einstellen]</title>
 		<name>	[Datenbankverbindung einstellen]</name>
+		<desc>	[]</desc>
 		<variable>
 			<name>			smic_only_db</name>
 			<htmlname>		[Use only this db]</htmlname>

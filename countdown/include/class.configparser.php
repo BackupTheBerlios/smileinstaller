@@ -94,6 +94,18 @@
 		function setPageinfos ( $pagenum, $settings )
 		{
 			if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setPageinfos', 'Set pageinfos' );
+			if ( !isset ( $settings['title'] ) )
+			{
+				$this->setErrorpage ( $pagenum, 'setPageinfos', 'No pagetitle' );
+			}
+			if ( !isset ( $settings['name'] ) )
+			{
+				$this->setErrorpage ( $pagenum, 'setPageinfos', 'No pagename' );
+			}
+			if ( !isset ( $settings['desc'] ) )
+			{
+				$this->setErrorpage ( $pagenum, 'setPageinfos', 'No pagedescription' );
+			}
 			$this->config['system']['smarttemplate']['allPages'][$pagenum]		= array
 			(
 				'info'		=> array
@@ -121,13 +133,25 @@
 			{
 				foreach ( $settings as $check )
 				{
+					if ( !isset ( $check['required'] ) )
+					{
+						$this->setErrorpage ( $pagenum, 'setPageactions', 'No required for action' );
+					}
+					if ( !isset ( $check['action'] ) )
+					{
+						$this->setErrorpage ( $pagenum, 'setPageactions', 'No action for action?!?' );
+					}
+					if ( !isset ( $check['errormessage'] ) )
+					{
+						$this->setErrorpage ( $pagenum, 'setPageactions', 'No errormessage for action' );
+					}
 					$this->config['pages'][$pagenum]['action'][]		= array (
 						'required'		=> $check['required'],
 						'action'		=> $this->parseItem ( $check['action'] ),
 						'errormessage'	=> $check['errormessage'],
 					);
 				}
-			}
+			}				
 		}
 		function setPagevariables ( $pagenum, $settings )
 		{
@@ -140,13 +164,35 @@
 			{
 				$varcount		= sizeof ( $this->config['pages'][$pagenum]['data'] );
 				if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setConfig', 'Set variable ' . $varcount );
+				if ( !isset ( $variable['required'] ) )
+				{
+					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables, No required for variable' );
+				}
+				if ( !isset ( $variable['newline'] ) )
+				{
+					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables, No newline for variable' );
+				}
+				if ( !isset ( $variable['name'] ) )
+				{
+					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables, No name for variable' );
+				}
+				if ( !isset ( $variable['htmlname'] ) )
+				{
+					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables, No htmlname for variable' );
+				}
+				if ( !isset ( $variable['htmldesc'] ) )
+				{
+					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables, No htmldesc for variable' );
+				}
+				if ( !isset ( $variable['formtype'] ) )
+				{
+					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables, No formtype for variable' );
+				}
 				$required		= $variable['required'];
 				$position		= $varcount;
-				$canRecheck		= $variable['recheckable'];
 				$newline		= $variable['newline'];
 				$varname		= $variable['name'];
 				$htmlname		= $variable['htmlname'];
-				$form			= $variable['form'];
 				$formtype		= $variable['formtype'];
 				if ( isset ( $_POST[$varname] ) )
 				{
@@ -167,14 +213,14 @@
 						'pagenum'	=> $pagenum,
 						'varnum'	=> $varnum
 					)
-				);			
+				);
 				$tempdefaultvalue	= $this->parseItem ( $defaultvalue, false, $code );
 				$defaultform	= $this->genForm ( $varname, $formtype, $tempdefaultvalue, false );
 				$this->config['pages'][$pagenum]['data'][$position]		= array (
 					'varname'		=> $variable['name'],
 					'htmlname'		=> $this->lang ( $htmlname ),
 					'newline'		=> $newline,
-					'form'			=> $variable['form'],
+					'form'			=> $variable['formtype'],
 					'formtype'		=> $variable['formtype'],
 					'defaultvalue'	=> $tempdefaultvalue,
 				);
