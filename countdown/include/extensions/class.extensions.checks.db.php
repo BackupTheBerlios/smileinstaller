@@ -1,7 +1,7 @@
 <?
 class extensions_checks_db extends extensions_checks
 {
-	function _check_SQLConnection($pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbname )
+	function _check_SQLConnection ( $pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbname )
 	{		if ( $this->config['system']['debug'] >= 0 ) parent::_setError ( $pagenum, $varnum, '_check_SQLConnection', false );		$return		= array
 		(
 			'value' => '',
@@ -9,17 +9,15 @@ class extensions_checks_db extends extensions_checks
 		);
 		if ( parent::_validateSupportedDatabase ( $dbtype ) )
 		{
-			$dsn	= "$dbtype://$dbuser:$dbpass@$dbhost/$dbname?persist";
+			$dsn	= "$dbtype://$dbuser:$dbpass@$dbhost/$dbname";
 			$conn	= ADONewConnection ( $dsn );
-			$rs		= $conn->Execute('SHOW DATABASES');
-			if ( !$rs )
+			if ( is_object ( $conn ) )
 			{
-				echo $conn->ErrorMsg ();
-			} else {
-				$rs		= $rs->getArray ();
-				foreach ( $rs as $database )
+				$rs		= $conn->Execute('SHOW DATABASES');
+				if ( $rs )
 				{
-					echo "DB: " . $database[0] . "<br>";
+					$rs		= $rs->getArray ();
+					$return['isset']	= true;
 				}
 			}
 		}

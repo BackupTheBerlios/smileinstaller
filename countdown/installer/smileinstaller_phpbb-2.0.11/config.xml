@@ -141,7 +141,7 @@
 			<newline>		1</newline>
 			<formtype>		select</formtype>
 			<defaultvalue>	!_value_supportedDatabases</defaultvalue>
-			<autovalue>		!_value_SQLDetect</autovalue>
+			<autovalue>		=</autovalue>
 		</variable>
 		<variable>
 			<name>			dbhost</name>
@@ -167,8 +167,8 @@
 			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		input</formtype>
-			<defaultvalue>	=phpbb2user</defaultvalue>
-			<autovalue>		=phpbb2user</autovalue>
+			<defaultvalue>	=root</defaultvalue>
+			<autovalue>		=root</autovalue>
 			<check>
 				<action>	!_check_NotNull</action>
 				<required>	1</required>
@@ -210,24 +210,34 @@
 		<name>	[Select database]</name>
 		<desc>	[Database and tables to use]</desc>
 		<variable>
-			<name>			dbname</name>
+			<name>			dbname_existing</name>
 			<htmlname>		[Existing databases]</htmlname>
 			<htmldesc>		[Select an existing database]</htmldesc>
 			<required>		0</required>
 			<newline>		1</newline>
 			<formtype>		select</formtype>
-			<defaultvalue>	!_value_SQLDatabasesUser:$dbms,$dbhost,$dbuser,$dbpasswd</defaultvalue>
+			<defaultvalue>	!_value_SQLGetDatabases:$dbms,$dbhost,$dbuser,$dbpasswd,$testdb</defaultvalue>
+			<autovalue>		=</autovalue>
+		</variable>
+		<variable>
+			<name>			dbname_new</name>
+			<htmlname>		[or new database]</htmlname>
+			<htmldesc>		[Create a new database]</htmldesc>
+			<required>		0</required>
+			<newline>		1</newline>
+			<formtype>		input</formtype>
+			<defaultvalue>	=demoscript</defaultvalue>
 			<autovalue>		=</autovalue>
 		</variable>
 		<variable>
 			<name>			tableprefix</name>
 			<htmlname>		[Tableprefix]</htmlname>
-			<htmldesc>		[Prefix for PHPbb2's tables]</htmldesc>
+			<htmldesc>		[Prefix for Demoscript's tables]</htmldesc>
 			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		input</formtype>
 			<defaultvalue>	=</defaultvalue>
-			<autovalue>		=phpbb2</autovalue>
+			<autovalue>		=demoscript</autovalue>
 		</variable>
 	</page>
 </pages>
