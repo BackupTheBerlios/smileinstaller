@@ -39,6 +39,7 @@
 		}
 		function _writeToFile ( $pagenum, $varnum, $path, $file, $allowOnlyVariables = false )
 			{
+				die ( "IN" );
 				$return		= array (
 					'value'		=> '',
 					'isset'		=> false

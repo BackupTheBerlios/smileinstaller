@@ -4,6 +4,7 @@
 	{
 		function _checkInstalldir ( $pagenum, $varnum )
 		{
+			echo $_POST[$this->config['pages'][$pagenum]['data'][$varnum]['varname']];
 			$return		= array (
 				'value'		=> $_POST[$this->config['pages'][$pagenum]['data'][$varnum]['varname']],
 				'isset'		=> false

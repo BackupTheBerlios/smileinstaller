@@ -12,6 +12,7 @@
 		
 		function _unpackScript ( $pagenum, $varnum, $path )
 		{
+			echo $path;
 			$return['isset']		= true;
 			// the first argument is the zip file
 			//$in_file = $_SERVER['argv'][1];
