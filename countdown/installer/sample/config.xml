@@ -3,12 +3,12 @@
 		<title>[Install PHPMyAdmin 2.24.2.1 2005/01/24 01:11:42]</title>
 		<nextstring>[next]</nextstring>
 		<finishedstring>Installation complete</finishedstring>
-		<redirectTo>!_redirectTo:$url,/index.php</redirectTo>
+		<redirectTo>!_redirectTo:$smic_pma_absolute_uri,/index.php</redirectTo>
 		<finish>
 			<action>	!_createDirectory:$path</action>
 			<required>	1</required>
 			<errormessage>
-				[Could not extract script]
+				[Could not create directory]
 			</errormessage>
 		</finish>
 		<finish>
@@ -69,6 +69,13 @@
 			<newline>		1</newline>
 			<formtype>		select</formtype>
 			<defaultvalue>	!_getDemopaths</defaultvalue>
+			<check>		
+				<required>	1</required>
+				<action>	!_checkFormspecific</action>
+				<errormessage>
+					[Selected path is not available path]
+				</errormessage>
+			</check>
 			<check>		
 				<required>	1</required>
 				<action>	!_checkInstalldir</action>

@@ -101,12 +101,12 @@
 				'value'		=> '',
 				'isset'		=> false
 			);
-			$roothpath		= str_replace ( "\\", "/", ROOTPATH ) . '/';
+			$roothpath		= str_replace ( "\\", "/", ROOTPATH . '/' );
 			for ( $i = 1; $i <= 10; $i++ )
 			{
-				$value		.= ",$rootpath:$rootpath";
+				$return['value']		.= "," . $roothpath . $i;
 			}
-			$return['value']	= substr ( $value, 1 );
+			$return['value']	= substr ( $return['value'], 1 );
 			return $return;
 		}
 	}
