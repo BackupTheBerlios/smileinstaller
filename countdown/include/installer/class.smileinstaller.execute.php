@@ -1,5 +1,5 @@
 <?php
-class smileinstaller_execute extends configparser
+class smileinstaller_execute
 {
 	function execute($evalcode, $pagenum= false, $varnum= false)
 	{
