@@ -1,0 +1,35 @@
+Allgemeine Funktionen
+	Prüfungen
+		_check_none
+		_check_notNull
+		_check_compareValues:VariableMitDerZuVergleichenIst
+	Werte
+		_value_redirectTo
+		_value_Servername
+		_value_Serverport
+	Ausgabe
+Funktionen für Datenbanken
+	Prüfungen
+		_check_SQLConnection:Datenbanktyp,Datenbankserver,Benutzer,Passwort,Testdatenbankname
+		_check_SQLDatabaseExists:Datenbanktyp,Datenbankserver,Benutzer,Passwort,Datenbank
+	Werte
+		_value_SQLGetDatabases:Datenbanktyp,Datenbankserver,Benutzer,Passwort,Datenbank
+		_value_supportedDatabases:[NurBestimmteDatenbankenAusgeben]
+	Ausgabe
+		_output_SQL:Datenbanktyp,Datenbankserver,Benutzer,Passwort,AuswahlDatenbank,NeueDatenbank,Tabellenpräfix,SQLDateiInExternals
+
+Funktionen für das Dateisystem
+	Prüfungen
+		_check_IsInstalldirOk:[NichtDenVariablenWertAlsVerzeichnissNutzen]
+	Werte
+		_value_rootdir
+		_value_installerdir
+		_value_rooturl
+		_value_Demopaths
+	Ausgabe
+		_output_VarToFile:Pfad,Dateiname[,NurBestimmteVariablen]
+		_output_CreateDirectory:Pfad,Mode
+		_output_UnpackScript:Pfad
+
+		
+		
