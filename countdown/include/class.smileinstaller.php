@@ -276,6 +276,7 @@
 							$$varname	= $varvalue;
 						}
 						$return	= $this->execute ( $executecode['code'] . $return, $pagenum, $varnum );
+						$return	= $return['value'];
 					}
 					break;
 				}

@@ -156,7 +156,7 @@
 					'newline'		=> $newline,
 					'form'			=> $variable['form'],
 					'formtype'		=> $variable['formtype'],
-					'defaultvalue'	=> $defaultvalue,
+					'defaultvalue'	=> $tempdefaultvalue,
 				);
 				if ( isset ( $variable['check']['required'] ) ) {
 					$variable['check']	= array ( $variable['check'] );
