@@ -1,0 +1,89 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Language" content="en" />
+		<meta name="GENERATOR" content="PHPEclipse 1.0" />
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>{htmlentities:var.installer.title}</title>
+		<link rel="stylesheet" href="./include/templates/css/installer.css" type="text/css">
+		<link rel="stylesheet" href="./include/templates/css/installer.tab.side.css" type="text/css">
+		<link rel="stylesheet" href="./include/templates/css/installer.tab.top.css" type="text/css">
+		<link rel="stylesheet" href="./include/templates/css/installer.document.css" type="text/css">
+		<link rel="stylesheet" href="./include/templates/css/installer.contenttable.css" type="text/css">
+		<script type="text/javascript" language="javascript" src="./include/templates/domtt/domlib.js"></script>
+		<script type="text/javascript" language="javascript" src="./include/templates/domtt/domtt.js"></script>
+		<script language="JavaScript" type="text/javascript">
+			<!-- BEGIN var.displayPage.data -->
+				<!-- IF htmldesc>"" -->var htmldesc_{ROWCNT} = '{addslashes_javascript:htmldesc}'; 
+				<!-- ENDIF htmldesc>"" --> 
+			<!-- END var.displayPage.data -->
+			<!-- BEGIN var.setValues -->
+				<!-- IF htmldesc>"" -->var finishhtmldesc_{ROWCNT} = '{addslashes_javascript:htmldesc}'; 
+				<!-- ENDIF htmldesc>"" -->
+			<!-- END var.setValues -->
+			<!-- BEGIN var.allPages -->
+				<!-- IF info.pagedesc>"" --> var pagedesc_{ROWCNT} = '{addslashes_javascript:info.pagedesc}';
+				<!-- ENDIF info.pagedesc>"" -->
+			<!-- END var.allPages -->
+		</script>
+	</head>
+	<body bgcolor="#FFFFFF" text="#000000" link="#FF9966" vlink="#FF9966" alink="#FFCC99">
+		<table cellspacing="0" cellpadding="0" border="0" class="maintable" width="100%" height="100%">
+			<tr valign="top">
+				<td colspan="2" class="maintable_installertitle">{htmlentities:var.installer.title}</td>
+			</tr>
+			<tr valign="top">
+				<td class="installersteptable">
+					<br><br><br>
+					<table cellspacing="0" cellpadding="0" border="0" class="installersteptable">
+					<!-- BEGIN var.allPages -->
+						<tr valign="middle">
+							<td class="installersteprow">&nbsp;*&nbsp;</td>
+							<td class="installersteprow_2">
+								<div class="installersteptable_unavailable_step_shadow">{info.pagetitle}</div>
+								<div class="installersteptable_unavailable_step"
+										<!-- IF info.pagedesc>"" -->
+											onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{pagetitle}', 'content', pagedesc_{ROWCNT}, 'trail', true ) );"
+										<!-- ENDIF info.pagedesc>"" -->
+								>{info.pagetitle}</div>
+							</td>
+						</tr>
+					<!-- END var.allPages -->
+					</table>
+				</td>
+				<td class="contenttable">
+					<div align="center">
+						<br><br><br>
+						<table cellspacing="0" cellpadding="0" border="0" class="contenttable">
+							<tr>
+								<td class="contenttable_head" colspan="2">
+									{var.displayPage.info.pagename}<font class="contenttable_head_description">
+									<br>{var.displayPage.info.pagedesc}</font>
+								</td>
+							</tr>
+							<!-- BEGIN var.installerlanguages -->
+								<form action="index.php" name="language_{ROWCNT}" method="post">
+								<input type="hidden" name="_installerlanguage" value="{language}">
+								<tr>
+									<td id="installeritem_{ROWCNT}" class="installeritem_{ROWBIT}">
+										<img src="./include/templates/images/languages/{language}.png">
+									</td>
+									<td id="installeritem_{ROWCNT}" class="installeritem_{ROWBIT}">
+										<div class="installersteptable_available_step_shadow" onclick="document.language_{ROWCNT}.submit()">{text}</div>
+										<div class="installersteptable_available_step"  onclick="document.language_{ROWCNT}.submit()"
+										>{text}</div>
+									</td>
+								</tr>
+								</form>
+							<!-- END var.installerlanguages -->						</table>
+						<br><br><hr style="border-bottom: #FFFFFF 1px solid;border-top: #FFFFFF 0px solid;border-left: #FFFFFF 0px solid;border-right: #FFFFFF 0px solid;width: 90%;">
+						<hr style="border-bottom: #FFFFFF 1px solid;border-top: #FFFFFF 0px solid;border-left: #FFFFFF 0px solid;border-right: #FFFFFF 0px solid;width: 60%;">
+						<div class="copyright_shadow">&copy; 2005 smiling peoples</div>
+						<div class="copyright">&copy; 2005 smiling peoples</div>
+						
+					</div>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
+  
