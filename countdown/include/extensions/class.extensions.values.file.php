@@ -94,6 +94,21 @@
 		    }
 		    return true;
 		}
+
+		function _getDemopaths ( $pagenum, $varnum )
+		{
+			$return		= array (
+				'value'		=> '',
+				'isset'		=> false
+			);
+			$roothpath		= str_replace ( "\\", "/", ROOTPATH ) . '/';
+			for ( $i = 1; $i <= 10; $i++ )
+			{
+				$value		.= ",$rootpath:$rootpath";
+			}
+			$return['value']	= substr ( $value, 1 );
+			return $return;
+		}
 	}
 
 ?>

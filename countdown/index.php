@@ -7,8 +7,8 @@
 	set_magic_quotes_runtime ( 0 );
 	// Benoetigt fuer Debugging (spaeter nicht vergessen)
 	// Eigene Fehlerbehandlung setzen
-#	$originalEh 	= set_error_handler( "onError" );
-	error_reporting ( 0 ); error_reporting ( E_PARSE );
+	$originalEh 	= set_error_handler( "onError" );
+	error_reporting ( 1 ); error_reporting ( E_ALL );
 
 	$catchedErrors	= array
 	(

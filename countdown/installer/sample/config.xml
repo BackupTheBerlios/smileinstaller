@@ -67,8 +67,8 @@
 			<htmldesc>		[]</htmldesc>
 			<required>		1</required>
 			<newline>		1</newline>
-			<formtype>		input</formtype>
-			<defaultvalue>	!_value_rootdir</defaultvalue>
+			<formtype>		select</formtype>
+			<defaultvalue>	!_getDemopaths</defaultvalue>
 			<check>		
 				<required>	1</required>
 				<action>	!_checkInstalldir</action>
