@@ -1,4 +1,4 @@
-/** $Id: domLib.js,v 1.1 2005/02/04 14:16:00 nuhpardon Exp $ */
+/** $Id: domlib.js,v 1.1 2005/02/04 14:44:38 nuhpardon Exp $ */
 // {{{ docs <-- this is a VIM (text editor) text fold
 
 /**

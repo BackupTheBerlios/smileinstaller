@@ -1,4 +1,4 @@
-/** $Id: domTT_drag.js,v 1.1 2005/02/04 14:16:00 nuhpardon Exp $ */
+/** $Id: domtt_drag.js,v 1.1 2005/02/04 14:44:38 nuhpardon Exp $ */
 var domTT_dragStickyTips = true;
 var domTT_currentDragTarget;
 var domTT_dragMouseDown;

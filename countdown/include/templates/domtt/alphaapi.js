@@ -1,4 +1,4 @@
-/** $Id: alphaAPI.js,v 1.1 2005/02/04 14:16:00 nuhpardon Exp $ */
+/** $Id: alphaapi.js,v 1.1 2005/02/04 14:44:38 nuhpardon Exp $ */
 /**
  * alphaAPI
  * Original Author: chrisken

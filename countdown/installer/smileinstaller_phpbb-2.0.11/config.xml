@@ -116,7 +116,7 @@
 		<variable>
 			<name>			dbms</name>
 			<htmlname>		[Databasetype]</htmlname>
-			<htmldesc>		[Which database do you use?]</htmldesc>
+			<htmldesc>		[Which Databaseserver would you like to use?]</htmldesc>
 			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		select</formtype>
