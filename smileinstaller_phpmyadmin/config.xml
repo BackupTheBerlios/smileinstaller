@@ -1,6 +1,40 @@
-smic_pma_absolute_uri
-smic_blowfish_secret //The 'cookie' auth_type uses blowfish algorithm to encrypt the password. If at least one server configuration uses 'cookie' auth_type, enter here a passphrase that will be used by blowfish.
-smic_host// MySQL hostname or IP address
+		<variable>
+			<name>			none1</name>
+			<htmlname>		[Lizenz]</htmlname>				
+			<htmldesc>		</htmldesc>
+			<required>		0</required>
+			<newline>		1</newline>
+			<recheckable>	0</recheckable>
+			<formtype>		box</formtype>
+			<defaultvalue>	.license.txt</defaultvalue>
+		</variable>
+		<variable>
+			<name>			smic_pma_absolute_uri</name>
+			<htmlname>		[URL]</htmlname>				
+			<required>		1</required>
+			<newline>		1</newline>
+			<formtype>		input</formtype>
+			<defaultvalue>	=http://</defaultvalue>
+		</variable>
+		<variable>
+			<name>			smic_blowfish_secret</name>
+			<htmlname>		[URL]</htmlname>
+			<htmldesc>		The 'cookie' auth_type uses blowfish algorithm to encrypt the password. If at least one server configuration uses 'cookie' auth_type, enter here a passphrase that will be used by blowfish.</htmldesc>
+			<required>		1</required>
+			<newline>		1</newline>
+			<formtype>		input</formtype>
+			<defaultvalue>	=http://</defaultvalue>
+		</variable>
+		<variable>
+			<name>			smic_host</name>
+			<htmlname>		[URL]</htmlname>
+			<htmldesc>		MySQL hostname or IP address</htmldesc>
+			<required>		1</required>
+			<newline>		1</newline>
+			<formtype>		input</formtype>
+			<defaultvalue>	=http://</defaultvalue>
+		</variable>
+		_var
 smic_port// MySQL port - leave blank for default port
 smic_socket// Path to the socket - leave blank for default socket
 smic_connect_type// How to connect to MySQL server ('tcp' or 'socket')
