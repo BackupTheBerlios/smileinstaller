@@ -4,27 +4,27 @@
 		<nextstring>[next]</nextstring>
 		<finishedstring>Installation complete</finishedstring>
 		<finish>
-			<action>	!_createDirectory:$script_path,0777</action>
+			<action>	!_output_createDirectory:$script_path,0777</action>
 			<required>	1</required>
 			<errormessage>
 				[Could not create directory]
 			</errormessage>
 		</finish>
 		<finish>
-			<action>	!_unpackScript:$script_path</action>
+			<action>	!_output_unpackScript:$script_path</action>
 			<required>	1</required>
 			<errormessage>
 				[Could not extract script]
 			</errormessage>
 		</finish>
 		<finish>
-			<action>	!_writeToFile:$script_path,/config.php,dbms+dbhost+dbname+dbuser+dbpasswd+table_prefix</action>
+			<action>	!_output_VarToFile:$script_path,/config.php,dbms+dbhost+dbname+dbuser+dbpasswd+table_prefix</action>
 			<required>	1</required>
 			<errormessage>
 				[Could not write variables]
 			</errormessage>
 		</finish>
-		<redirectTo>!_redirectTo:$script_path,/index.php</redirectTo>
+		<redirectTo>!_value_redirectTo:$script_path,/index.php</redirectTo>
 	</installer>
 	<page>
 		<title>	[License]</title>
@@ -49,7 +49,7 @@
 			<defaultvalue>	=[No],[Yes]</defaultvalue>
 			<check>
 				<required>	1</required>
-				<action>	!_checkFormspecific:[Yes]</action>
+				<action>	!_check_Formspecific:[Yes]</action>
 				<errormessage>
 					[You must accept the license to install]
 				</errormessage>
@@ -67,17 +67,17 @@
 			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		select</formtype>
-			<defaultvalue>	!_getDemopaths</defaultvalue>
+			<defaultvalue>	!_value_demopaths</defaultvalue>
 			<check>		
 				<required>	1</required>
-				<action>	!_checkFormspecific</action>
+				<action>	!_check_Formspecific</action>
 				<errormessage>
 					[Selected path is not available path]
 				</errormessage>
 			</check>
 			<check>		
 				<required>	1</required>
-				<action>	!_checkInstalldir</action>
+				<action>	!_check_Installdir</action>
 				<errormessage>
 					[Can not install in this directory]
 				</errormessage>
@@ -95,7 +95,7 @@
 			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		input</formtype>
-			<defaultvalue>	!_getServername</defaultvalue>
+			<defaultvalue>	!_value_Servername</defaultvalue>
 		</variable>
 		<variable>
 			<name>			server_port</name>
@@ -104,7 +104,7 @@
 			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		input</formtype>
-			<defaultvalue>	!_getServerport</defaultvalue>
+			<defaultvalue>	!_value_Serverport</defaultvalue>
 		</variable>
 
 
@@ -156,7 +156,7 @@
 			<required>		0</required>
 			<newline>		1</newline>
 			<formtype>		select</formtype>
-			<defaultvalue>	=getDatabases:$doFoo,$doBar</defaultvalue>
+			<defaultvalue>	!_value_SQLDatabasesUser:$dbms,$dbhost,$dbuser,$dbpasswd</defaultvalue>
 		</variable>
 		<variable>
 			<name>			tableprefix</name>

@@ -2,7 +2,7 @@
 
 	class extensions_checks_file extends extensions_checks_db
 	{
-		function _checkInstalldir ( $pagenum, $varnum )
+		function _check_Installdir ( $pagenum, $varnum )
 		{
 			$return		= array (
 				'value'		=> $_POST[$this->config['pages'][$pagenum]['data'][$varnum]['varname']],

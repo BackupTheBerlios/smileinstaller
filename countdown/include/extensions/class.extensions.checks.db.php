@@ -2,7 +2,7 @@
 
 	class extensions_checks_db extends extensions_checks
 	{
-		function _checkConnection ( $pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass )
+		function _check_SQLConnection ( $pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass )
 		{
 			$return = array (
 				'value'		=> '',

@@ -2,7 +2,7 @@
 
 	class extensions_values_db extends extensions_values
 	{
-		function _getTables ( $pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass )
+		function _value_SQLTables ( $pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass )
 		{
 			$return = array (
 				'value'		=> '',
@@ -19,32 +19,6 @@
 					'value'		=> substr ( $options, 1 ),
 					'isset'		=> true
 				);
-			}
-			return $return;
-		}
-		function _writesql ( $pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbname, $dbname_user, $tableprefix, $sqlfile )
-		{
-			$return		= array (
-				'value'		=> '',
-				'isset'		=> false
-			);
-			if ( $dbname_user > "" )
-			{
-				$dbname		= $dbname_user;
-			}
-			$userquery	= implode ( "", file ( $this->config['system']['directories']['scriptdir'] . '/' . $sqlfile ) );
-			eval ( "\$userquery = \"$userquery\";" );
-			if ( $link = mysql_connect ( $dbhost, $dbuser, $dbpass ) )
-			{
-				$query		= "CREATE DATABASE IF NOT EXISTS $dbname";
-				if ( mysql_query ( $query ) )
-				{
-					mysql_select_db ( $dbname, $link );
-					if ( @mysql_query ( $userquery ) )
-					{
-						$return['isset']		= true;
-					}
-				}
 			}
 			return $return;
 		}

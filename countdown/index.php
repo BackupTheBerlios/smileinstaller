@@ -106,6 +106,11 @@
 	require_once "./include/extensions/class.extensions.checks.file.php";
 	require_once "./include/extensions/class.extensions.checks.finish.php";
 	require_once "./include/extensions/class.extensions.checks.form.php";
+	require_once "./include/extensions/class.extensions.output._.php";
+	require_once "./include/extensions/class.extensions.output.db.php";
+	require_once "./include/extensions/class.extensions.output.file.php";
+	require_once "./include/extensions/class.extensions.output.finish.php";
+	require_once "./include/extensions/class.extensions.output.form.php";
 	require_once "./include/extensions/class.extensions.values._.php";
 	require_once "./include/extensions/class.extensions.values.db.php";
 	require_once "./include/extensions/class.extensions.values.file.php";

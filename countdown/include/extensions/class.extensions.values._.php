@@ -1,8 +1,8 @@
 <?
 
-	class extensions_values extends extensions_checks_form
+	class extensions_values extends extensions_output_form
 	{
-		function _redirectTo ( $pagenum, $varnum, $preurl, $file )
+		function _value_redirectTo ( $pagenum, $varnum, $preurl, $file )
 		{
 			$return		= array (
 				'value'		=> $preurl . '/' . $file,
@@ -10,7 +10,7 @@
 			);
 			return $return;
 		}
-		function _getServername ( $pagenum, $varnum )
+		function _value_Servername ( $pagenum, $varnum )
 		{
 			$return		= array (
 				'value'		=> getenv ( 'SERVER_NAME' ),
@@ -18,7 +18,7 @@
 			);
 			return $return;
 		}
-		function _getServerport ( $pagenum, $varnum )
+		function _value_Serverport ( $pagenum, $varnum )
 		{
 			$return		= array (
 				'value'		=> getenv ( 'SERVER_PORT' ),

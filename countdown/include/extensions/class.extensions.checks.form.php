@@ -2,7 +2,7 @@
 
 	class extensions_checks_form extends extensions_checks_finish
 	{
-		function _string ( $pagenum, $varnum )
+		function _check_string ( $pagenum, $varnum )
 		{
 			$return		= array (
 				'value'		=> $var['defaultvalue'],
@@ -16,7 +16,7 @@
 			return $return;
 				
 		}
-		function _checkFormspecific ( $pagenum, $varnum, $requireValue = false )
+		function _check_Formspecific ( $pagenum, $varnum, $requireValue = false )
 		{
 			$var		= $this->config['pages'][$pagenum]['data'][$varnum];
 			switch ( strtolower ( $var['formtype'] ) )
@@ -28,17 +28,17 @@
 				}
 				case 'checkbox' :
 				{
-					$return		= $this->__checkFormCheckbox( $var );
+					$return		= $this->__checkFormCheckbox( $var, $requireValue );
 					break;
 				}
 				case 'input' :
 				{
-					$return		= $this->__checkFormInput ( $var );
+					$return		= $this->__checkFormInput ( $var, $requireValue );
 					break;
 				}
 				case 'password' :
 				{
-					$return		= $this->__checkFormPassword ( $var );
+					$return		= $this->__checkFormPassword ( $var, $requireValue );
 					break;
 				}
 				default :
@@ -87,48 +87,81 @@
 			}
 			return $return;
 		}
-		function __checkFormCheckbox ( $var )
+		function __checkFormCheckbox ( $var, $requireValue = false )
 		{
 			$return = array ( 
 				'value' => $var['defaultvalue'],
 				'isset'	=> false
 			);
-			if ( $var['defaultvalue'] == $_POST[$var['varname']] )
+			if ( $requireValue ) 
 			{
-				$return = array ( 
-					'value' => $_POST[$var['varname']],
-					'isset'	=> true
-				);
+				if ( $_POST[$var['varname']] == $requireValue )
+				{
+					$return = array ( 
+						'value' => $_POST[$var['varname']],
+						'isset'	=> true
+					);
+				}
+			} else {
+				if ( $var['defaultvalue'] == $_POST[$var['varname']] )
+				{
+					$return = array ( 
+						'value' => $_POST[$var['varname']],
+						'isset'	=> true
+					);
+				}
 			}
 			return $return;
 		}
-		function __checkFormInput ( $var )
+		function __checkFormInput ( $var, $requireValue = false )
 		{
 			$return = array ( 
 				'value' => $var['defaultvalue'],
 				'isset'	=> false
 			);
-			if ( $_POST[$var['varname']] > "" )
+			if ( $requireValue ) 
 			{
-				$return = array ( 
-					'value' => $_POST[$var['varname']],
-					'isset'	=> true
-				);
+				if ( $_POST[$var['varname']] == $requireValue )
+				{
+					$return = array ( 
+						'value' => $_POST[$var['varname']],
+						'isset'	=> true
+					);
+				}
+			} else {
+				if ( $_POST[$var['varname']] > "" )
+				{
+					$return = array ( 
+						'value' => $_POST[$var['varname']],
+						'isset'	=> true
+					);
+				}
 			}
 			return $return;
 		}
-		function __checkFormPassword ( $var )
+		function __checkFormPassword ( $var, $requireValue = false )
 		{
 			$return = array ( 
 				'value' => $var['defaultvalue'],
 				'isset'	=> false
 			);
-			if ( $_POST[$var['varname']] > "" )
+			if ( $requireValue ) 
 			{
-				$return = array ( 
-					'value' => $_POST[$var['varname']],
-					'isset'	=> true
-				);
+				if ( $_POST[$var['varname']] == $requireValue )
+				{
+					$return = array ( 
+						'value' => $_POST[$var['varname']],
+						'isset'	=> true
+					);
+				}
+			} else {
+				if ( $_POST[$var['varname']] > "" )
+				{
+					$return = array ( 
+						'value' => $_POST[$var['varname']],
+						'isset'	=> true
+					);
+				}
 			}
 			return $return;
 		}
