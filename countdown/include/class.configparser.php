@@ -3,8 +3,8 @@ class configparser
 {
 	function setConfig()
 	{
-		$settings= $this->loadConfig();
-		$this->setInstallerinfos($settings);
+		$settings		= $this->loadConfig();
+		$this->setInstallerinfos ( $settings );
 		$pagenum= 0;
 		if (isset ($settings['root']['pages']['page']['variable']))
 		{
@@ -74,8 +74,11 @@ class configparser
 			}
 			#$pagenum ++;
 		}
+		$this->config['system']['totalPages']++;
+		$this->setPageinfos($this->config['system']['totalPages'], $settings['root']['pages']['installer']['onFinish'] );
 		if ($this->config['languageSet'] && $this->config['system']['pageerror'] == -1)
 		{
+			$this->config['system']['smarttemplate']['allPages'][$pagenum][$this->config['system']['totalPages']]= 1;
 			if ($_POST['_doFinish'] == 1)
 			{
 				if (isset ($settings['root']['pages']['installer']['finish']['action']))
@@ -156,9 +159,17 @@ class configparser
 	}
 	function setInstallerOnFinish ( $settings )
 	{
-		if ( !isset ( $settings['string'] ) )
+		if ( !isset ( $settings['title'] ) )
 		{
-			$this->_setError ( 0, 0, 'setInstallerOnFinish string not set' );
+			$this->_setError ( 0, 0, 'setInstallerOnFinish title not set' );
+		}
+		if ( !isset ( $settings['name'] ) )
+		{
+			$this->_setError ( 0, 0, 'setInstallerOnFinish name not set' );
+		}
+		if ( !isset ( $settings['desc'] ) )
+		{
+			$this->_setError ( 0, 0, 'setInstallerOnFinish desc not set' );
 		}
 	}
 	function setInstallerOnFinishfunctions ( $functions )
@@ -188,7 +199,7 @@ class configparser
 		{
 			$this->setErrorpage($pagenum, 'setPageinfos', 'No pagedescription');
 		}
-		$this->config['system']['smarttemplate']['allPages'][$pagenum]= array		(			'info' => array			(				'name' => $this->config['system']['installer'], 				'pagetitle' => $this->lang($settings['title']), 				'pagename' => $this->lang($settings['name']),				'pagedesc' => $this->lang($settings['desc']),			),			'pagenum' => $pagenum, 			'isActive' => 0,		);
+		$this->config['system']['smarttemplate']['allPages'][$pagenum]	= array		(			'info' => array			(				'name' => $this->config['system']['installer'], 				'pagetitle' => $this->lang($settings['title']), 				'pagename' => $this->lang($settings['name']),				'pagedesc' => $this->lang($settings['desc']),			),			'pagenum' => $pagenum, 			'isActive' => 0,		);
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]['installerlanguage']= $this->config['system']['installerlanguage'];
 		if ($this->config['system']['debug'] >= 5)
 			$this->_setError($pagenum, 'setPageinfos', print_r($this->config['system']['smarttemplate']['allPages'][$pagenum], 1));
@@ -344,7 +355,10 @@ class configparser
 			}
 			$this->config['pages'][$pagenum]['data'][$position]['form']= $form;
 			$this->config['hiddenValue'][]	= $hiddenValue;
-			$this->config['setValue'][]		= $hiddenValue;
+			if ($formtype != 'box' && $formtype != 'html')
+			{
+				$this->config['setValue'][]		= $hiddenValue;
+			}
 		}
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]['data']= $this->config['pages'][$pagenum]['data'];
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]['hiddenValue']= & $this->config['hiddenValue'];
@@ -388,8 +402,8 @@ class configparser
 				{
 					if ($_POST['_doFinish'] != 1)
 					{
-						$tpl= $this->config['files']['installertemplate'];
-						$usePage= $this->config['system']['totalPages'] + 1;
+						$tpl		= $this->config['files']['installertemplate'];
+						$usePage	= $this->config['system']['totalPages'];
 						$this->config['system']['smarttemplate']['setCompletepage']= 1;
 						$this->config['system']['smarttemplate']['setValues']= $this->config['setValue'];
 					}
@@ -417,9 +431,9 @@ class configparser
 			}
 			$this->tpl= new smarttemplate($this->config['files']['languagetemplate']);
 		}
-		$this->config['system']['smarttemplate']['currentPage']= $this->config['system']['pageerror'];
-		$this->config['system']['smarttemplate']['errormessage']= $this->config['system']['errormessage'];
-		$this->config['system']['smarttemplate']['totalPages']= sizeof($this->config['system']['smarttemplate']['allPages']);
+		$this->config['system']['smarttemplate']['currentPage']		= $this->config['system']['pageerror'];
+		$this->config['system']['smarttemplate']['errormessage']	= $this->config['system']['errormessage'];
+		$this->config['system']['smarttemplate']['totalPages']		= sizeof($this->config['system']['smarttemplate']['allPages']);
 		$this->config['system']['smarttemplate']['installerlanguage']= $this->config['system']['installerlanguage'];
 		$this->config['system']['smarttemplate']['installer']= $this->config['installer']['info'];
 		$this->config['system']['smarttemplate']['installer']['name']= $this->config['system']['installer'];

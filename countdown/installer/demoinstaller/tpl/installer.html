@@ -143,29 +143,29 @@
 					</td>
 				</tr>
 				<!-- BEGIN var.allPages -->
-				<form action="index.php" name="gotopage_{ROWCNT}" method="post">
-				<input type="hidden" name="_installerlanguage" value="{installerlanguage}">
-				<input type="hidden" name="explicit_page" value="{pagenum}">
-				<!-- BEGIN hiddenValue -->
-					<input type="hidden" name="{varname}" value="{varvalue}">
-				<!-- END hiddenValue -->
-				<tr valign="top">
-					<td 
-						<!-- IF info.pagedesc>"" -->
-							onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{pagetitle}', 'content', pagedesc_{ROWCNT}, 'trail', true ) );"
-						<!-- ENDIF info.pagedesc>"" -->
-						class="
-						<!-- IF isActive=="0" -->
-						unavailable_tab_side
-						<!-- ELSEIF isActive=="1" -->
-						available_tab_side" onclick="document.gotopage2_{ROWCNT}.submit ()
-						<!-- ELSEIF isActive=="2" -->
-						current_tab_side
-						<!-- ENDIF isActive=="1" -->
-						">{info.pagetitle}</td>
-					</td>
-				</tr>
-				</form>
+					<form action="index.php" name="gotopage_{ROWCNT}" method="post">
+					<input type="hidden" name="_installerlanguage" value="{installerlanguage}">
+					<input type="hidden" name="explicit_page" value="{pagenum}">
+					<!-- BEGIN hiddenValue -->
+						<input type="hidden" name="{varname}" value="{varvalue}">
+					<!-- END hiddenValue -->
+					<tr valign="top">
+						<td 
+							<!-- IF info.pagedesc>"" -->
+								onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{pagetitle}', 'content', pagedesc_{ROWCNT}, 'trail', true ) );"
+							<!-- ENDIF info.pagedesc>"" -->
+							class="
+							<!-- IF isActive=="0" -->
+							unavailable_tab_side
+							<!-- ELSEIF isActive=="1" -->
+							available_tab_side" onclick="document.gotopage2_{ROWCNT}.submit ()
+							<!-- ELSEIF isActive=="2" -->
+							current_tab_side
+							<!-- ENDIF isActive=="1" -->
+							">{info.pagetitle}</td>
+						</td>
+					</tr>
+					</form>
 				<!-- END var.allPages -->
 				<tr valign="top">
 					<td class="tabfoot">

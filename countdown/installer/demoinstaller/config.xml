@@ -6,9 +6,15 @@
 		<onComplete>
 			<showVars>	all</showVars>
 			<string>	[Setup complete.]</string>
+			<title>	[Setup complete.]</title>
+			<name>	[Setup complete.]</name>
+			<desc>	[Setup complete.]</desc>
+			
 		</onComplete>
 		<onFinish>
-			<string>	[Setup finished.]</string>
+			<title>	[Setup finished.]</title>
+			<name>	[Setup finished.]</name>
+			<desc>	[Setup finished.]</desc>
 			<checkfunctions>
 			</checkfunctions>
 			<valuefunctions>
