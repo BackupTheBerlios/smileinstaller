@@ -7,11 +7,16 @@ set_magic_quotes_runtime ( 0 );
 // Welcher Installer soll verwendet werden?
 	$configuration		= 'configgenerator';
 ////////////////////////////////////////////
-define ( 'ROOTPATH',			dirname ( dirname ( __FILE__ ) . '*' ) );
-define ( 'INSTALLERPATH',		dirname ( __FILE__ ) );
-define ( 'SMARTTEMPLATEDIR',	dirname ( __FILE__ ) . '/../smarttemplate' );
-define ( 'INDEXFILE',			basename( __FILE__ ) );
-$_CONFIG['smarttemplate_compiled']	= addslashes ( dirname ( __FILE__ ) ) . '/tmp';
+define ( 'ROOTPATH',				str_replace ( "\\", "/", 
+	dirname ( __FILE__ ) ) . '/../' . time() );
+define ( 'INSTALLERPATH',			str_replace ( "\\", "/", 
+	dirname ( __FILE__ ) ) . '/..' );
+define ( 'SMARTTEMPLATEDIR',		str_replace ( "\\", "/", 
+	dirname ( __FILE__ ) ) . '/../../smarttemplate' );
+define ( 'INDEXFILE',				str_replace ( "\\", "/", 
+	dirname ( __FILE__ ) ) . '/../index.php' );
+$_CONFIG['smarttemplate_compiled']	= str_replace ( "\\", "/", 
+	dirname ( __FILE__ ) ) . '/../tmp';
 $_CONFIG['cache_lifetime']			= 1;
 $catchedErrors						= array
 (
