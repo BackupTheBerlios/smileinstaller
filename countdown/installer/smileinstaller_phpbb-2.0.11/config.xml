@@ -2,6 +2,7 @@
 	<installer>
 		<title>[Install PHPbb2 2.0.11]</title>
 		<nextstring>[next]</nextstring>
+		<completestring>[Setup complete.]</completestring>
 		<finishedstring>[Installation complete]</finishedstring>
 		<finish>
 			<action>	!_output_createDirectory:$script_path,0777</action>

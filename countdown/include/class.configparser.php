@@ -30,15 +30,19 @@
 				$pagenum++;
 			}
 			if ( $this->config['languageSet'] 
-				&& $this->config['system']['pageerror'] == -1 )
+				&& $this->config['system']['pageerror'] == -1  
+				 )
 			{
-				if ( isset ( $settings['root']['pages']['installer']['finish']['action'] ) )
+				if ( $_POST['_doFinish'] == 1 )
 				{
-					$settings['root']['pages']['installer']['finish']	= array ( $settings['root']['pages']['installer']['finish'] );
-				}
-				if ( $this->finishActions ( $settings['root']['pages']['installer']['finish'] ) )
-				{
-					$this->setFinish ( $settings['root']['pages']['installer']['redirectTo'] );
+					if ( isset ( $settings['root']['pages']['installer']['finish']['action'] ) )
+					{
+						$settings['root']['pages']['installer']['finish']	= array ( $settings['root']['pages']['installer']['finish'] );
+					}
+					if ( $this->finishActions ( $settings['root']['pages']['installer']['finish'] ) )
+					{
+						$this->setFinish ( $settings['root']['pages']['installer']['redirectTo'] );
+					}
 				}
 			}
 			$this->setPage ();
@@ -249,6 +253,7 @@
 					{
 						$this->config['hiddenValue'][]		= array
 						(
+							'htmlname'		=> $this->lang ( $htmlname ),
 							'varname'		=> $varname,
 							'varvalue'		=> $_POST[$varname],
 						);
@@ -287,7 +292,12 @@
 					{
 						$_POST['explicit_page'] = $this->config['system']['totalPages'];
 					}
-					if ( $_POST['explicit_page'] <= $this->config['system']['pageerror'] )
+					if ( $this->config['system']['pageerror'] == -1 )
+					{
+						$this->config['system']['pageerror']	= $_POST['explicit_page'];
+					}
+					if ( $_POST['explicit_page'] <= $this->config['system']['pageerror'] 
+						)
 					{
 						$usePage		= $_POST['explicit_page'];
 					} else {
@@ -298,7 +308,16 @@
 					if ( $this->config['system']['canFinish'] == 1 
 						&& $usePage == -1 )
 					{
-						$tpl		= $this->config['files']['finishtemplate'];
+						if ( $_POST['_doFinish'] != 1 )
+						{
+							$tpl		= $this->config['files']['installertemplate'];
+							$usePage	= $this->config['system']['totalPages']+1;
+							$this->config['system']['smarttemplate']['setCompletepage']		= 1;
+							$this->config['system']['smarttemplate']['setValues']		= $this->config['hiddenValue'];
+						} else {
+							echo "FINISH";
+							$tpl		= $this->config['files']['completetemplate'];
+						}
 					} else {
 						$tpl		= $this->config['files']['installertemplate'];
 						$usePage		= $this->config['system']['pageerror'];

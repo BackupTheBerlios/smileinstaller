@@ -61,17 +61,8 @@
 					<div align="center">
 						<!-- CONTENT -->
 						<br>
-						<!-- IF var.setCompletepage="1" -->
-							<table cellspacing="1" cellpadding="2" border="0" class="contenttable">
-								<form action="index.php" method="post">
-								<input type="hidden" name="_installerlanguage" value="{var.installerlanguage}">
-								<!-- BEGIN var.setValues -->
-								<tr  class="contenttable_row_{ROWBIT}" <!-- IF htmldesc>"" -->onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{htmlname}', 'content', htmldesc_{ROWCNT}, 'trail', true ) );"><!-- ENDIF htmldesc>"" -->
-									<td>{htmlname}</td>
-									<td>{varvalue}</td>
-								</tr>
-								<!-- END var.setValues -->
-							</table>
+						<!-- IF var.setCompletepage>"0" -->
+							complete
 						<!-- ELSE -->
 							<table cellspacing="1" cellpadding="2" border="0" class="contenttable">
 								<form action="index.php" method="post">
@@ -98,7 +89,7 @@
 								</tr>
 								</form>
 							</table>
-						<!-- ENDIF var.setCompletepage=="1" -->
+						<!-- ENDIF setCompletepage="1" -->
 						<br>
 						<!-- IF var.errormessage>"" -->
 							<div class="error">
