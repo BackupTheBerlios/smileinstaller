@@ -5,10 +5,10 @@
 		<completestring>[Setup complete.]</completestring>
 		<onComplete>
 			<showVars>	all</showVars>
-			<string>	[Setup complete.]</string>
-			<title>	[Setup complete.]</title>
-			<name>	[Setup complete.]</name>
-			<desc>	[Setup complete.]</desc>
+			<title>	[Finish installation]</title>
+			<name>	[Configuration complete]</name>
+			<desc>	[Please check your settings]</desc>
+			<button>[Settings OK. Finish installation.]</button>
 			<redirectTo>!_value_redirectTo:$installdir/index.php</redirectTo>
 		</onComplete>
 		<onFinish>

@@ -12,7 +12,7 @@ class configparser
 		$this->setTotalPages ( $settings['root']['pages']['page'] );
 		$this->setAllInstallerpages ( $settings['root']['pages']['page'] );
 		$this->setAllRuntimeGeneratedInstallerpages ();
-		$this->setFinishInstallerpage ( $settings['root']['pages']['installer']['onFinish'] );
+		$this->setCompleteInstallerpage ( $settings['root']['pages']['installer']['onComplete'] );
 		$this->setFinishOrComplete ();
 		$this->setPage();
 	}
@@ -54,8 +54,9 @@ class configparser
 			'info'			=> $pageinfo
 		);					
 	}
-	function setFinishvalue ( $valueinfo )
+	function setFinishvalue ( $valueinfo, $noDisplay )
 	{
+		$valueinfo['noDisplay']		= $noDisplay;
 		$this->config['setValue'][]		= $valueinfo;					
 	}
 	function setInstallerpageActive ( $pagenum, $activate = true )
@@ -202,7 +203,7 @@ class configparser
 			}
 		}
 	}
-	function setFinishInstallerpage ( $pageinfo )
+	function setCompleteInstallerpage ( $pageinfo )
 	{
 		$this->config['system']['totalPages']++;
 		$this->setPagedataInfos( $this->config['system']['totalPages'], $pageinfo );
@@ -246,7 +247,9 @@ class configparser
 		{
 			$this->setErrorpage($pagenum, 'setPageinfos', 'No pagedescription');
 		}
-		$this->config['system']['smarttemplate']['allPages'][$pagenum]	= array		(			'info' => array			(				'name' => $this->config['system']['installer'], 				'pagetitle' => $this->lang($settings['title']), 				'pagename' => $this->lang($settings['name']),				'pagedesc' => $this->lang($settings['desc']),			),			'pagenum' => $pagenum, 			'isActive' => 0,		);
+		$this->config['system']['smarttemplate']['allPages'][$pagenum]	= array		(			'info' => array			(				'name'		=> $this->config['system']['installer'], 				'pagetitle'	=> $this->lang($settings['title']), 				'pagename'	=> $this->lang($settings['name']),				'pagedesc'	=> $this->lang($settings['desc']),
+				'button'	=> $this->lang($settings['button']),
+			),			'pagenum' => $pagenum, 			'isActive' => 0,		);
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]['installerlanguage']= $this->config['system']['installerlanguage'];
 		if ($this->config['system']['debug'] >= 5)
 			$this->_setError($pagenum, 'setPageinfos', print_r($this->config['system']['smarttemplate']['allPages'][$pagenum], 1));
@@ -404,8 +407,12 @@ class configparser
 			$this->config['hiddenValue'][]	= $hiddenValue;
 			if ($formtype != 'box' && $formtype != 'html')
 			{
-				$this->setFinishvalue ( $hiddenValue );
+				$noDisplay	= 0;
+				
+			} else {
+				$noDisplay	= 1;
 			}
+			$this->setFinishvalue ( $hiddenValue, $noDisplay );
 		}
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]['data']= $this->config['pages'][$pagenum]['data'];
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]['hiddenValue']= & $this->config['hiddenValue'];

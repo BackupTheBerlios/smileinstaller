@@ -83,6 +83,12 @@
 							<br>
 							<!-- IF var.setCompletepage="1" -->
 								<table cellspacing="1" cellpadding="2" border="0" class="contenttable">
+									<tr>
+										<td class="contenttable_head" colspan="2">
+											{var.displayPage.info.pagename}
+											<br><font class="contenttable_head_description">{var.displayPage.info.pagedesc}</font>
+										</td>
+									</tr>
 									<form action="index.php" method="post">
 									<input type="hidden" name="_installerlanguage" value="{var.installerlanguage}">
 									<!-- BEGIN var.setValues -->
@@ -91,13 +97,20 @@
 											<td class="contenttable_head" colspan="2">{info.pagetitle}</td>
 										</tr>
 									<!-- ELSE -->
-										<tr class="contenttable_row_{ROWBIT}" <!-- IF htmldesc>"" -->onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{htmlname}', 'content', finishhtmldesc_{ROWCNT}, 'trail', true ) );"><!-- ENDIF htmldesc>"" -->
-											<td>{htmlname}
-												<br>({varname})</td>
-											<td>{varvalue}</td>
-										</tr>
+										<input type="hidden" name="{varname}" value="{varvalue}">
+										<!-- IF noDisplay="0" -->
+											<tr class="contenttable_row_{ROWBIT}" <!-- IF htmldesc>"" -->onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{htmlname}', 'content', finishhtmldesc_{ROWCNT}, 'trail', true ) );"><!-- ENDIF htmldesc>"" -->
+												<td>{htmlname}
+													<br>({varname})</td>
+												<td>{varvalue}</td>
+											</tr>
+										<!-- ENDIF noDisplay="0" -->
 									<!-- ENDIF isTitle="1" -->
 									<!-- END var.setValues -->
+									<tr>
+										<td class="contenttable_foot" colspan="2"><input class="pagesubmitactivepage" type="submit" value="{var.displayPage.info.button}"></td>
+									</tr>
+									</form>
 								</table>
 							<!-- ELSE -->
 								<table cellspacing="1" cellpadding="2" border="0" class="contenttable">
