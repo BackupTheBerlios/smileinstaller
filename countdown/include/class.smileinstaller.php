@@ -185,7 +185,8 @@ class installer extends smileinstaller_variable
 				}
 			case 'checkbox' :
 				{
-					if ($selectedValue)
+					$defaultValues		= $this->lang ( $defaultValues );
+					if ($selectedValue == $defaultValues )
 					{
 						$form= "<input type=\"checkbox\" name=\"$formname\" CHECKED value=\"$defaultValues\">";
 						$this->config['executeEnvironment'][$formname]= $selectedValue;
@@ -648,7 +649,7 @@ class installer extends smileinstaller_variable
 				$this->config['count'][$pagenum]['variables']= $position;
 			}
 			$code= array ('code' => "\$return = \$this->config['extension']->", 'var' => array ('pagenum' => $pagenum, 'varnum' => $varnum));
-			$tempdefaultvalue= $this->parseItem($defaultvalue, false, $code);
+			$tempdefaultvalue= $this->parseItem ( $defaultvalue, false, $code );
 			$autovalue= $this->parseItem($autovalue, false, $code);
 			$autovalue= $this->lang($autovalue);
 			$defaultform= $this->genForm($varname, $formtype, $tempdefaultvalue, false);

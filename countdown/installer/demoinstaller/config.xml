@@ -63,9 +63,9 @@
 			<htmldesc>		</htmldesc>
 			<required>		0</required>
 			<newline>		1</newline>
-			<formtype>		select</formtype>
-			<defaultvalue>	=[No],[Yes]</defaultvalue>
-			<autovalue>		=[Yes]</autovalue>
+			<formtype>		checkbox</formtype>
+			<defaultvalue>	=[Yes]</defaultvalue>
+			<autovalue>		=[checked]</autovalue>
 			<check>
 				<required>	1</required>
 				<action>	!_check_Formspecific:[Yes]</action>
