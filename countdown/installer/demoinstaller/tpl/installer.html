@@ -116,9 +116,14 @@
 								<table cellspacing="1" cellpadding="2" border="0" class="contenttable">
 									<form action="index.php" method="post">
 									<input type="hidden" name="_installerlanguage" value="{var.installerlanguage}">
+									<tr>
+										<td class="contenttable_head" colspan="3">
 									<!-- BEGIN var.displayPage.hiddenValue -->
+										{htmlentities:varname}:{htmlentities:varvalue}<br>
 										<input type="hidden" name="{varname}" value="{varvalue}">
 									<!-- END var.displayPage.hiddenValue -->
+										</td>
+									</tr>
 									<tr>
 										<td class="contenttable_head" colspan="3">
 											{var.displayPage.info.pagetitle}

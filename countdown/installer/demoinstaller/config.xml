@@ -1,25 +1,28 @@
 <pages>
 	<installer>
 		<title>[Installerdemo 0.1]</title>
-		<nextstring>[next]</nextstring>
-		<completestring>[Setup complete.]</completestring>
+		<nextbutton>[next]</nextbutton>
+		<pausebutton>[Pause]</pausebutton>
+		<resumebutton>[Resume]</resumebutton>
+		<resumetext>[Resume an installation]</resumetext>
+		<canResume>0</canResume>
 		<onComplete>
 			<showVars>	all</showVars>
-			<title>	[Finish installation]</title>
-			<name>	[Configuration complete]</name>
-			<desc>	[Please check your settings]</desc>
-			<button>[Settings OK. Finish installation.]</button>
+			<title>		[Finish installation]</title>
+			<name>		[Configuration complete]</name>
+			<desc>		[Please check your settings]</desc>
+			<button>	[Settings OK. Finish installation.]</button>
 			<redirectTo>!_value_redirectTo:$installdir/index.php</redirectTo>
 		</onComplete>
 		<onFinish>
 			<title>	[Setup finished.]</title>
 			<name>	[Setup finished.]</name>
 			<desc>	[Setup finished.]</desc>
-			<checkfunctions>
-			</checkfunctions>
-			<valuefunctions>
-			</valuefunctions>
-			<outputfunctions>
+			<check>
+			</check>
+			<value>
+			</value>
+			<output>
 				<function>
 					<name>createInstalldirectory:$installdir</name>
 					<required>1</required>
@@ -40,232 +43,242 @@
 					<required>1</required>
 					<errormessage>[Installation failed. Could not finish installation.]</errormessage>
 				</function>
-			</outputfunctions>
+			</output>
 		</onFinish>
+		<page>
+			<title>	[License]</title>
+			<name>	[License agreement]</name>
+			<desc>	[Script's license]</desc>
+			<variable>
+				<name>			none1</name>
+				<htmlname>		[License]</htmlname>				
+				<htmldesc>		</htmldesc>
+				<required>		0</required>
+				<newline>		1</newline>
+				<formtype>		box</formtype>
+				<defaultvalue>	.license.txt</defaultvalue>
+				<autovalue>		=</autovalue>
+			</variable>
+			<variable>
+				<name>			accept_license</name>
+				<htmlname>		[Accept license?]</htmlname>				
+				<htmldesc>		</htmldesc>
+				<required>		0</required>
+				<newline>		1</newline>
+				<formtype>		checkbox</formtype>
+				<defaultvalue>	=[Yes]</defaultvalue>
+				<autovalue>		=[checked]</autovalue>
+				<check>
+					<required>	1</required>
+					<action>	!_check_Formspecific:[Yes]</action>
+					<errormessage>
+						[You must accept the license to install]
+					</errormessage>
+				</check>
+			</variable>
+			<onError>
+			</onError>
+			<onOk>
+				<check>
+				</check>
+				<value>
+				</value>
+				<output>
+				</output>
+			</onOk>
+		</page>
+		<page>
+			<title>		[Installation directory]</title>
+			<name>		[Installation directory]</name>
+			<desc>		[Directory to install this script]</desc>
+			<variable>
+				<name>			installdir</name>
+				<htmlname>		[Path for demoscript]</htmlname>
+				<htmldesc>		[Smileinstallerdemo. No user defined path allowed.]</htmldesc>
+				<required>		1</required>
+				<newline>		1</newline>
+				<formtype>		select</formtype>
+				<defaultvalue>	!_value_demopaths</defaultvalue>
+				<autovalue>		=</autovalue>
+				<check>		
+					<required>	1</required>
+					<action>	!_check_Formspecific</action>
+					<errormessage>
+						[Selected path is not available path]
+					</errormessage>
+				</check>
+				<check>		
+					<required>	1</required>
+					<action>	!_check_isInstalldirOk</action>
+					<errormessage>
+						[Can not install in this directory]
+					</errormessage>
+				</check>
+			</variable>
+		</page>	
+		<page>
+			<title>	[Server]</title>
+			<name>	[Server]</name>
+			<desc>	[Informations for Webserver and SQL-Server]</desc>
+			<variable>
+				<name>			server_name</name>
+				<htmlname>		[Server name]</htmlname>
+				<htmldesc>		[Name of the Webserver]</htmldesc>
+				<required>		1</required>
+				<newline>		1</newline>
+				<formtype>		input</formtype>
+				<defaultvalue>	!_value_Servername</defaultvalue>
+				<autovalue>		!_value_Servername</autovalue>
+				<check>
+					<action>	!_check_notNull</action>
+					<required>	1</required>
+					<errormessage>
+						[Server name is required]
+					</errormessage>
+				</check>
+			</variable>
+			<variable>
+				<name>			server_port</name>
+				<htmlname>		[Server port]</htmlname>
+				<htmldesc>		[Port for HTTP]</htmldesc>
+				<required>		1</required>
+				<newline>		1</newline>
+				<formtype>		input</formtype>
+				<defaultvalue>	!_value_Serverport</defaultvalue>
+				<autovalue>		!_value_Serverport</autovalue>
+				<check>
+					<action>	!_check_notNull</action>
+					<required>	1</required>
+					<errormessage>
+						[Server port is required]
+					</errormessage>
+				</check>
+			</variable>
+			<variable>
+				<name>			dbms</name>
+				<htmlname>		[Databasetype]</htmlname>
+				<htmldesc>		[Which Databaseserver would you like to use?]</htmldesc>
+				<required>		1</required>
+				<newline>		1</newline>
+				<formtype>		select</formtype>
+				<defaultvalue>	!_value_supportedDatabases</defaultvalue>
+				<autovalue>		=</autovalue>
+				<check>
+					<action>	!_check_formspecific:mysql</action>
+					<required>	1</required>
+					<errormessage>[Only MySQL allowed]</errormessage>
+				</check>
+			</variable>
+			<variable>
+				<name>			dbhost</name>
+				<htmlname>		[Database server]</htmlname>
+				<htmldesc>		[Hostname or IP of your databaseserver]</htmldesc>
+				<required>		1</required>
+				<newline>		1</newline>
+				<formtype>		input</formtype>
+				<defaultvalue>	=localhost</defaultvalue>
+				<autovalue>		=localhost</autovalue>
+				<check>
+					<action>	!_check_NotNull</action>
+					<required>	1</required>
+					<errormessage>
+						[Database server is required]
+					</errormessage>
+				</check>
+			</variable>
+			<variable>
+				<name>			dbuser</name>
+				<htmlname>		[Username databaseserver]</htmlname>
+				<htmldesc>		[Username for your databaseserver]</htmldesc>
+				<required>		1</required>
+				<newline>		1</newline>
+				<formtype>		input</formtype>
+				<defaultvalue>	=test</defaultvalue>
+				<autovalue>		=[In demo: test]</autovalue>
+				<check>
+					<action>	!_check_Formspecific:test</action>
+					<required>	1</required>
+					<errormessage>
+						[Allowed username is test]
+					</errormessage>
+				</check>
+			</variable>
+			<variable>
+				<name>			dbpasswd</name>
+				<htmlname>		[Password databaseserver]</htmlname>
+				<htmldesc>		[Password for your databaseserver]</htmldesc>
+				<required>		0</required>
+				<newline>		1</newline>
+				<formtype>		password</formtype>
+				<defaultvalue>	=test</defaultvalue>
+				<autovalue>		=[In demo: test]</autovalue>
+				<check>
+					<action>	!_check_Formspecific:test</action>
+					<required>	1</required>
+					<errormessage>
+						[Allowed password is test]
+					</errormessage>
+				</check>
+			</variable>
+			<variable>
+				<name>			testdb</name>
+				<htmlname>		[Database]</htmlname>
+				<htmldesc>		[Available database on this server]</htmldesc>
+				<required>		1</required>
+				<newline>		1</newline>
+				<formtype>		input</formtype>
+				<defaultvalue>	=smileinstallerdemo_test</defaultvalue>
+				<autovalue>		=[In demo: smileinstallerdemo_test]</autovalue>
+				<check>
+					<action>	!_check_Formspecific:smileinstallerdemo_test</action>
+					<required>	1</required>
+					<errormessage>
+						[Allowed testdb is smileinstallerdemo_test]
+					</errormessage>
+				</check>
+			</variable>
+			<check>
+				<action>		!_check_SQLConnection:$dbms,$dbhost,$dbuser,$dbpasswd,$testdb</action>
+				<required>		1</required>
+				<errormessage>
+					[Can't connect to database]
+				</errormessage>
+			</check>
+		</page>
+		<page>
+			<title>	[Select database]</title>
+			<name>	[Select database]</name>
+			<desc>	[Database and tables to use]</desc>
+			<variable>
+				<name>			dbname_existing</name>
+				<htmlname>		[Existing databases]</htmlname>
+				<htmldesc>		[Select an existing database]</htmldesc>
+				<required>		0</required>
+				<newline>		1</newline>
+				<formtype>		select</formtype>
+				<defaultvalue>	!_value_SQLGetDatabases:$dbms,$dbhost,$dbuser,$dbpasswd,$testdb</defaultvalue>
+				<autovalue>		=</autovalue>
+			</variable>
+			<variable>
+				<name>			dbname_new</name>
+				<htmlname>		[or new database]</htmlname>
+				<htmldesc>		[Create a new database]</htmldesc>
+				<required>		0</required>
+				<newline>		1</newline>
+				<formtype>		input</formtype>
+				<defaultvalue>	=demoscript</defaultvalue>
+				<autovalue>		=demoscript</autovalue>
+			</variable>
+			<variable>
+				<name>			tableprefix</name>
+				<htmlname>		[Tableprefix]</htmlname>
+				<htmldesc>		[Prefix for Demoscript's tables]</htmldesc>
+				<required>		1</required>
+				<newline>		1</newline>
+				<formtype>		input</formtype>
+				<defaultvalue>	=demoscript</defaultvalue>
+				<autovalue>		=demoscript</autovalue>
+			</variable>
+		</page>
 	</installer>
-	<page>
-		<title>	[License]</title>
-		<name>	[License agreement]</name>
-		<desc>	[Script's license]</desc>
-		<variable>
-			<name>			none1</name>
-			<htmlname>		[License]</htmlname>				
-			<htmldesc>		</htmldesc>
-			<required>		0</required>
-			<newline>		1</newline>
-			<formtype>		box</formtype>
-			<defaultvalue>	.license.txt</defaultvalue>
-			<autovalue>		=</autovalue>
-		</variable>
-		<variable>
-			<name>			accept_license</name>
-			<htmlname>		[Accept license?]</htmlname>				
-			<htmldesc>		</htmldesc>
-			<required>		0</required>
-			<newline>		1</newline>
-			<formtype>		checkbox</formtype>
-			<defaultvalue>	=[Yes]</defaultvalue>
-			<autovalue>		=[checked]</autovalue>
-			<check>
-				<required>	1</required>
-				<action>	!_check_Formspecific:[Yes]</action>
-				<errormessage>
-					[You must accept the license to install]
-				</errormessage>
-			</check>
-		</variable>
-	</page>
-	<page>
-		<title>		[Installation directory]</title>
-		<name>		[Installation directory]</name>
-		<desc>		[Directory to install this script]</desc>
-		<variable>
-			<name>			installdir</name>
-			<htmlname>		[Path for demoscript]</htmlname>
-			<htmldesc>		[Smileinstallerdemo. No user defined path allowed.]</htmldesc>
-			<required>		1</required>
-			<newline>		1</newline>
-			<formtype>		select</formtype>
-			<defaultvalue>	!_value_demopaths</defaultvalue>
-			<autovalue>		=</autovalue>
-			<check>		
-				<required>	1</required>
-				<action>	!_check_Formspecific</action>
-				<errormessage>
-					[Selected path is not available path]
-				</errormessage>
-			</check>
-			<check>		
-				<required>	1</required>
-				<action>	!_check_isInstalldirOk</action>
-				<errormessage>
-					[Can not install in this directory]
-				</errormessage>
-			</check>
-		</variable>
-	</page>	
-	<page>
-		<title>	[Server]</title>
-		<name>	[Server]</name>
-		<desc>	[Informations for Webserver and SQL-Server]</desc>
-		<variable>
-			<name>			server_name</name>
-			<htmlname>		[Server name]</htmlname>
-			<htmldesc>		[Name of the Webserver]</htmldesc>
-			<required>		1</required>
-			<newline>		1</newline>
-			<formtype>		input</formtype>
-			<defaultvalue>	!_value_Servername</defaultvalue>
-			<autovalue>		!_value_Servername</autovalue>
-			<check>
-				<action>	!_check_notNull</action>
-				<required>	1</required>
-				<errormessage>
-					[Server name is required]
-				</errormessage>
-			</check>
-		</variable>
-		<variable>
-			<name>			server_port</name>
-			<htmlname>		[Server port]</htmlname>
-			<htmldesc>		[Port for HTTP]</htmldesc>
-			<required>		1</required>
-			<newline>		1</newline>
-			<formtype>		input</formtype>
-			<defaultvalue>	!_value_Serverport</defaultvalue>
-			<autovalue>		!_value_Serverport</autovalue>
-			<check>
-				<action>	!_check_notNull</action>
-				<required>	1</required>
-				<errormessage>
-					[Server port is required]
-				</errormessage>
-			</check>
-		</variable>
-		<variable>
-			<name>			dbms</name>
-			<htmlname>		[Databasetype]</htmlname>
-			<htmldesc>		[Which Databaseserver would you like to use?]</htmldesc>
-			<required>		1</required>
-			<newline>		1</newline>
-			<formtype>		select</formtype>
-			<defaultvalue>	!_value_supportedDatabases</defaultvalue>
-			<autovalue>		=</autovalue>
-			<check>
-				<action>	!_check_formspecific:mysql</action>
-				<required>	1</required>
-				<errormessage>[Only MySQL allowed]</errormessage>
-			</check>
-		</variable>
-		<variable>
-			<name>			dbhost</name>
-			<htmlname>		[Database server]</htmlname>
-			<htmldesc>		[Hostname or IP of your databaseserver]</htmldesc>
-			<required>		1</required>
-			<newline>		1</newline>
-			<formtype>		input</formtype>
-			<defaultvalue>	=localhost</defaultvalue>
-			<autovalue>		=localhost</autovalue>
-			<check>
-				<action>	!_check_NotNull</action>
-				<required>	1</required>
-				<errormessage>
-					[Database server is required]
-				</errormessage>
-			</check>
-		</variable>
-		<variable>
-			<name>			dbuser</name>
-			<htmlname>		[Username databaseserver]</htmlname>
-			<htmldesc>		[Username for your databaseserver]</htmldesc>
-			<required>		1</required>
-			<newline>		1</newline>
-			<formtype>		input</formtype>
-			<defaultvalue>	=test</defaultvalue>
-			<autovalue>		=[In demo: test]</autovalue>
-			<check>
-				<action>	!_check_Formspecific:test</action>
-				<required>	1</required>
-				<errormessage>
-					[Allowed username is test]
-				</errormessage>
-			</check>
-		</variable>
-		<variable>
-			<name>			dbpasswd</name>
-			<htmlname>		[Password databaseserver]</htmlname>
-			<htmldesc>		[Password for your databaseserver]</htmldesc>
-			<required>		0</required>
-			<newline>		1</newline>
-			<formtype>		password</formtype>
-			<defaultvalue>	=test</defaultvalue>
-			<autovalue>		=[In demo: test]</autovalue>
-			<check>
-				<action>	!_check_Formspecific:test</action>
-				<required>	1</required>
-				<errormessage>
-					[Allowed password is test]
-				</errormessage>
-			</check>
-		</variable>
-		<variable>
-			<name>			testdb</name>
-			<htmlname>		[Database]</htmlname>
-			<htmldesc>		[Available database on this server]</htmldesc>
-			<required>		1</required>
-			<newline>		1</newline>
-			<formtype>		input</formtype>
-			<defaultvalue>	=smileinstallerdemo_test</defaultvalue>
-			<autovalue>		=[In demo: smileinstallerdemo_test]</autovalue>
-			<check>
-				<action>	!_check_Formspecific:smileinstallerdemo_test</action>
-				<required>	1</required>
-				<errormessage>
-					[Allowed testdb is smileinstallerdemo_test]
-				</errormessage>
-			</check>
-		</variable>
-		<check>
-			<action>		!_check_SQLConnection:$dbms,$dbhost,$dbuser,$dbpasswd,$testdb</action>
-			<required>		1</required>
-			<errormessage>
-				[Can't connect to database]
-			</errormessage>
-		</check>
-	</page>
-	<page>
-		<title>	[Select database]</title>
-		<name>	[Select database]</name>
-		<desc>	[Database and tables to use]</desc>
-		<variable>
-			<name>			dbname_existing</name>
-			<htmlname>		[Existing databases]</htmlname>
-			<htmldesc>		[Select an existing database]</htmldesc>
-			<required>		0</required>
-			<newline>		1</newline>
-			<formtype>		select</formtype>
-			<defaultvalue>	!_value_SQLGetDatabases:$dbms,$dbhost,$dbuser,$dbpasswd,$testdb</defaultvalue>
-			<autovalue>		=</autovalue>
-		</variable>
-		<variable>
-			<name>			dbname_new</name>
-			<htmlname>		[or new database]</htmlname>
-			<htmldesc>		[Create a new database]</htmldesc>
-			<required>		0</required>
-			<newline>		1</newline>
-			<formtype>		input</formtype>
-			<defaultvalue>	=demoscript</defaultvalue>
-			<autovalue>		=demoscript</autovalue>
-		</variable>
-		<variable>
-			<name>			tableprefix</name>
-			<htmlname>		[Tableprefix]</htmlname>
-			<htmldesc>		[Prefix for Demoscript's tables]</htmldesc>
-			<required>		1</required>
-			<newline>		1</newline>
-			<formtype>		input</formtype>
-			<defaultvalue>	=demoscript</defaultvalue>
-			<autovalue>		=demoscript</autovalue>
-		</variable>
-	</page>
 </pages>

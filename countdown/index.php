@@ -17,6 +17,7 @@ $tpl			->assign
 $debug			= $tpl->result();
 // $_top entfernen um Smarttemplate ein weiteres Template erstellen zu lassen
 unset ( $_top );
+/*
 // Debugtemplate in Template einfuegen sofern noetig und moeglich
 if ( preg_match ( '|<body([^>]{1,})>|', $content, $result ) )
 {
@@ -27,7 +28,7 @@ if ( preg_match ( '|<body([^>]{1,})>|', $content, $result ) )
 		$content
 	);
 }
-
+*/
 echo $content;
 
 ?>

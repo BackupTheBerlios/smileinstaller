@@ -186,14 +186,15 @@ class installer extends smileinstaller_variable
 			case 'checkbox' :
 				{
 					$defaultValues		= $this->lang ( $defaultValues );
+					$form= "<input type=\"hidden\" name=\"$formname\" value=\"NOTSET\">";
 					if ($selectedValue == $defaultValues )
 					{
-						$form= "<input type=\"checkbox\" name=\"$formname\" CHECKED value=\"$defaultValues\">";
+						$form	.= "<input type=\"checkbox\" name=\"$formname\" CHECKED value=\"$defaultValues\">";
 						$this->config['executeEnvironment'][$formname]= $selectedValue;
 					}
 					else
 					{
-						$form= "<input type=\"checkbox\" name=\"$formname\" value=\"$defaultValues\">";
+						$form	.= "<input type=\"checkbox\" name=\"$formname\" value=\"$defaultValues\">";
 						$this->config['executeEnvironment'][$formname]= $defaultValues;
 					}
 					break;
@@ -287,17 +288,16 @@ class installer extends smileinstaller_variable
 			$this->_setError($pagenum, $varnum, $errormessage);
 		}
 	}
-
 	function setConfig()
 	{
 		$settings		= $this->loadConfig();
-		$this->setInstaller ( $settings );
-		if ( isset ($settings['root']['pages']['page']['variable']) )
+		$this->setInstaller ( $settings['root']['pages']['installer'] );
+		if ( isset ($settings['root']['pages']['installer']['page']['variable']) )
 		{
-			$settings['root']['pages']['page']= array ($settings['root']['pages']['page']);
+			$settings['root']['pages']['installer']['page']= array ($settings['root']['pages']['installer']['page']);
 		}
-		$this->setTotalPages ( $settings['root']['pages']['page'] );
-		$this->setAllInstallerpages ( $settings['root']['pages']['page'] );
+		$this->setTotalPages ( $settings['root']['pages']['installer']['page'] );
+		$this->setAllInstallerpages ( $settings['root']['pages']['installer']['page'] );
 		$this->setAllRuntimeGeneratedInstallerpages ();
 		$this->setCompleteInstallerpage ( $settings['root']['pages']['installer']['onComplete'] );
 		$this->setFinishOrComplete ();
@@ -373,19 +373,19 @@ class installer extends smileinstaller_variable
 		$return= $root->toArray();
 		return $return;
 	}
-	function setInstaller ( $settings )
+	function setInstaller ( $installer )
 	{
-		if (isset ($settings['root']['pages']['installer']))
+		if (isset ($installer))
 		{
-			$this->setInstallerdataInfos ( $settings['root']['pages']['installer'] );
+			$this->setInstallerdataInfos ( $installer );
 		}
-		if ( isset ( $settings['root']['pages']['installer']['onComplete'] ) )
+		if ( isset ( $installer['onComplete'] ) )
 		{
-			$this->setInstallerdataOnComplete ( $settings['root']['pages']['installer']['onComplete'] );
+			$this->setInstallerdataOnComplete ( $installer['onComplete'] );
 		}
-		if ( isset ( $settings['root']['pages']['installer']['onFinish'] ) )
+		if ( isset ( $installer['onFinish'] ) )
 		{
-			$this->setInstallerOnFinish ( $settings['root']['pages']['installer']['onFinish'] );
+			$this->setInstallerdataOnFinish ( $installer['onFinish'] );
 		}
 	}
 	function setInstallerdataInfos($infos)
@@ -396,7 +396,7 @@ class installer extends smileinstaller_variable
 		$this->config['installer']['info']		= array
 		(
 			'title'				=> $this->lang ( $infos['title'] ),
-			'nextstring'		=> $this->lang ( $infos['nextstring'] )
+			'nextstring'		=> $this->lang ( $infos['nextbutton'] )
 		);
 	}
 	function setInstallerdataOnComplete ( $actions )
@@ -426,7 +426,7 @@ class installer extends smileinstaller_variable
 			$this->_setError ( 0, 0, 'setInstallerOnComplete string not set' );
 		}
 	}
-	function setInstallerOnFinish ( $settings )
+	function setInstallerdataOnFinish ( $settings )
 	{
 		if ( !isset ( $settings['title'] ) )
 		{
@@ -440,16 +440,53 @@ class installer extends smileinstaller_variable
 		{
 			$this->_setError ( 0, 0, 'setInstallerOnFinish desc not set' );
 		}
+		if ( isset ( $settings['check'] ) )
+		{
+			$this->setInstallerdataOnFinishActionCheck ( $settings['check'] );
+		}
+		if ( isset ( $settings['value'] ) )
+		{
+			$this->setInstallerdataOnFinishActionValue ( $settings['value'] );
+		}
+		if ( isset ( $settings['output'] ) )
+		{
+			$this->setInstallerdataOnFinishActionOutput ( $settings['output'] );
+		}
 	}
-	function setInstallerOnFinishfunctions ( $functions )
+	function setInstallerdataOnFinishActionCheck ( $functions )
 	{
 		if ( is_array ( $functions ) )
 		{
 			foreach ( $functions as $function )
 			{
+				echo "IN";
 			}
 		} else {
-			$this->_setError ( 0, 0, 'setInstallerOnFinishfunctions' );
+			$this->_setError ( 0, 0, 'setInstallerdataOnFinishActionCheck' );
+		}
+	}
+	function setInstallerdataOnFinishActionValue ( $functions )
+	{
+		if ( is_array ( $functions ) )
+		{
+			foreach ( $functions as $function )
+			{
+				echo "IN";
+			}
+		} else {
+			$this->_setError ( 0, 0, 'setInstallerdataOnFinishActionValue' );
+		}
+	}
+	function setInstallerdataOnFinishActionOutput ( $functions )
+	{
+		if ( is_array ( $functions ) )
+		{
+			foreach ( $functions as $function )
+			{
+				echo "IN";
+			}
+		} else {
+			$this->_setError ( 0, 0, 'setInstallerdataOnFinishActionOutput' );
 		}
 	}
 	function setAllRuntimeGeneratedInstallerpages ()
@@ -492,7 +529,7 @@ class installer extends smileinstaller_variable
 	}
 	function setCompleteInstallerpage ( $pageinfo )
 	{
-		$this->config['system']['totalPages']++;
+		#$this->config['system']['totalPages']++;
 		$this->setPagedataInfos( $this->config['system']['totalPages'], $pageinfo );
 	}
 	function setFinishOrComplete ()
@@ -692,6 +729,8 @@ class installer extends smileinstaller_variable
 					$this->setErrorpage($pagenum);
 					$form= $defaultform;
 				}
+
+				$this->setHiddenValue ( $pagenum, $hiddenValue );
 			}
 			else
 			{
@@ -702,7 +741,6 @@ class installer extends smileinstaller_variable
 				$form= $defaultform;
 			}
 			$this->config['pages'][$pagenum]['data'][$position]['form']= $form;
-			$this->config['hiddenValue'][]	= $hiddenValue;
 			if ($formtype != 'box' && $formtype != 'html')
 			{
 				$noDisplay	= 0;
@@ -713,7 +751,10 @@ class installer extends smileinstaller_variable
 			$this->setFinishvalue ( $hiddenValue, $noDisplay );
 		}
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]['data']= $this->config['pages'][$pagenum]['data'];
-		$this->config['system']['smarttemplate']['allPages'][$pagenum]['hiddenValue']= & $this->config['hiddenValue'];
+	}
+	function setHiddenValue ( $pagenum, $hiddenValue )
+	{
+		$this->config['hiddenValue'][$pagenum][]	= $hiddenValue;
 	}
 	function setPage()
 	{
@@ -783,6 +824,21 @@ class installer extends smileinstaller_variable
 			}
 			$this->tpl= new smarttemplate($this->config['files']['languagetemplate']);
 		}
+		for ( $i = 0; $i <= $this->config['system']['totalPages']; $i++ )
+		{
+			for ( $j = 0; $j <= $this->config['system']['totalPages']; $j++ )
+			{
+				foreach ( $this->config['hiddenValue'][$j] as $hiddenValue )
+				{
+					$this->config['system']['smarttemplate']['allPages'][$i]['hiddenValue'][]	= $hiddenValue;
+					if ( $j != $i && $usePage == $i )
+					{
+						$this->config['system']['smarttemplate']['displayPage']['hiddenValue'][]	= $hiddenValue;
+					}
+				}
+			}
+		}
+
 		$this->config['system']['smarttemplate']['currentPage']		= $this->config['system']['pageerror'];
 		$this->config['system']['smarttemplate']['errormessage']	= $this->config['system']['errormessage'];
 		$this->config['system']['smarttemplate']['totalPages']		= sizeof($this->config['system']['smarttemplate']['allPages']);
