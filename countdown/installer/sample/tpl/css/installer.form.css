@@ -1,0 +1,59 @@
+input.pagesubmitactivepage {
+	font-size:				14px;
+	color:					#000000;
+	white-space:			nowrap;
+	background:				#ffaa3b;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 2px solid; 
+	BORDER-LEFT:			#000000 0px solid;
+	BORDER-BOTTOM:			#000000 2px solid; 
+	BORDER-RIGHT:			#000000 0px solid;
+	padding-left:			10px;
+	padding-right:			10px;
+	padding-top:			3px;
+	padding-bottom:			3px;
+	cursor:					pointer;
+}
+input.pagesubmitactivepage:hover {
+	font-size:				14px;
+	color:					#000000;
+	white-space:			nowrap;
+	background:				#ffbb3b;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 2px solid; 
+	BORDER-LEFT:			#000000 0px solid;
+	BORDER-BOTTOM:			#000000 2px solid; 
+	BORDER-RIGHT:			#000000 0px solid;
+	padding-left:			10px;
+	padding-right:			10px;
+	padding-top:			3px;
+	padding-bottom:			3px;
+	cursor:					pointer;
+}
+input.pagesubmitincurrentpage {
+	font-size:				14px;
+	color:					#FFFFFF;
+	white-space:			nowrap;
+	background:				#4A668A;
+	white-space:			nowrap;
+	height:					50px;
+	max-height:				50px;
+	padding:				2px;
+	cursor:					pointer;
+}
+input.variable, select.variable, textarea.variable {
+	font-size:				14px;
+	color:					#FFFFFF;
+	white-space:			nowrap;
+	background-color:		#c98400;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 1px solid; 
+	BORDER-LEFT:			#000000 1px solid;
+	BORDER-BOTTOM:			#000000 1px solid; 
+	BORDER-RIGHT:			#000000 1px solid;
+	padding-left:			2px;
+	padding-right:			2px;
+	padding-top:			1px;
+	padding-bottom:			1px;
+	cursor:					pointer;
+}

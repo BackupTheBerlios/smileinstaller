@@ -163,7 +163,7 @@
 						|| $this->config['system']['pageerror'] > $pagenum )
 						{
 							$this->config['system']['pageerror']	= $pagenum;
-							$this->config['system']['errormessage']	.= "Vorpruefung nicht OK\n";
+							$this->_setError ( $pagenum, 0, "Fehler gefunden in precheck", "$evalcode" );
 						}
 					}
 				}
@@ -185,7 +185,7 @@
 						|| $this->config['system']['pageerror'] > $pagenum )
 						{
 							$this->config['system']['pageerror']	= $pagenum;
-							$this->config['system']['errormessage']	.= "Abschlusspruefung nicht OK\n";
+							$this->_setError ( $pagenum, 0, "Fehler gefunden in postcheck", "$evalcode" );
 						}
 					}
 				}
@@ -638,7 +638,8 @@
 				}
 				$this->tpl		= new smarttemplate ( $this->config['files']['languagetemplate'] );
 			}
-			$this->config['system']['smarttemplate']['installer']		= $this->config['installer']['info'];
+			$this->config['system']['smarttemplate']['installer']				= $this->config['installer']['info'];
+			$this->config['system']['smarttemplate']['installer']['name']		= $this->config['system']['installer'];			
 			$this->tpl->assign ( 'var', $this->config['system']['smarttemplate'] );
 			
 		}
@@ -753,6 +754,16 @@
 				}
 			}
 			$this->tpl		= new smarttemplate ( $this->config['system']['directories']['scriptdir'] . "/files/templates/finish.html" );
+		}
+		function _setError ( $pagenum, $varnum, $errormessage, $value = "" )
+		{
+			if ( $varnum == 0 )
+			{
+				$htmlname		= 'Seite ' . $pagenum;
+			} else {
+				$htmlname		= $this->config['pages'][$pagenum]['data'][$varnum]['htmlname'];
+			}
+			$this->config['system']['errormessage'][]['text']		= $htmlname . ": " . $errormessage . "\n" . $value;
 		}
 	}
 ?>

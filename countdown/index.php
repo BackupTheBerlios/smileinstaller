@@ -97,6 +97,7 @@
 	require_once "./include/class.extensions.finish.php";
 	require_once "./include/class.extensions.db.php";
 	require_once "./include/class.extensions.formspecific.php";
+	require_once "./include/class.extensions.file.php";
 	require_once "./include/class.extensions.php";
 
 	// Start
@@ -114,7 +115,21 @@
 			'content'		=> $content
 		)	
 	);
-	echo $tpl->result();
+	$debug		= $tpl->result();
+	unset ( $_top );
+	if ( preg_match ( '|<body([^>]{1,})>|', $content, $result ) )
+	{
+		$content	= str_replace
+		( 
+			'<body' . $result[1] . '>',
+			'<body' . $result[1] . '>' . $debug,
+			$content
+		);
+	} else {
+		$content		.= 'no debug added';
+	}
 	removeTemplatedir ();
+	
+	echo $content;
 
 ?>

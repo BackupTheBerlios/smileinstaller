@@ -1,37 +1,20 @@
 <?
 
-	class extensions extends extensions_formspecific
-	{ 
-		function _none ( $pagenum, $varnum ) {
-			$return = array ( 
-				'value' => $_POST[$this->config['pages'][$pagenum]['data'][$varnum]['varname']],
-				'isset'	=> true
-			);
-			return $return;
+	class extensions extends extensions_file
+	{
+		function _none ( $pagenum, $varnum )
+		{
+			return true;
 		}
 		function _notNull ( $pagenum, $varnum )
 		{
-			$return = array ( 
-				'value' => $var['defaultvalue'],
-				'isset'	=> false
-			);
+			$return		= false;
 			if ( $_POST[$this->config['pages'][$pagenum]['data'][$varnum]['varname']] > "" )
 			{
-				$return = array ( 
-					'value' => $_POST[$this->config['pages'][$pagenum]['data'][$varnum]['varname']],
-					'isset'	=> true
-				);
+				$return		= true;
 			}
-			return $return;
-		}
-		function __compareUser ( $varname, $requireValue )
-		{
-			$return			= 0;
-			if ( $_POST[$varname] == $requireValue )
-			{
-				
-				$return		= 1;
-			}
+			
+			if ( $return == false ) $this->_setError ( $pagenum, $varnum, 'Nicht gesetzt', "" );
 			return $return;
 		}
 		function _injectVariable ( $pagenum, $varnum, $userpagenum )
@@ -82,48 +65,9 @@
 			{
 				$return		= true;
 			}
+
+			if ( $return == false ) $this->_setError ( $pagenum, $varnum, 'Passwoerter stimmen nicht ueberein', "" );
 			return $return;
-		}
-		function _rootdir ( $pagenum, $varnum )
-		{
-			return	str_replace ( '/include', '', str_replace ( "\\", "/", dirname ( __FILE__ ) ) );
-		}
-		function _checkWriteable ( $pagenum, $varnum, $path )
-		{
-			$return		= false;
-			if ( is_dir( $path ) )
-			{
-				$fh		= @fopen ( 'test', 'w+' );
-				if ( $fh )
-				{
-					fclose ( $fh );
-					unlink ( $fh );
-					$return		= true;
-				}
-			}
-			return $return;
-		}
-		function _createDirectory ( $pagenum, $varnum, $pathname, $mode = null )
-		{
-			$pathname		= $_POST[$this->config['pages'][$pagenum]['data'][$varnum]['varname']];
-			$pathname		= str_replace ( '\\', '/', $pathname );
-			$return		= false;
-		    if ( !is_dir ( $pathname )
-		    	&& !empty ( $pathname )
-		    	&& !is_file ( $pathname ) )
-		    {
-			    $next_pathname		= substr ( $pathname, 0, strrpos ( $pathname, '/' ) );
-			    if ( mkdirr ( $next_pathname, $mode ) )
-			    {
-			        if ( !file_exists ( $pathname ) )
-			        {
-			            return mkdir($pathname, $mode);
-			        }
-			    }
-		        $return		= true;
-		    }
-		 
-		    return false;
 		}
 	}
 	

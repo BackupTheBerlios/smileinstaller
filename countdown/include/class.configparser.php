@@ -18,6 +18,7 @@
 			$pagenum	= 1;
 			foreach ( $settings['root']['pages']['page'] as $page )
 			{
+				$this->config['pages'][$pagenum]['info']['name']			= $this->config['system']['installer'];
 				$this->config['pages'][$pagenum]['info']['pagetitle']		= $this->lang ( $page['title'] );
 				$this->config['pages'][$pagenum]['info']['pagename']		= $this->lang ( $page['name'] );
 				$this->config['pages'][$pagenum]['info']['pagedesc']		= $this->lang ( $page['desc'] );

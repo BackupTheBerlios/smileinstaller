@@ -14,6 +14,7 @@
 				}
 				$return = substr ( $options, 1 );
 			}
+			if ( $return == false ) $this->_setError ( $pagenum, $varnum, 'Tabellen nicht abrufbar', "Host: $dbhost, User: $dbuser" );
 			return $return;
 		}
 		function _checkConnection ( $pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass )
@@ -23,6 +24,7 @@
 			{
 				$return	= true;
 			}
+			if ( $return == false ) $this->_setError ( $pagenum, $varnum, "Konnte nicht zur Datenbank verbinden", "Host: $dbhost, User: $dbuser" );
 			return $return;
 		}
 		function _writesql ( $pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbname, $dbname_user, $tableprefix, $sqlfile )
@@ -44,7 +46,7 @@
 					{
 						$return		= true;
 					} else {
-						$this->config['system']['errormessage']		.= "Userquery falsch\n$userquery\n";
+						$this->_setError ( $pagenum, $varnum, "Userquery falsch", "$userquery" );
 					}
 				}
 			}

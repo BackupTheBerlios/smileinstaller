@@ -32,6 +32,8 @@
 					die ( 'no checkable element ' . $this->config['pages'][$pagenum]['data'][$varnum]['form'] );
 				}
 			}
+			if ( $return['isset'] == false ) $this->_setError ( $pagenum, $varnum, 'ungueltiger Wert', $_POST[$this->config['pages'][$pagenum]['data'][$varnum]['varname']] );
+			
 			return $return;
 		}
 		function __checkFormSelect ( $var, $requireValue = false )

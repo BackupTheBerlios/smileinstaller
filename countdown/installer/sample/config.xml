@@ -46,7 +46,7 @@
 			<newline>		1</newline>
 			<recheckable>	1</recheckable>
 			<formtype>		input</formtype>
-			<defaultvalue>	!_rootdir</defaultvalue>
+			<defaultvalue>	!_value_rootdir</defaultvalue>
 			<check>			!_checkDirExists</check>
 		</variable>
 		<variable>
