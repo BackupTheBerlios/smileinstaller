@@ -1,5 +1,5 @@
 <?
-class extensions_checks extends installer
+class extensions_checks extends extensions_all
 {
 	function _check_none($pagenum, $varnum)
 	{		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, 'check_none', false );		$return= array ('value' => '', 'isset' => false);
