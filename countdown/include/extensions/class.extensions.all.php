@@ -44,7 +44,7 @@ class extensions_all extends installer
 	{
 		if ( $this->config['system']['debug'] >= 0 ) parent::_setError ( $pagenum, $varnum, '_SQLConnect', false );
 		$return		= false;
-		if ( parent::_validateSupportedDatabase ( $dbtype ) )
+		if ( $this->_validateSupportedDatabase ( $dbtype ) )
 		{
 			$dsn	= "$dbtype://$dbuser:$dbpass@$dbhost/$dbname";
 			$conn	= ADONewConnection ( $dsn );

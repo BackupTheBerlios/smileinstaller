@@ -56,6 +56,7 @@ function genTemplatedir()
 	if (!is_dir("./tmp"))
 	{
 		mkdir("tmp", 0777);
+		chmod('tmp', 0777 );
 	}
 }
 /* Setzt alle noetigen Variablen fuer Smarttemplate */
