@@ -7,8 +7,14 @@ set_magic_quotes_runtime ( 0 );
 // Welcher Installer soll verwendet werden?
 	$configuration		= 'demoinstaller';
 ////////////////////////////////////////////
-define ( 'ROOTPATH',				str_replace ( "\\", "/", 
-	dirname ( __FILE__ ) ) . '/../' . time() );
+$rp		= str_replace ( "\\", "/", dirname ( __FILE__ ) );
+$nrp	= str_replace ( '/include', '', $rp );
+$nrp	= str_replace ( strrchr ( $nrp, '/' ), '', $nrp );
+$dnrp	= $nrp . '/demo';
+
+
+define ( 'ROOTPATH',		$nrp ); 
+define ( 'DEMOROOTPATH',	$dnrp ); 
 define ( 'INSTALLERPATH',			str_replace ( "\\", "/", 
 	dirname ( __FILE__ ) ) . '/..' );
 define ( 'SMARTTEMPLATEDIR',		str_replace ( "\\", "/", 
