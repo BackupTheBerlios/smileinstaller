@@ -3,6 +3,39 @@
 		<title>[Installerdemo 0.1]</title>
 		<nextstring>[next]</nextstring>
 		<completestring>[Setup complete.]</completestring>
+		<onComplete>
+			<showVars>	all</showVars>
+			<string>	[Setup complete.]</string>
+		</onComplete>
+		<onFinish>
+			<string>	[Setup finished.]</string>
+			<checkfunctions>
+			</checkfunctions>
+			<valuefunctions>
+			</valuefunctions>
+			<outputfunctions>
+				<function>
+					<name>createInstalldirectory:$installdir</name>
+					<required>1</required>
+					<errormessage>[Installation failed. Could not create directory.]</errormessage>
+				</function>
+				<function>
+					<name>unpackScript:$installdir</name>
+					<required>1</required>
+					<errormessage>[Installation failed. Could not extract script.]</errormessage>
+				</function>
+				<function>
+					<name>VarToFile:$installdir/democonfig.php,dbms+dbhost+dbname+dbuser+dbpasswd+table_prefix</name>
+					<required>1</required>
+					<errormessage>[Installation failed. Could not write variables.]</errormessage>
+				</function>
+				<function>
+					<name>finish</name>
+					<required>1</required>
+					<errormessage>[Installation failed. Could not finish installation.]</errormessage>
+				</function>
+			</outputfunctions>
+		</onFinish>
 		<finishedstring>[Installation complete]</finishedstring>
 		<finish>
 			<action>	!_output_createInstalldirectory:$installdir</action>
