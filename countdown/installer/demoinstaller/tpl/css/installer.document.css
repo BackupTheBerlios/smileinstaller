@@ -9,7 +9,7 @@ table.maintable {
 	border-top:				#FFFFFF 2px solid;
 }
 td.maintable_installertitle {
-	font-size:				20px;
+	font-size:				30px;
 	color:					#000000;
 	background:				#d5d2cd;
 	text-align:				right;
@@ -55,4 +55,20 @@ div.domTTClassicContent {
 	font-size:				12px;
 	font-family:			Arial, sans-serif;
 	padding:				1px 2px 0 2px;
+}
+div.copyright {
+	font-size:				12px;
+	position:				relative;
+	top:					-13px;
+	left:					-1px;
+	color:					#838183;
+	text-align:				right;
+	line-height:			12px;
+}
+div.copyright_shadow {
+	font-size:				12px;
+	color:					#FFFFFF;
+	position:				relative;
+	text-align:				right;
+	line-height:			12px;
 }

@@ -12,6 +12,10 @@ td.installersteptable {
 td.installersteprow {
 	height:					40px;
 }
+td.installersteprow_2 {
+	height:					40px;
+	border-right:			1px #000000 solid;
+}
 
 div.installersteptable_current_step {
 	text-decoration:		none;
