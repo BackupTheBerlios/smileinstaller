@@ -2,7 +2,28 @@
 class extensions_checks_db extends extensions_checks
 {
 	function _check_SQLConnection($pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass)
-	{		if ( $this->config['system']['debug'] >= 0 ) parent::_setError ( $pagenum, $varnum, '_check_SQLConnection', false );		$return= array ('value' => '', 'isset' => false);		require_once 'DB.php';		$dsn		= array(			'phptype'	=> $dbtype,			'username'	=> $dbuser,			'password'	=> $dbpass,			'hostspec'	=> $dbhost,		);				$options	= array(			'debug'			=> 2,			'portability'	=> DB_PORTABILITY_ALL,		);				$db =& DB::connect($dsn, $options);				if (DB::isError($db)) {		    die($db->getMessage());		}		$data		= $db->getListOf ( 'databases' );		return $return;
+	{		if ( $this->config['system']['debug'] >= 0 ) parent::_setError ( $pagenum, $varnum, '_check_SQLConnection', false );		$return		= array
+		(
+			'value' => '',
+			'isset' => false
+		);
+		if ( parent::_validateSupportedDatabase ( $dbtype ) )
+		{
+			$conn	= &ADONewConnection ( $dbtype );
+			$conn	->PConnect ( $dbhost, $dbuser, $dbpass );
+			$rs		= $conn->Execute('SHOW DATABASES');
+			if ( !$rs )
+			{
+				echo $conn->ErrorMsg ();
+			} else {
+				$rs		= $rs->getArray ();
+				foreach ( $rs as $database )
+				{
+					echo "DB: " . $database[0] . "<br>";
+				}
+			}
+		}
+		return $return;
 	}
 	function _check_SQLDatabaseExists($pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbdatabase)
 	{

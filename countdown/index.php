@@ -1,4 +1,8 @@
 <?
+error_reporting(1);
+error_reporting(E_ALL);
+ini_set("display_errors", "1");
+define('ADODB_ERROR_LOG_TYPE',3);
 define('ROOTPATH', dirname(dirname(__FILE__).'*'));
 define('INSTALLERPATH', dirname(__FILE__));
 // Ziparchiv des Scripts muss den neuen Pfad enthalten!
@@ -8,8 +12,6 @@ set_magic_quotes_runtime(0);
 // Benoetigt fuer Debugging (spaeter nicht vergessen)
 // Eigene Fehlerbehandlung setzen
 $originalEh= set_error_handler("onError");
-error_reporting(1);
-error_reporting(E_ALL);
 $catchedErrors= array ('counts' => array ('notice' => 0, 'parse' => 0, 'main' => 0, 'other' => 0,));
 /* Faengt alle abfangbaren Fehler ab ;) */
 function onError($errno, $errstr, $errfile= false, $errline= false, $context= false)

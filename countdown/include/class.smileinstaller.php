@@ -6,20 +6,45 @@ class installer extends smileinstaller_variable
 			(
 				'debug' => 0, 				'isExtension' => $isExtension, 				'errormessage' => '', 				'installer' => $installer, 				'installerlanguage' => "", 				'largest_row' => 0, 				'largest_row_cached' => 0, 				'totalPages' => 0, 				'currentPage' => 0, 				'explicit_page' => 0, 				'installerlanguages' => array 				(					'english' => 'Please select your language', 					'deutsch' => 'Bitte w&auml;hlen Sie Ihre Sprache', 					'français' => 'Veuillez choisir votre langue',				), 				'classname' => preg_replace('|([^a-zA-Z0-9])|', '_', $installer ),				'pageerror' => -1, 'allow_db' => false, 				'directories' => array 				(					'scriptdir' => addslashes(dirname(__FILE__)).'/../installer/'.$installer, 					'languagedir' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/languages',
 				),
-				'supportedDatabases'	=>
-					'dbase:dBase' 
-					. "," . 'fbsql:FrontBase' 
-					. "," . 'ibase:InterBase' 
-					. "," . 'ifx:Informix' 
-					. "," . 'msql:Mini SQL' 
-					. "," . 'mssql:Microsoft SQL Server' 
-					. "," . 'mysql:MySQL (for MySQL <= 4.0)' 
-					. "," . 'mysqli:MySQL (for MySQL >= 4.1) (requires PHP 5) (since DB 1.6.3)' 
-					. "," . 'oci8:Oracle 7/8/9'
-					. "," . 'odbc:ODBC (Open Database Connectivity)' 
-					. "," . 'pgsql:PostgreSQL'
-					. "," . 'sqlite:SQLite' 
-					. "," . 'sybase:Sybase',			), 			'files' => array 			(				'languageitems' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/languages/available', 				'extension' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/index.php', 				'config' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/config.xml', 				'installertemplate' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/tpl/installer.html', 				'languagetemplate' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/tpl/language.html', 				'completetemplate' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/tpl/complete.html', 				'finishtemplate' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/tpl/finish.html',			), 			'varpattern' => '/^'.'([0-9]{1,10})\s{1,}'.'([12]{1})\s{1,}'.'([0-9]{1,})\s{1,}'.'([01]{1})\s{1,}'.'([01]{1})\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'varrequirepattern' => '/^'.'([0-9]{1,10})\s{1,}'.'([12]{1})\s{1,}'.'([0-9]{1,})\s{1,}'.'([01]{1})\s{1,}'.'([01]{1})\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'pagetextpattern' => '/^'.'([0-9]{1,})\s{1,}'.'"(pagetitle|pagename|pagedesc{1})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'pageactionpattern' => '/^'.'([0-9]{1,10})\s{1,}'.'([12]{1})\s{1,}'.'([0-9]{1,10})\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'languagelinepattern' => '/^'.'([^=]{1,})=(.*)'.'$/',		);
+				'supportedDatabases'	=> array
+				(
+					'access'		=> 'Microsoft Access',
+					'ado_access'	=> 'Microsoft Access/Jet',
+					'ado_mssql'		=> 'Microsoft SQL Server',
+					'db2'			=> 'DB2',
+					'vfp'			=> 'Microsoft Visual FoxPro',
+					'fbsql'			=> 'FrontBase',
+					'ibase'			=> 'Interbase <=6',
+					'firebird'		=> 'Firebird',
+					'borland_ibase'	=> 'Borland Interbase >=6.5',
+					'informix'		=> 'Informix >=7.3',
+					'informix72'	=> 'Informix <7.3',
+					'ldap'			=> 'LDAP',
+					'mssql'			=> 'Microsoft SQL Server >=7 (default)',
+					'mssqlpo'		=> 'Microsoft SQL Server >=7 (portable)',
+					'mysql'			=> 'MySQL',
+					'mysqlt'		=> 'MySQL (transaction support)',
+					'oci8'			=> 'Oracle 8/9',
+					'oci805'		=> 'Oracle 8.0.5',
+					'oci8po'		=> 'Oracle 8/9 (portable)',
+					'odbc'			=> 'ODBC (generic)',
+					'odbc_mssql'	=> 'ODBC MSSQL',
+					'odbc_oracle'	=> 'ODBC Oracle',
+					'odbtp'			=> 'odbtp (generic)',
+					'odbtp_unicode'	=> 'odbtp (unicode)',
+					'oracle'		=> 'Oracle 7',
+					'netezza'		=> 'Netezza',
+					'postgres'		=> 'PostgreSQL (generic)',
+					'postgres64'	=> 'PostgreSQL 6.4',
+					'postgres7'		=> 'PostgreSQL 7',
+					'postgres8'		=> 'PostgreSQL 8',
+					'sapdb'			=> 'SAP DB',
+					'sqlanywhere'	=> 'Sybase SQL Anywhere',
+					'sqlite'		=> 'SQLite',
+					'sqlitepo'		=> 'SQLite (portable)',
+					'sybase'		=> 'Sybase'
+				),
+			), 			'files' => array 			(				'languageitems' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/languages/available', 				'extension' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/index.php', 				'config' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/config.xml', 				'installertemplate' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/tpl/installer.html', 				'languagetemplate' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/tpl/language.html', 				'completetemplate' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/tpl/complete.html', 				'finishtemplate' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/tpl/finish.html',			), 			'varpattern' => '/^'.'([0-9]{1,10})\s{1,}'.'([12]{1})\s{1,}'.'([0-9]{1,})\s{1,}'.'([01]{1})\s{1,}'.'([01]{1})\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'varrequirepattern' => '/^'.'([0-9]{1,10})\s{1,}'.'([12]{1})\s{1,}'.'([0-9]{1,})\s{1,}'.'([01]{1})\s{1,}'.'([01]{1})\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'pagetextpattern' => '/^'.'([0-9]{1,})\s{1,}'.'"(pagetitle|pagename|pagedesc{1})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'pageactionpattern' => '/^'.'([0-9]{1,10})\s{1,}'.'([12]{1})\s{1,}'.'([0-9]{1,10})\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'languagelinepattern' => '/^'.'([^=]{1,})=(.*)'.'$/',		);
 	}
 	function go()
 	{
@@ -293,6 +318,15 @@ class installer extends smileinstaller_variable
 			}
 		}
 		return true;
+	}
+	function _validatesupporteddatabase ( $databasetype )
+	{
+		$return		= false;
+		if ( isset ( $this->config['system']['supportedDatabases'][$databasetype] ) )
+		{
+			$return		= true;
+		}
+		return $return;
 	}
 }
 ?>
