@@ -4,7 +4,7 @@
 		{ 
 			$this->config			= array (
 				'system'				=> array (
-					'debug'					=> 1,
+					'debug'					=> 0,
 					'isExtension'			=> $isExtension,
 					'errormessage'			=> '',
 					'installer'				=> $installer,
@@ -121,22 +121,6 @@
 				$this->unsetVariable ( $pagenum, $varnum );
 				$return		= false;
 			}
-		}
-		function checkFinishpage ( $abortFinish )
-		{
-			$this->config['system']['dofinish']		= 0;					
-			if ( $this->config['system']['pageerror'] == -1 )
-			{
-				$this->config['system']['finishpage']		= $this->config['system']['totalPages'] - 1;
-				if ( !$abortFinish )
-				{
-					$this->config['system']['dofinish']		= 1;
-					$this->config['system']['currentPage']	= $this->config['system']['totalPages'] + 1;
-				}
-			} else {
-				$this->config['system']['finishpage']		= 0;
-			}
-			return $this->config['system']['dofinish'];
 		}
 		function genForm ( $formname, $formtype, $defaultValues, $selectedValue )
 		{
@@ -304,29 +288,6 @@
 				$return		= $itemtype . $return;
 			}
 			return $return;
-		}
-		function doFinish ()
-		{
-			
-			foreach ( $this->config['installer']['action'] as $action )
-			{
-				$action['action']		= substr ( $action['action'], 1 );
-				$evalcode	= "\$return = \$this->config['extension']->" . $this->parseItem ( $action['action'] );
-				$return		= $this->executeFinishenvironment ( $evalcode );
-				if ( !$return['isset'] )
-				{
-					$this->_setError ( $action['errormessage'] );
-					break;
-				}
-			}
-			$this->config['finishSet']	= $return['isset'];
-			if ( $return['isset'] )
-			{
-				$action		= substr ( $this->config['installer']['info']['redirectTo'], 1 );
-				$evalcode	= "\$return = \$this->config['extension']->" . $this->parseItem ( $action );
-				$return		= $this->executeFinishenvironment ( $evalcode );
-				$this->config['installer']['info']['redirectTo']		= $return['value'];
-			}
 		}
 		function _setError ( $pagenum, $varnum, $errormessage )
 		{

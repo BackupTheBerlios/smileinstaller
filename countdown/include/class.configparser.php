@@ -87,6 +87,7 @@
 				'pagenum'	=> $pagenum,
 				'isActive'	=> 0,
 			);
+			$this->config['system']['smarttemplate']['allPages'][$pagenum]['installerlanguage']	= $this->config['system']['installerlanguage'];
 			if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setPageinfos', print_r ( $this->config['system']['smarttemplate']['allPages'][$pagenum], 1 ) );
 		}
 		function setPageactions ( $pagenum, $settings )
