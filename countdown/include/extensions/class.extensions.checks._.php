@@ -23,6 +23,5 @@ class extensions_checks extends installer
 			$return['isset']= true;
 		}
 		return $return;
-	}
-}
+	}}
 ?>

@@ -140,7 +140,7 @@
 			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		select</formtype>
-			<defaultvalue>	=mysql:MySQL 3.x,mysql4:MySQL 4.x,postgres:PostgreSQL 7.x,mssql:MS SQL Server 7/2000,msaccess:MS Access [ ODBC ],mssql-odbc:MS SQL Server [ ODBC ]</defaultvalue>
+			<defaultvalue>	!_value_supportedDatabases</defaultvalue>
 			<autovalue>		!_value_SQLDetect</autovalue>
 		</variable>
 		<variable>
@@ -187,6 +187,13 @@
 			<defaultvalue>	=</defaultvalue>
 			<autovalue>		=</autovalue>
 		</variable>
+		<check>
+			<action>		!_check_SQLConnection:$dbms,$dbhost,$dbuser,$dbpasswd</action>
+			<required>		1</required>
+			<errormessage>
+				[Can't connect to database]
+			</errormessage>
+		</check>
 	</page>
 	<page>
 		<title>	[Select database]</title>

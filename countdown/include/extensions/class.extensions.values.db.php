@@ -19,6 +19,6 @@ class extensions_values_db extends extensions_values
 	function _value_SQLDetect($pagenum, $varnum)
 	{
 		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_value_SQLDetect' );		$this->_setError('0', '_value_SQLDetect', '[no code]');
-	}
+	}	function _value_supportedDatabases ( $pagenum, $varnum )	{		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_value_SQLTables' );		$return		= array		(			'value'		=> $this->config['system']['supportedDatabases'],			'isset'		=> true		);		return $return;	}
 }
 ?>
