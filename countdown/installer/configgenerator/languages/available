@@ -1,0 +1,41 @@
+License
+Accept license?
+Yes
+No
+next
+You must accept the license to install
+Installation directory
+Path for PHPbb2
+Server name
+Server port
+Databasetype
+Database server
+Username databaseserver
+Password databaseserver
+no code
+Server
+Select database
+Existing databases
+Tableprefix
+Path to installer
+Script's license
+Directory to install this script
+Informations for Webserver and SQL-Server
+Database and tables to use
+Smileinstallerdemo. No user defined path allowed.
+Name of the Webserver
+Port for HTTP
+Which Databaseserver would you like to use?
+Hostname or IP of your databaseserver
+Username for your databaseserver
+Password for your databaseserver
+Select an existing database
+or create a new database
+Prefix for PHPbb2's tables
+Install PHPbb2 2.0.11
+Installation complete
+License agreement
+Installation failed. Could not create directory.
+Installation failed. Could not extract script.
+Installation failed. Could not write variables.
+Installation failed. Could not finish installation.

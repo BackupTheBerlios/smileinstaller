@@ -122,7 +122,11 @@ class configparser
 	{
 		if ( is_array ( $functions ) )
 		{
-			foreach ( $functions
+			foreach ( $functions as $function )
+			{
+			}
+		} else {
+			$this->_setError ( 0, 0, 'setInstallerOnFinishfunctions' );
 		}
 	}
 	function setPageinfos($pagenum, $settings)

@@ -121,7 +121,7 @@ require_once "./include/class.extensions.php";
 genTemplatedir();
 setTemplatevariables();
 stripPostvariables();
-$install= new installer('demoinstaller');
+$install= new installer('configgenerator');
 $content= $install->go();
 unset ($_top);
 $tpl= new smarttemplate('./include/templates/debug.html');

@@ -23,5 +23,15 @@ class extensions_checks extends extensions_all
 			$return['isset']= true;
 		}
 		return $return;
+	}
+	function _check_isNumeric ( $pagenum, $varnum )
+	{
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_check_compareValues', false );
+		$return= array ('value' => '', 'isset' => false);
+		if ( is_numeric ( $_POST[$this->config['pages'][$pagenum]['data'][$varnum]['varname']] ) )
+		{
+			$return['isset']= true;
+		}
+		return $return;
 	}}
 ?>

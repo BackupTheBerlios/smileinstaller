@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Language" content="en" />
+		<meta name="GENERATOR" content="PHPEclipse 1.0" />
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>{htmlentities:var.installer.title}</title>
+		<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.css" type="text/css">
+		<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.tab.side.css" type="text/css">
+		<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.tab.top.css" type="text/css">
+		<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.document.css" type="text/css">
+		<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.contenttable.css" type="text/css">
+	</head>
+	<body bgcolor="#FFFFFF" text="#000000" link="#FF9966" vlink="#FF9966" alink="#FFCC99">
+		<br>
+		<div align="center">
+			<table cellspacing="0" cellpadding="0" border="0" class="contenttable">
+				<caption colspan="2" class="title">{htmlentities:var.installer.title}</caption>
+				<tr>
+					<td class="contenttable_head"> {htmlentities:var.installer.finishedstring}
+						<br><a href="{var.installer.redirectTo}">{htmlentities:var.installer.nextstring}</a></td>
+							<!-- IF var.errormessage>"" -->
+								<div class="error">
+									<ol>
+										<!-- BEGIN var.errormessage -->
+											<li>{htmlentities:text}</li>
+										<!-- END var.errormessage -->
+									</ol>
+								</div>
+								<br>
+							<!-- ENDIF var.errormessage -->
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>
+  

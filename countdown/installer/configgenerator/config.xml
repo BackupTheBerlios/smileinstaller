@@ -1,0 +1,50 @@
+<pages>
+	<installer>
+		<title>[Instant Config Maker 0.1]</title>
+		<nextstring>[next]</nextstring>
+		<completestring>[Config complete.]</completestring>
+		<onComplete>
+			<showVars>	all</showVars>
+			<string>	[Config complete.]</string>
+		</onComplete>
+		<onFinish>
+			<string>	[Config finished.]</string>
+			<checkfunctions>
+			</checkfunctions>
+			<valuefunctions>
+			</valuefunctions>
+			<outputfunctions>
+				<function>
+					<name>displayConfig</name>
+					<required>1</required>
+					<errormessage>[Config failed. Could not display config.]</errormessage>
+				</function>
+			</outputfunctions>
+		</onFinish>
+	</installer>
+	<page>
+		<title>	[Set total pages]</title>
+		<name>	[Set total pages]</name>
+		<desc>	[Set total pages]</desc>
+		<variable>
+			<name>			total_pages</name>
+			<htmlname>		[Total pages]</htmlname>				
+			<htmldesc>		</htmldesc>
+			<required>		1</required>
+			<newline>		1</newline>
+			<formtype>		input</formtype>
+			<defaultvalue>	=1</defaultvalue>
+			<autovalue>		=</autovalue>
+			<check>
+				<action>	!_check_isNumeric</action>
+				<required>	1</required>
+				<errormessage>[Is not a number]</errormessage>
+			</check>
+		</variable>
+		<check>
+			<action>	!_output_InjectPages:$total_pages</action>
+			<required>	1</required>
+			<errormessage>[Could not create pages]</errormessage>
+		</check>
+	</page>
+</pages>

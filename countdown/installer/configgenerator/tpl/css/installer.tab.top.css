@@ -1,0 +1,67 @@
+td.available_tab_top {
+	font-size:				14px;
+	color:					#FFFFFF;
+	white-space:			nowrap;
+	background:				#ffaa3b;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 1px solid;
+	BORDER-BOTTOM:			#000000 1px solid;
+	BORDER-LEFT:			#000000 1px solid;
+	BORDER-RIGHT:			#000000 1px solid;
+	height:					50px;
+	max-height:				50px;
+	vertical-align:			middle;
+	text-align:				center;
+	padding:				3px;
+	cursor:					pointer;
+}
+td.available_tab_top:hover {
+	font-size:				14px;
+	color:					#000000;
+	white-space:			nowrap;
+	background:				#ffbb3b;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 1px solid;
+	BORDER-BOTTOM:			#000000 1px solid;
+	BORDER-LEFT:			#000000 1px solid;
+	BORDER-RIGHT:			#000000 1px solid;
+	height:					50px;
+	max-height:				50px;
+	vertical-align:			middle;
+	text-align:				center;
+	padding:				3px;
+	cursor:					pointer;
+}
+td.current_tab_top {
+	font-size:				15px;
+	color:					#000000;
+	white-space:			nowrap;
+	background:				#ffbb3b;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 1px solid;
+	BORDER-BOTTOM:			#000000 1px solid;
+	BORDER-LEFT:			#000000 1px solid;
+	BORDER-RIGHT:			#000000 1px solid;
+	height:					50px;
+	max-height:				50px;
+	vertical-align:			middle;
+	font-weight:			bold;
+	padding:				3px;
+	cursor:					wait;
+}
+td.unavailable_tab_top {
+	font-size:				14px;
+	color:					#FFFFFF;
+	white-space:			nowrap;
+	background:				#abaaa8;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 1px solid;
+	BORDER-BOTTOM:			#000000 1px solid;
+	BORDER-LEFT:			#000000 1px solid;
+	BORDER-RIGHT:			#000000 1px solid;
+	height:					50px;
+	max-height:				50px;
+	vertical-align:			middle;
+	padding:				3px;
+	cursor:					wait;
+}
