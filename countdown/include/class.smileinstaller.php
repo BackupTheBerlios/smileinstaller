@@ -291,11 +291,10 @@
 		}
 		function _setError ( $pagenum, $varnum, $errormessage )
 		{
-			if ( $varnum == 0 )
+			$htmlname		= $pagenum;
+			if ( $varnum > 0 )
 			{
-				$htmlname		= 'Seite ' . $pagenum;
-			} else {
-				$htmlname		= $this->config['pages'][$pagenum]['data'][$varnum]['htmlname'];
+				$htmlname		.= " (" . $this->config['pages'][$pagenum]['data'][$varnum]['htmlname'] . ")";
 			}
 			$errormessage		= $this->lang ( $errormessage );
 			$this->config['system']['errormessage'][]['text']		= $htmlname . ": " . $errormessage;

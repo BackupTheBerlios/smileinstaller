@@ -33,7 +33,7 @@
 									<input type="hidden" name="{varname}" value="{varvalue}">
 								<!-- END hiddenValue -->
 									<!-- IF isActive=="0" -->
-										<td class="unavailable_tab_side">
+										<td class="unavailable_tab_top">
 										{info.pagetitle}
 										</td>
 									<!-- ELSEIF isActive=="1" -->
@@ -70,7 +70,7 @@
 								<input type="hidden" name="{varname}" value="{varvalue}">
 							<!-- END var.displayPage.hiddenValue -->
 							<tr>
-								<td class="contenttable_head" colspan="2">
+								<td class="contenttable_head" colspan="3">
 									{var.displayPage.info.pagetitle}
 									<br><font class="contenttable_head_description">{var.displayPage.info.pagedesc}</font>
 								</td>
@@ -79,11 +79,12 @@
 							<tr  class="contenttable_row_{ROWBIT}" >
 								<td>{htmlname}<!-- IF error="1" -->*<!-- ENDIF error --></td>
 								<td>{form}</td>
+								<td class="contenttable_row_disabled_{ROWBIT}">{autovalue}</td>
 							</tr>
 							<!-- END var.displayPage.data -->
 							</tr>
 							<tr>
-								<td class="contenttable_foot" colspan="2"><input class="pagesubmitactivepage" type="submit" value="{var.installer.nextstring}"></td>
+								<td class="contenttable_foot" colspan="3"><input class="pagesubmitactivepage" type="submit" value="{var.installer.nextstring}"></td>
 							</tr>
 							</form>
 						</table>

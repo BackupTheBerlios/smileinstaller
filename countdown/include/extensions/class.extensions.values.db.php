@@ -22,6 +22,10 @@
 			}
 			return $return;
 		}
+		function _value_SQLDetect ( $pagenum, $varnum )
+		{
+			$this->_setError ( '0', '_value_SQLDetect', '[no code]' );
+		}
 	}
 
 ?>

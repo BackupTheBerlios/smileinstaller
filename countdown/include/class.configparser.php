@@ -164,29 +164,34 @@
 			{
 				$varcount		= sizeof ( $this->config['pages'][$pagenum]['data'] );
 				if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setConfig', 'Set variable ' . $varcount );
+				if ( !isset ( $variable['name'] ) )
+				{
+					$this->setErrorpage ( $pagenum, $variable['name'] . '(' . $varcount . ')', 'setPagevariables, No name for variable' );
+					$variable['name']		= "";
+				}
 				if ( !isset ( $variable['required'] ) )
 				{
-					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables, No required for variable' );
+					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables ' . $variable['name'].', No required for variable' );
 				}
 				if ( !isset ( $variable['newline'] ) )
 				{
-					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables, No newline for variable' );
-				}
-				if ( !isset ( $variable['name'] ) )
-				{
-					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables, No name for variable' );
+					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables ' . $variable['name'].', No newline for variable' );
 				}
 				if ( !isset ( $variable['htmlname'] ) )
 				{
-					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables, No htmlname for variable' );
+					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables ' . $variable['name'].', No htmlname for variable' );
 				}
 				if ( !isset ( $variable['htmldesc'] ) )
 				{
-					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables, No htmldesc for variable' );
+					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables ' . $variable['name'].', No htmldesc for variable' );
 				}
 				if ( !isset ( $variable['formtype'] ) )
 				{
-					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables, No formtype for variable' );
+					$this->setErrorpage ( $pagenum, $varcount, 'setPagevariables ' . $variable['name'].', No formtype for variable' );
+				}
+				if ( !isset ( $variable['autovalue'] ) )
+				{
+					$this->_setError ( $pagenum, $varcount, 'setPagevariables ' . $variable['name'].', No autovalue for variable' );
 				}
 				$required		= $variable['required'];
 				$position		= $varcount;
@@ -201,6 +206,7 @@
 					$uservalue	= false;
 				}
 				$defaultvalue	= $variable['defaultvalue'];
+				$autovalue		= $variable['autovalue'];
 				if ( !isset ( $this->config['count'][$pagenum]['variables'] ) )
 					$this->config['count'][$pagenum]['variables']	= false;
 				if ( $position > $this->config['count'][$pagenum]['variables'] )
@@ -215,6 +221,8 @@
 					)
 				);
 				$tempdefaultvalue	= $this->parseItem ( $defaultvalue, false, $code );
+				$autovalue			= $this->parseItem ( $autovalue, false, $code );
+				$autovalue			= $this->lang ( $autovalue );
 				$defaultform	= $this->genForm ( $varname, $formtype, $tempdefaultvalue, false );
 				$this->config['pages'][$pagenum]['data'][$position]		= array (
 					'varname'		=> $variable['name'],
@@ -223,6 +231,7 @@
 					'form'			=> $variable['formtype'],
 					'formtype'		=> $variable['formtype'],
 					'defaultvalue'	=> $tempdefaultvalue,
+					'autovalue'		=> $autovalue,
 				);
 				if ( isset ( $variable['check']['required'] ) ) {
 					$variable['check']	= array ( $variable['check'] );
