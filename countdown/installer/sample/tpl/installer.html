@@ -1,0 +1,119 @@
+<html>
+<head>
+<meta http-equiv="Content-Language" content="en" />
+<meta name="GENERATOR" content="PHPEclipse 1.0" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>{htmlentities:var.installertitle}</title>
+<link rel="stylesheet" href="include/templates/css.css" type="text/css">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#FF9966" vlink="#FF9966" alink="#FFCC99">
+	<table width="100%" cellspacing="0" cellpadding="0" border="0">
+		<tr>
+			<td colspan="2">
+				<div align="center">
+				<table width="90%" cellspacing="1" cellpadding="2" border="0">
+					<tr valign="top" style="height: 50px">
+						<!-- BEGIN var.allPages -->
+						<form action="index.php" name="gotopage2_{ROWCNT}" method="post">
+						<input type="hidden" name="_installerlanguage" value="{installerlanguage}">
+						<input type="hidden" name="explicit_page" value="{pagenum}">
+						<!-- BEGIN hiddenValue -->
+							<input type="hidden" name="{varname}" value="{varvalue}">
+						<!-- END hiddenValue -->
+							<td class="<!-- IF isActive=="1" --><!-- IF isCurrentPage=="1" -->currentpage_top<!-- ELSE -->activepage_top" onclick="document.gotopage2_{ROWCNT}.submit ()<!-- ENDIF isCurrentPage=="1" --><!-- ELSE -->inactivepage_top<!-- ENDIF isActive=="1" -->">
+								[Schritt] {calc:ROWCNT,1}
+								<br>{info.pagetitle}
+							</td>
+						</form>
+						<!-- END var.allPages -->
+					</tr>
+				</table>
+				</div>
+			</td>
+		</tr>
+		<tr style="height: 20px">
+			<td class="headline" colspan="2">{htmlentities:var.installertitle}</td>
+		</tr>
+		<tr style="height: 20px">
+			<td class="pagehead">Fortschritt</td>
+			<td width="100%" class="contentspace" rowspan="{calc:var.totalPages,3}">
+				<div align="center">
+					<!-- CONTENT -->
+					<!-- IF var.currentPage=="-1" -->
+						<br><br>
+						<table cellspacing="1" cellpadding="2" border="0" width="90%" class="contenttable">
+							<!-- BEGIN var.installerlanguages -->
+								<form action="index.php" name="language_{ROWCNT}" method="post">
+								<input type="hidden" name="_installerlanguage" value="{language}">
+								<tr>
+									<td id="installeritem_{ROWCNT}" class="installeritem_{ROWBIT}" nowrap onclick="document.language_{ROWCNT}.submit()">
+										{text}
+										<br>({language})</td>
+								</tr>
+								</form>
+							<!-- END var.installerlanguages -->
+						</table>
+					<!-- ELSE -->
+						<!-- IF var.errormessage>"" -->
+							<table cellspacing="1" cellpadding="2" border="0" class="errormessage">
+								<tr>
+									<td>{htmlentities:var.errormessage}</td>
+								</tr>
+							</table>
+						<!-- ENDIF var.errormessage -->
+						<br><br>
+						<table cellspacing="1" cellpadding="2" border="0" width="90%" class="contenttable">
+							<form action="index.php" method="post">
+							<input type="hidden" name="_installerlanguage" value="{var.installerlanguage}">
+							<!-- BEGIN var.displayPage.hiddenValue -->
+								<input type="hidden" name="{varname}" value="{varvalue}">
+							<!-- END var.displayPage.hiddenValue -->
+							<tr>
+								<td class="content_head" colspan="2">
+									{var.displayPage.info.pagetitle}
+									<br><font class="content_head_description">{var.displayPage.info.pagedesc}</font>
+								</td>
+							</tr>
+							<!-- BEGIN var.displayPage.data -->
+							<tr  class="content_row_{ROWBIT}" >
+								<td style="width: 1px">{htmlname}<!-- IF error="1" -->*<!-- ENDIF error --></td>
+								<td style="width:100%;">{editableValue}</td>
+							</tr>
+							<!-- END var.displayPage.data -->
+							</tr>
+							<tr>
+								<td class="content_foot" colspan="2"><input class="pagesubmitactivepage" type="submit" value="[weiter]"></td>
+							</tr>
+							</form>
+						</table>
+					<!-- ENDIF var.currentPage=="-1" -->
+					<br><br><hr style="border-bottom: #FFFFFF 1px solid;border-top: #FFFFFF 0px solid;border-left: #FFFFFF 0px solid;border-right: #FFFFFF 0px solid;width: 90%;">
+					<b>[Aktuelles System ohne Ablaufsteuerung]</b>
+					<hr style="border-bottom: #FFFFFF 1px solid;border-top: #FFFFFF 0px solid;border-left: #FFFFFF 0px solid;border-right: #FFFFFF 0px solid;width: 60%;">
+				</div>
+			</td>
+		</tr>
+		<!-- BEGIN var.allPages -->
+		<form action="index.php" name="gotopage_{ROWCNT}" method="post">
+		<input type="hidden" name="_installerlanguage" value="{installerlanguage}">
+		<input type="hidden" name="explicit_page" value="{pagenum}">
+		<!-- BEGIN hiddenValue -->
+			<input type="hidden" name="{varname}" value="{varvalue}">
+		<!-- END hiddenValue -->
+		<tr valign="top" style="height: 50px">
+			<td class="<!-- IF isActive=="1" --><!-- IF isCurrentPage=="1" -->currentpage<!-- ELSE -->activepage" onclick="document.gotopage_{ROWCNT}.submit ()<!-- ENDIF isCurrentPage=="1" --><!-- ELSE -->inactivepage<!-- ENDIF isActive=="1" -->">
+				[Schritt] {calc:ROWCNT,1}
+				<br>{info.pagetitle}
+			</td>
+		</tr>
+		</form>
+		<!-- END var.allPages -->
+		<tr valign="top" height="200">
+			<td class="pagehead" height="100%">
+				<table width="100%" height="100%"><tr><td>&nbsp;</td></tr></table>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
+  

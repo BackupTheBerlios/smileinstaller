@@ -1,0 +1,97 @@
+<body bgcolor="#FFFFFF">
+<!-- Stolen from Smarttemplate -->
+<script type="text/javascript">
+function switchview () {
+	for(var i=0;i<arguments.length;++i)
+	{
+		var element = document.getElementById(arguments[i]).style
+		element.display = element.display == 'inline' ? 'none' : 'inline'
+	}
+}
+</script>
+<!-- THX to Smarttemplate -->
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+	<tr>
+		<td class="content_head" width="25%">[<a href="javascript: switchview ( 'noticeerror' );">NOTICE</a>] ({var.errors.counts.notice})</td>
+		<td class="content_head" width="25%">[<a href="javascript: switchview ( 'parseerror' );">PARSE</a>] ({var.errors.counts.parse})</td>
+		<td class="content_head" width="25%">[<a href="javascript: switchview ( 'mainerror' );">MAIN</a>] ({var.errors.counts.main})</td>
+		<td class="content_head" width="25%">[<a href="javascript: switchview ( 'othererror' );">OTHER</a>] ({var.errors.counts.other})</td>
+	</tr>
+	<tr>
+		<td colspan="4">
+		<div id="noticeerror" style="display: none; visibility: visible;">
+			<table width="100%" cellspacing="1" cellpadding="2" border="0">
+				<tr valign="top" class="content_head">
+					<td class="content_head" width="1">Zeile</td>
+					<td class="content_head" width="1">Datei</td>
+					<td class="content_head" width="*">Text</td>
+				</tr>
+				<!-- IF var.errors.notice>"" -->
+					<!-- BEGIN var.errors.notice -->
+						<tr valign="top" class="content_error_{ROWBIT}">
+							<td width="1">{htmlentities:line}</td>
+							<td width="1"><pre>{file}</pre></td>
+							<td width="100%">{htmlentities:str}</td>
+						</tr>
+					<!-- END var.errors.notice -->
+				<!-- ENDIF var.errors.notice>"" -->
+			</table>
+		</div>
+		<div id="parseerror" style="display: none; visibility: visible;">
+			<table width="100%" cellspacing="1" cellpadding="2" border="0">
+				<tr valign="top" class="content_head">
+					<td class="content_head" width="1">Zeile</td>
+					<td class="content_head" width="1">Datei</td>
+					<td class="content_head" width="*">Text</td>
+				</tr>
+				<!-- IF var.errors.parse>"" -->
+					<!-- BEGIN var.errors.parse -->
+						<tr valign="top" class="content_error_{ROWBIT}">
+							<td width="1">{htmlentities:line}</td>
+							<td width="1"><pre>{file}</pre></td>
+							<td width="100%">{htmlentities:str}</td>
+						</tr>
+					<!-- END var.errors.parse -->
+				<!-- ENDIF var.errors.parse>"" -->
+			</table>
+		</div>
+		<div id="mainerror" style="display: none; visibility: visible;">
+			<table width="100%" cellspacing="1" cellpadding="2" border="0">
+				<tr valign="top" class="content_head">
+					<td class="content_head" width="1">Zeile</td>
+					<td class="content_head" width="1">Datei</td>
+					<td class="content_head" width="*">Text</td>
+				</tr>
+				<!-- IF var.errors.main>"" -->
+					<!-- BEGIN var.errors.main -->
+						<tr valign="top" class="content_error_{ROWBIT}">
+							<td width="1">{htmlentities:line}</td>
+							<td width="1"><pre>{file}</pre></td>
+							<td width="100%">{htmlentities:str}</td>
+						</tr>
+					<!-- END var.errors.main -->
+				<!-- ENDIF var.errors.main>"" -->
+			</table>
+		</div>
+		<div id="othererror" style="display: none; visibility: visible;">
+			<table width="100%" cellspacing="1" cellpadding="2" border="0">
+				<tr valign="top">
+					<td class="content_head" width="1">Zeile</td>
+					<td class="content_head" width="1">Datei</td>
+					<td class="content_head" width="*">Text</td>
+				</tr>
+				<!-- IF var.errors.other>"" -->
+					<!-- BEGIN var.errors.other -->
+						<tr valign="top" class="content_error_{ROWBIT}">
+							<td width="1">{htmlentities:line}</td>
+							<td width="1"><pre>{file}</pre></td>
+							<td width="100%">{htmlentities:str}</td>
+						</tr>
+					<!-- END var.errors.other -->
+				<!-- ENDIF var.errors.other>"" -->
+			</table>
+		</div>
+	</tr>
+</table>
+{var.content}

@@ -1,0 +1,155 @@
+<pages>
+	<installer>
+		<title>Beispielinstaller</title>
+		<finish>
+			<action>_createDirectory:$path,$dir,0777</action>
+			<action>_writeToFile:config.php,dbhost+dbname</action>
+		</finish>
+	</installer>
+	<page>
+		<title>	[Lizenz]</title>
+		<name>	[]</name>
+		<desc>	[Beispiel fuer den ersten Schritt]</desc>
+		<variable>
+			<name>			none1</name>
+			<htmlname>		[Lizenz]</htmlname>				
+			<required>		0</required>
+			<newline>		1</newline>
+			<recheckable>	0</recheckable>
+			<formtype>		box</formtype>
+			<defaultvalue>	.license.txt</defaultvalue>
+		</variable>
+		<variable>
+			<name>			accept_license</name>
+			<htmlname>		[Ich akzeptiere die Lizenz]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	0</recheckable>
+			<formtype>		select</formtype>
+			<defaultvalue>	=Nein,Ja</defaultvalue>
+			<check>
+				<required>	1</required>
+				<action>	!_checkFormspecific:Ja</action>
+			</check>
+		</variable>
+	</page>
+	<page>
+		<title>	[Pfad waehlen]</title>
+		<name>	=[]</name>
+		<desc>	=[]</desc>
+		<variable>
+			<name>			path</name>
+			<htmlname>		[Pfad]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	1</recheckable>
+			<formtype>		input</formtype>
+			<defaultvalue>	!_rootdir</defaultvalue>
+			<check>			!_checkDirExists</check>
+		</variable>
+		<variable>
+			<name>			dir</name>
+			<htmlname>		[(Neues) Verzeichniss fuer das Skript]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	1</recheckable>
+			<formtype>		input</formtype>
+			<defaultvalue>	=sample</defaultvalue>
+		</variable>
+		<checkafter>
+			<required>		1</required>
+			<action>		!_checkWriteable:$path</action>
+		</checkafter>
+	</page>
+	<page>
+		<title>	[Datenbank auswaehlen]</title>
+		<name>	[]</name>
+		<desc>	[]</desc>
+		<checkbefore>
+			<required>	1</required>
+			<action>	!_none</action>
+		</checkbefore>
+		<variable>
+			<name>			dbhost</name>
+			<htmlname>		[Datenbankserver]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	0</recheckable>
+			<formtype>		input</formtype>
+			<defaultvalue>	=localhost</defaultvalue>
+		</variable>
+		<variable>
+			<name>			dbuser</name>
+			<htmlname>		[Benutzername]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	0</recheckable>
+			<formtype>		input</formtype>
+			<defaultvalue>	=</defaultvalue>
+		</variable>
+		<variable>
+			<name>			dbpass</name>
+			<htmlname>		[Passwort]</htmlname>
+			<required>		0</required>
+			<newline>		1</newline>
+			<recheckable>	0</recheckable>
+			<formtype>		password</formtype>
+			<defaultvalue>	=</defaultvalue>
+		</variable>
+		<checkafter>
+			<required>	1</required>
+			<action>	!_checkConnection:mysql,$dbhost,$dbuser,$dbpass</action>
+		</checkafter>
+	</page>
+	<page>
+		<title>	[Tabelle auswaehlen]</title>
+		<name>	[]</name>
+		<desc>	[]</desc>
+		<variable>
+			<name>			dbname</name>
+			<htmlname>		[Datenbank]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	0</recheckable>
+			<formtype>		select</formtype>
+			<defaultvalue>	!_getTables:mysql,$dbhost,$dbuser,$dbpass</defaultvalue>
+			<check>			!_checkFormspecific</check>
+		</variable>
+	</page>
+	<page>
+		<title>	[Administrator anlegen]</title>
+		<name>	[]</name>
+		<desc>	[]</desc>
+		<variable>
+			<name>			adminname</name>
+			<htmlname>		[Name des Administrators]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	1</recheckable>
+			<formtype>		input</formtype>
+			<defaultvalue>	=root</defaultvalue>
+		</variable>
+		<variable>
+			<name>			adminpass</name>
+			<htmlname>		[Passwort]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	1</recheckable>
+			<formtype>		password</formtype>
+			<defaultvalue>	=</defaultvalue>
+		</variable>
+		<variable>
+			<name>			adminpass_2</name>
+			<htmlname>		[Passwort wiederholen]</htmlname>
+			<required>		1</required>
+			<newline>		1</newline>
+			<recheckable>	1</recheckable>
+			<formtype>		password</formtype>
+			<defaultvalue>	=</defaultvalue>
+		</variable>
+		<checkafter>
+			<required>	1</required>
+			<action>	!_newPasswordcheck:$adminpass,$adminpass_2</action>
+		</checkafter>
+	</page>
+</pages>
