@@ -19,7 +19,7 @@
 						'français'				=> 'Veuillez choisir votre langue',
 					),
 					'classname'				=> preg_replace ( '|([^a-zA-Z0-9])|', '_', $installer ),
-					'pageerror'				=> 0,
+					'pageerror'				=> -1,
 					'allow_db'				=> false,
 					'directories'			=> array (
 						'scriptdir'				=> addslashes ( dirname ( __FILE__ ) )  . '/../installer/' . $installer,
@@ -80,13 +80,47 @@
 			$this->initializeExtension ();
 			$this->checkLanguagepage ();
 			$this->setConfig ();
-			$this->setPages ();
-			$abortFinish	= $this->checkExplicitPage ();
-			if ( $this->checkFinishPage ( $abortFinish ) == 1 )
+#			$abortFinish	= $this->checkExplicitPage ();
+#			if ( $this->checkFinishPage ( $abortFinish ) == 1 )
+#			{
+#				$this->doFinish ();
+#			}
+			echo $this->config['system']['pageerror'];
+			if ( $this->config['languageSet'] )
 			{
-				$this->doFinish ();
+				if ( $this->config['finishSet'] )
+				{
+					$this->tpl		= new smarttemplate ( $this->config['files']['finishtemplate'] );
+				} else {
+					$this->tpl		= new smarttemplate ( $this->config['files']['installertemplate'] );
+				}
+			} else {
+				foreach ( $this->config['system']['installerlanguages'] as $language => $text ) {
+					$this->config['system']['smarttemplate']['installerlanguages'][]		= array (
+						'language'		=> $language,
+						'text'			=> $text,
+					);
+				}
+				$this->tpl		= new smarttemplate ( $this->config['files']['languagetemplate'] );
 			}
-			$this->setForSmarttemplate ();
+			foreach ( $this->config['system']['smarttemplate']['allPages'] as $key => $value )
+			{
+				$this->config['system']['smarttemplate']['allPages'][$key]['currentPage']	= $this->config['system']['currentPage'];
+				if ( $key == $this->config['system']['currentPage'] )
+				{
+					$this->config['system']['smarttemplate']['allPages'][$key]['isCurrent']	= 1;
+				} else {
+					$this->config['system']['smarttemplate']['allPages'][$key]['isCurrent']	= 0;
+				}
+			}
+			$this->config['system']['smarttemplate']['currentPage']		= $this->config['system']['pageerror'];
+			$this->config['system']['smarttemplate']['displayPage']		= $this->config['system']['smarttemplate']['allPages'][$this->config['system']['pageerror']];
+			$this->config['system']['smarttemplate']['errormessage']		= $this->config['system']['errormessage'];
+			$this->config['system']['smarttemplate']['totalPages']			= $this->config['system']['totalPages'];
+			$this->config['system']['smarttemplate']['installerlanguage']	= $this->config['system']['installerlanguage'];
+			$this->config['system']['smarttemplate']['installer']				= $this->config['installer']['info'];
+			$this->config['system']['smarttemplate']['installer']['name']		= $this->config['system']['installer'];			
+			$this->tpl->assign ( 'var', $this->config['system']['smarttemplate'] );
 			$return		= $this->tpl->result ();
 			return $return;
 		}
@@ -105,7 +139,7 @@
 				{
 					$this->setVariable ( $pagenum, $varnum );
 				}
-				if ( (int)$this->config['system']['pageerror'] > (int)0 )
+				if ( $this->config['system']['pageerror'] > -1 )
 				{
 					if ( $this->config['system']['pageerror'] >= $pagenum )
 					{
@@ -118,7 +152,7 @@
 					break;
 				}
 			}
-			if ( $this->config['system']['pageerror'] > 0 )
+			if ( $this->config['system']['pageerror'] > -1 )
 			{
 				for ( $i =  $this->config['system']['pageerror']; $i <=  $this->config['system']['totalPages']; $i++ )
 				{
@@ -133,12 +167,12 @@
 			{
 				foreach ( $this->config['pages'][$pagenum]['action'] as $check )
 				{
-					$evalcode	= "\$return = \$this->config['extension']->" . substr ( $check['action'], 1 );
+					$evalcode	= "\$return = \$this->config['extension']->" . $check['action'];
 					$return		= $this->executePageenvironment ( $evalcode, $pagenum, 0 );
 					if ( !$return['isset'] )
 					{
 						$this->_setError ( $pagenum, 0, $check['errormessage'] );
-						if ( $this->config['system']['pageerror'] == 0 
+						if ( $this->config['system']['pageerror'] == -1 
 						|| $this->config['system']['pageerror'] > $pagenum )
 						{
 							$this->config['system']['pageerror']	= $pagenum;
@@ -159,7 +193,7 @@
 		function checkFinishpage ( $abortFinish )
 		{
 			$this->config['system']['dofinish']		= 0;					
-			if ( $this->config['system']['pageerror'] == 0 )
+			if ( $this->config['system']['pageerror'] == -1 )
 			{
 				$this->config['system']['finishpage']		= $this->config['system']['totalPages'] - 1;
 				if ( !$abortFinish )
@@ -172,68 +206,57 @@
 			}
 			return $this->config['system']['dofinish'];
 		}
-		function setForm ( $var, $value, $isset, $uneditable )
+		function genForm ( $formname, $formtype, $defaultValues, $selectedValue )
 		{
-			if ( $uneditable )
-			{
-				$disabled	= "DISABLED";
-			} else {
-				$disabled	= "";
-			}
-			$defaultvalue	= $this->lang ( $var['defaultvalue'] );
-			switch ( strtolower ( $var['form'] ) )
+			$selectedValue	= $this->lang ( $selectedValue );
+			switch ( strtolower ( $formtype ) )
 			{
 				case 'box' :
 				{
-					$form	= '<textarea readonly style="width: 100%; height: 200px">' .
-						$defaultvalue .
-						'</textarea>';
-					$this->config['executeEnvironment'][$var['varname']]	= $defaultvalue;
+					$form	= '<textarea readonly style="width: 100%; height: 200px">' . $defaultValues . '</textarea>';
+					$this->config['executeEnvironment'][$formname]	= $defaultValues;
 					break;
 				}
 				case 'html' :
 				{
-					$form	= $defaultvalue;
-					$this->config['executeEnvironment'][$var['varname']]	= $defaultvalue;
+					$form	= $defaultValues;
+					$this->config['executeEnvironment'][$var['varname']]	= $defaultValues;
 					break;
 				}
 				case 'input' :
 				{
-					$form		= '<input ' . $disabled . ' type="text" name="' . 
-						$var['varname'] . '" value="';
-					if ( $isset )
+					$form		= "<input type=\"text\" name=\"$formname\" value=\"";
+					if ( $selectedValue )
 					{
-						$form	.= $executeEnvironmentvalue	= $value;
+						$form	.= $executeEnvironmentvalue	= $selectedValue;
 					} else {
-						$form	.= $executeEnvironmentvalue	= $defaultvalue;
+						$form	.= $executeEnvironmentvalue	= $defaultValues;
 					}
-					$form	.= '">';
-					$this->config['executeEnvironment'][$var['varname']]	= $executeEnvironmentvalue;
+					$form	.= "\">";
+					$this->config['executeEnvironment'][$formname]	= $executeEnvironmentvalue;
 					break;
 				}
 				case 'password' :
 				{
-					$form		= '<input ' . $disabled . ' type="password" name="' . 
-						$var['varname'] . '" value="';
-					if ( $isset )
+					$form		= "<input type=\"password\" name=\"$formname\" value=\"";
+					if ( $selectedValue )
 					{
-						$form	.= $executeEnvironmentvalue	= $value;
+						$form	.= $executeEnvironmentvalue	= $selectedValue;
 					} else {
-						$form	.= $executeEnvironmentvalue	= $defaultvalue;
+						$form	.= $executeEnvironmentvalue	= $defaultValues;
 					}
-					$form	.= '">';
+					$form	.= "\">";
 					$this->config['executeEnvironment'][$var['varname']]	= $executeEnvironmentvalue;
 					break;
 				}
 				case 'text' :
 				{
-					$form	= '<textarea ' . $disabled . ' name="' . $var['varname'] . 
-						'" style="width: 100%; height:150px">';
-					if ( $isset )
+					$form	= "<textarea name=\"$formname\" style=\"width: 100%; height:150px\">";
+					if ( $selectedValue )
 					{
-						$form	.= $executeEnvironmentvalue	= $value;
+						$form	.= $executeEnvironmentvalue	= $selectedValue;
 					} else {
-						$form	.= $executeEnvironmentvalue	= $defaultvalue;
+						$form	.= $executeEnvironmentvalue	= $defaultValues;
 					}
 					$form	.= '</textarea>';
 					$this->config['executeEnvironment'][$var['varname']]	= $executeEnvironmentvalue;
@@ -241,8 +264,8 @@
 				}
 				case 'select' :
 				{
-					$this->config['executeEnvironment'][$var['varname']]	= $value;
-					$options		= explode ( ",", $var['defaultvalue'] );
+					$this->config['executeEnvironment'][$formname]	= $selectedValue;
+					$options		= explode ( ",", $defaultValues );
 					$newOptions		= "";
 					foreach ( $options as $option )
 					{
@@ -257,25 +280,25 @@
 						}
 						$selected		= "";
 						if ( $isset ) {
-							if ( $key == $value )
+							if ( $key == $selectedValue )
 							{
 								$selected		= "SELECTED";
 							}
 						}
 						$newOptions	.= "<option value=\"$key\" $selected>$option</option>";
 					}
-					$form		= "<select $disabled name=\"" . $var['varname'] . "\">$newOptions</select>";
+					$form		= "<select name=\"$formname\">$newOptions</select>";
 					break;
 				}
 				case 'checkbox' :
 				{
-					if ( $isset )
+					if ( $selectedValue )
 					{
-						$form	= '<input type="checkbox" name="' . $var['varname'] . '" CHECKED value="' . $value . '">';
-						$this->config['executeEnvironment'][$var['varname']]	= $value;
+						$form	= "<input type=\"checkbox\" name=\"$formname\" CHECKED value=\"$defaultValues\">";
+						$this->config['executeEnvironment'][$var['varname']]	= $selectedValue;
 					} else {
-						$form	= '<input type="checkbox" name="' . $var['varname'] . '" value="' . $defaultvalue . '">';
-						$this->config['executeEnvironment'][$var['varname']]	= $defaultvalue;
+						$form	= "<input type=\"checkbox\" name=\"$formname\" value=\"$defaultValues\">";
+						$this->config['executeEnvironment'][$formname]	= $defaultValues;
 					}
 					break;
 				}
@@ -286,9 +309,13 @@
 			}
 			return $form;
 		}
+		
+		function setForm ( $var, $value, $isset )
+		{
+			die ( "use genForm" );
+		}
 		function parseItem ( $value, $getType = false, $executecode = false )
 		{
-			echo "Item to parse :<b>" . htmlentities ( $value ) . "</b><br>";
 			$itemtype		= substr ( $value, 0, 1 );
 			$item			= substr ( $value, 1 );
 			switch ( $itemtype )
@@ -350,7 +377,6 @@
 			{
 				$return		= $itemtype . $return;
 			}
-			echo htmlentities ( $return ) . "<br>";
 			return $return;
 		}
 		function checkExplicitPage ()
@@ -361,7 +387,7 @@
 			&& $_POST['explicit_page'] <= $this->config['system']['totalPages'] )
 			{
 				$return		= true;
-				if ( $this->config['system']['pageerror'] > 0 )
+				if ( $this->config['system']['pageerror'] > -1 )
 				{
 					if ( $_POST['explicit_page'] <= $this->config['system']['pageerror'] )
 					{
@@ -376,143 +402,13 @@
 					$this->config['system']['currentPage']		= $_POST['explicit_page'];
 				}
 			} else {
-				if ( $this->config['system']['pageerror'] > 0 )
+				if ( $this->config['system']['pageerror'] > -1 )
 				{
 					$this->config['currentPage']				= $this->config['pages'][$this->config['system']['pageerror']];
 					$this->config['system']['currentPage']		= $this->config['system']['pageerror'];
 				} else {
 					$this->config['currentPage']				= $this->config['pages'][$this->config['system']['totalPages']];
 					$this->config['system']['currentPage']		= $this->config['system']['totalPages'];
-				}
-			}
-			return $return;
-		}
-		function setForSmarttemplate ()
-		{
-			if ( $this->config['languageSet'] )
-			{
-				$hiddenValue[]	= array (
-					'varname'	=> 'setVar',
-					'varvalue'	=> urlencode ( serialize ( $this->config['system']['setVar'] ) )
-				);
-				foreach ( $this->config['hiddenValue'] as $varname => $vardata )
-				{
-					$hiddenValue[]		= array (
-						'varname'		=> $varname,
-						'varvalue'		=> $vardata['varvalue']
-					);
-				}
-				$currentPage		= 0;
-				ksort ( $this->config['pages'] );
-				reset ( $this->config['pages'] );
-				while ( list ( $pagedatakey, $pagedata ) = each ( $this->config['pages'] ) ) {
-					$page[$currentPage]['currentPage']		= $this->config['system']['currentPage']-1;
-					$page[$currentPage]['info']		= $pagedata['info'];
-					$page[$currentPage]['pagenum']	= $currentPage+1;
-					if ( isset ( $pagedata['data'] ) && is_array ( $pagedata['data'] ) )
-					{
-						ksort ( $pagedata['data'] );
-						reset ( $pagedata['data'] );
-						$currentPosition		= 0;
-						while ( list ( $vardatakey, $vardata ) = each ( $pagedata['data'] ) )
-						{
-							$page[$currentPage]['data'][$currentPosition]		= $vardata;
-							$currentPosition++;
-						}
-					}
-					$page[$currentPage]['hiddenValue']		= $hiddenValue;
-					if ( $page[$currentPage]['currentPage'] == $currentPage )
-					{
-						$page[$currentPage]['isCurrentPage']		 = 1;
-						$this->config['system']['smarttemplate']['displayPage']		= $page[$currentPage];
-						unset ( $this->config['system']['smarttemplate']['displayPage']['currentPage'] );
-					} else {
-						$page[$currentPage]['isCurrentPage']		 = 0;
-					}
-					
-					if ( $currentPage <= $this->config['system']['pageerror']-1 
-						|| $this->config['system']['pageerror'] == 0 
-					)
-					{
-						$page[$currentPage]['isActive']		= 1;
-					} else {
-						$page[$currentPage]['isActive']		= 0;
-					}
-					$page[$currentPage]['installerlanguage']		= $this->config['system']['installerlanguage'];
-					$currentPage++;
-				}
-				$this->config['system']['smarttemplate']['allPages']			= $page;
-				$this->config['system']['smarttemplate']['errormessage']		= $this->config['system']['errormessage'];
-				$this->config['system']['smarttemplate']['totalPages']			= $this->config['system']['totalPages'];
-				$this->config['system']['smarttemplate']['installerlanguage']	= $this->config['system']['installerlanguage'];
-				$this->config['system']['smarttemplate']['currentPage']			= $this->config['system']['currentPage']-1;
-				if ( $this->config['finishSet'] )
-				{
-					$this->tpl		= new smarttemplate ( $this->config['files']['finishtemplate'] );
-				} else {
-					$this->tpl		= new smarttemplate ( $this->config['files']['installertemplate'] );
-				}
-			} else {
-				foreach ( $this->config['system']['installerlanguages'] as $language => $text ) {
-					$this->config['system']['smarttemplate']['installerlanguages'][]		= array (
-						'language'		=> $language,
-						'text'			=> $text,
-					);
-				}
-				$this->tpl		= new smarttemplate ( $this->config['files']['languagetemplate'] );
-			}
-			$this->config['system']['smarttemplate']['installer']				= $this->config['installer']['info'];
-			$this->config['system']['smarttemplate']['installer']['name']		= $this->config['system']['installer'];			
-			$this->tpl->assign ( 'var', $this->config['system']['smarttemplate'] );
-			
-		}
-		function setDefaultValue ( $pagenum, $varnum )
-		{
-			$var		= $this->config['pages'][$pagenum]['data'][$varnum];
-			$return		= "";
-			$code		= array (
-				'code'		=> "\$return = \$this->config['extension']->",
-				'var'		=> array (
-					'pagenum'	=> $pagenum,
-					'varnum'	=> $varnum
-				)
-			);			
-			$return		= $this->parseItem ( $var['defaultvalue'], false, $code );
-			if ( isset ( $return['isset'] ) )
-			{
-				$return		= $return['value'];
-			}
-			$this->config['pages'][$pagenum]['data'][$varnum]['defaultvalue'] = $return;
-			return $return;
-		}
-		function setAnyValue ( $value, $pagenum, $varnum )
-		{
-			switch ( substr ( $value, 0, 1 ) )
-			{
-				case '<' :
-				{
-					$evalcode		= "\$return = \$this->config['extension']->" . 
-						$this->parseItem ( substr ( $value, 1 ) );
-					$return	= $this->executeEnvironment ( $evalcode, $pagenum, $varnum );
-					break;
-				}
-				case '=' :
-				{
-					$return	= substr ( $var['defaultvalue'], 1 );
-					break;
-				}
-				case '.' :
-				{
-					$return	= trim ( implode ( "", file ( 
-						$this->config['system']['directories']['scriptdir'] . 
-						'/files/' . substr ( $value, 1 ) 
-					) ) );
-					break;
-				}
-				default :
-				{
-					die ( 'no useable value ' . htmlentities ( $var['defaultvalue'] ) );
-					break;
 				}
 			}
 			return $return;
@@ -551,5 +447,14 @@
 			$errormessage		= $this->lang ( $errormessage );
 			$this->config['system']['errormessage'][]['text']		= $htmlname . ": " . $errormessage;
 		}
+		
+		function setErrorpage ( $pagenum )
+		{
+			if ( $this->config['system']['pageerror'] < $pagenum )
+			{
+				$this->config['system']['pageerror'] = $pagenum;
+			}
+		}
 	}
+	
 ?>

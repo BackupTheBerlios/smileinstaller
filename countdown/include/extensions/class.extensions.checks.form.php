@@ -71,7 +71,7 @@
 					if ( $newValue		= strstr ( $value, ":" ) )
 					{
 						$key	= str_replace ( $newValue, "", $value );
-						$value	= substr ( $newValue, 1 );
+						$value	= $newValue;
 					}
 					else {
 						$key	= $value;

@@ -1,18 +1,19 @@
 include/class.extensions.php	cextensions	o13
-include/installer/class.smileinstaller.variable.php	csmileinstaller_variable	o11	msetVariable	o83	munsetVariable	o3339
+include/installer/class.smileinstaller.variable.php	csmileinstaller_variable	o11	msetVariable	o83	munsetVariable	o2518
 include/extensions/class.extensions.values._.php	cextensions_values	o13	m_redirectTo	o78
 include/extensions/class.extensions.checks._.php	cextensions_checks	o13	m_none	o65	m_notNull	o238	m_newPasswordcheck	o578	m_writeToFile	o891
-include/class.configparser.php	cconfigparser	o11	msetConfig	o38	mloadConfig	o559	msetInstallerinfos	o1062	msetPageinfos	o2120	msetPageactions	o2468	msetPagevariables	o2969
+include/class.configparser.php	cconfigparser	o11	msetConfig	o38	mloadConfig	o673	msetInstallerinfos	o1176	msetPageinfos	o2234	msetPageactions	o2761	msetPagevariables	o3262
 include/extensions/class.extensions.values.file.php	cextensions_values_file	o13	m_value_rootdir	o81	m_unpackScript	o246	mpc_mkdir_parents	o2019
+setforsmarttemplate.php
 include/extensions/class.extensions.checks.finish.php	cextensions_checks_finish	o13	m_createDirectory	o87
-include/extensions/class.extensions.checks.form.php	cextensions_checks_form	o13	m_string	o85	m_checkFormspecific	o377	m__checkFormSelect	o1154	m__checkFormCheckbox	o2027	m__checkFormInput	o2355	m__checkFormPassword	o2661
+include/extensions/class.extensions.checks.form.php	cextensions_checks_form	o13	m_string	o85	m_checkFormspecific	o377	m__checkFormSelect	o1154	m__checkFormCheckbox	o2013	m__checkFormInput	o2341	m__checkFormPassword	o2647
 include/installer/class.smileinstaller.execute.php	csmileinstaller_execute	o11	mexecute	o71	mexecuteEnvironment	o411	mexecutePageenvironment	o746	mexecuteFinishenvironment	o1094
-index.php	g$originalEh	o349	g$catchedErrors	o452	fonError	o651	g$catchedErrors	o747	fgenTemplatedir	o1619	fsetTemplatevariables	o1780	g$_CONFIG	o1818	fstripPostvariables	o2142	g$_POST	o2178	fremoveTemplatedir	o2433	g$install	o3919	g$content	o3960	g$install	o3971	g$_top	o3998	g$tpl	o4009	g$tpl	o4075	g$catchedErrors	o4129	g$content	o4163	g$debug	o4185	g$tpl	o4195	g$_top	o4221	g$content	o4272	g$result	o4282	g$content	o4301	g$result	o4344	g$result	o4376	g$debug	o4395	g$content	o4407	g$content	o4436	g$content	o4505
+index.php	g$catchedErrors	o455	fonError	o654	g$catchedErrors	o750	fgenTemplatedir	o1622	fsetTemplatevariables	o1783	g$_CONFIG	o1821	fstripPostvariables	o2145	g$_POST	o2181	fremoveTemplatedir	o2436	g$install	o3922	g$content	o3963	g$install	o3974	g$_top	o4001	g$tpl	o4012	g$tpl	o4078	g$catchedErrors	o4132	g$content	o4166	g$debug	o4188	g$tpl	o4198	g$_top	o4224	g$content	o4275	g$result	o4285	g$content	o4304	g$result	o4347	g$result	o4379	g$debug	o4398	g$content	o4410	g$content	o4439	g$content	o4508
 include/extensions/class.extensions.values.form.php	cextensions_values_form	o13
 include/extensions/class.extensions.values.finish.php	cextensions_values_finish	o13
 include/extensions/class.extensions.values.db.php	cextensions_values_db	o13	m_getTables	o76	m_writesql	o594
 include/extensions/class.extensions.checks.db.php	cextensions_checks_db	o13	m_checkConnection	o76
-include/class.smileinstaller.php	cinstaller	o11	kinstaller	o67	mgo	o2830	minitializeExtension	o3325	msetPages	o3657	msetPageAfter	o4403	munsetPage	o5141	mcheckFinishpage	o5346	msetForm	o5894	mparseItem	o9209	mcheckExplicitPage	o10925	msetForSmarttemplate	o12369	msetDefaultValue	o15762	msetAnyValue	o16337	mdoFinish	o17122	m_setError	o17971
 installer/sample/index.php	csample	o13	mfinish	o57
+include/class.smileinstaller.php	cinstaller	o11	kinstaller	o67	mgo	o2830	minitializeExtension	o5233	msetPages	o5565	msetPageAfter	o6311	munsetPage	o7035	mcheckFinishpage	o7240	msetForm	o7788	mparseItem	o11103	mcheckExplicitPage	o12705	mdoFinish	o14149	m_setError	o14998
 include/installer/class.smileinstaller.language.php	csmileinstaller_language	o13	mloadLanguageitems	o84	mcheckLanguagepage	o636	mparseLanguagefile	o1320	mlang	o1892
 include/extensions/class.extensions.checks.file.php	cextensions_checks_file	o13	m_checkInstalldir	o81

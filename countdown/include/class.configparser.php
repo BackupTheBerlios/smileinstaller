@@ -4,15 +4,19 @@
 		{
 			$settings		= $this->loadConfig ();
 			$this->setInstallerinfos ( $settings );
-			$pagenum	= 1;
+			$pagenum	= 0;
 			foreach ( $settings['root']['pages']['page'] as $page )
 			{
 				$this->setPageinfos ( $pagenum, $page );
-				$this->setPageactions ( $pagenum, $page['check'] );
-				$this->setPagevariables ( $pagenum, $page['variable'] );
-				if ( $this->config['system']['totalPages'] < $pagenum )
+				if ( $this->config['system']['pageerror'] == -1 )
 				{
-					$this->config['system']['totalPages']	= $pagenum;
+					$this->setPageactions ( $pagenum, $page['check'] );
+					$this->setPagevariables ( $pagenum, $page['variable'] );
+					if ( $this->config['system']['totalPages'] < $pagenum )
+					{
+						$this->config['system']['totalPages']	= $pagenum;
+					}
+					$this->setPageAfter ( $pagenum );
 				}
 				$pagenum++;
 			}
@@ -72,6 +76,12 @@
 				'pagename'		=> $this->lang ( $settings['name'] ),
 				'pagedesc'		=> $this->lang ( $settings['desc'] ),
 			);
+			$this->config['system']['smarttemplate']['allPages'][$pagenum]		= array
+			(
+				'info'		=> $pagedata['info'],
+				'pagenum'	=> $pagenum,
+				'isCurrentPage'	=> 0,
+			);
 		}
 		function setPageactions ( $pagenum, $settings )
 		{
@@ -94,13 +104,14 @@
 		}
 		function setPagevariables ( $pagenum, $settings )
 		{
-			$varcount = 1;
 			if ( isset ( $settings['name'] ) )
 			{
 				$settings = array ( $settings );
 			}
 			foreach ( $settings as $variable )
 			{
+				$varcount		= sizeof ( $this->config['pages'][$pagenum]['data'] );
+				echo $varcount;
 				$required		= $variable['required'];
 				$position		= $varcount;
 				$canRecheck		= $variable['recheckable'];
@@ -108,6 +119,12 @@
 				$varname		= $variable['name'];
 				$htmlname		= $variable['htmlname'];
 				$form			= $variable['formtype'];
+				if ( isset ( $_POST[$varname] ) )
+				{
+					$uservalue	= $_POST[$varname];
+				} else {
+					$uservalue	= false;
+				}
 				$defaultvalue	= $variable['defaultvalue'];
 				if ( !isset ( $this->config['count'][$pagenum]['variables'] ) )
 					$this->config['count'][$pagenum]['variables']	= false;
@@ -115,29 +132,45 @@
 				{
 					$this->config['count'][$pagenum]['variables']	= $position;
 				}
-
+				$code		= array (
+					'code'		=> "\$return = \$this->config['extension']->",
+					'var'		=> array (
+						'pagenum'	=> $pagenum,
+						'varnum'	=> $varnum
+					)
+				);			
+				$tempdefaultvalue	= $this->parseItem ( $defaultvalue, false, $code );
+				$defaultform	= $this->genForm ( $varname, $form, $tempdefaultvalue, false );
 				$this->config['pages'][$pagenum]['data'][$position]		= array (
-					'varname'		=> $varname,
 					'htmlname'		=> $this->lang ( $htmlname ),
-					'valueRequired'	=> $required,
-					'canRecheck'	=> $canRecheck,
 					'form'			=> strtolower ( $form ),
 					'newline'		=> $newline,
-					'defaultvalue'	=> $defaultvalue,
-					'successfulSet'	=> 0,
-					'installerlanguage'	=> '',
+					'form'			=> $form,
 				);
-				unset ( $check );
 				if ( isset ( $variable['check']['required'] ) ) {
 					$variable['check']	= array ( $variable['check'] );
 				}
-				$this->config['pages'][$pagenum]['data'][$position]['valuecheck']	= $variable['check'];
-				$this->config['pagevariables'][$varname]		= array (
-					'pagenum'		=> $pagenum,
-					'varnum'		=> $varcount
+				if ( $_POST[$varname] )
+				{
+					if ( $this->checkVariable ( $pagenum, $varcount, $variable['check'], $_POST[$varname] ) )
+					{
+						$form		= $this->genForm ( $varname, $form, $tempdefaultvalue, $_POST[$varname] );
+					} else {
+						$form		= $defaultform;
+					}
+				} else {
+					echo "IN";
+					$this->setErrorpage ( $pagenum );
+					$form		= $defaultform;
+				}
+				$this->config['pages'][$pagenum]['data'][$position]		= array (
+					'htmlname'		=> $this->lang ( $htmlname ),
+					'form'			=> strtolower ( $form ),
+					'newline'		=> $newline,
+					'form'			=> $form,
 				);
-				$varcount++;
 			}
+			$this->config['system']['smarttemplate']['allPages'][$pagenum]['data']	= $this->config['pages'][$pagenum]['data']; 
 		}
 	}
 ?>

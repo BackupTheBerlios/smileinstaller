@@ -1,78 +1,56 @@
 <?
 	class smileinstaller_variable extends smileinstaller_language
 	{
-		function setVariable ( $pagenum, $varnum )
+		function checkVariable ( $pagenum, $varnum, $checks, $selectedValue )
 		{
-			if ( !isset ( $this->config['pages'][$pagenum]['data'][$varnum]['defaultSet'] ) )
+			$return	= true;
+			foreach ( $checks as $check )
 			{
-				$this->setDefaultValue ( $pagenum, $varnum );
-				$this->config['pages'][$pagenum]['data'][$varnum]['defaultSet']	= true;
-			}
-			$var						= $this->config['pages'][$pagenum]['data'][$varnum];
-			$postSet	= false;
-			$valueIsSet		= false;
-			if ( $var['canRecheck'] == 0 && isset ( $this->config['system']['setVar'][$var['varname']] ) )
-			{
-				$uneditable	= true;
-				$value		= $this->config['system']['setVar'][$var['varname']];
-				$valueIsSet		= true;
-				$postSet	= true;
-			} else {
-				$uneditable	= false;
-				if ( isset ( $_POST[$var['varname']] ) )
+				$value		= "";
+				$evalcode	= "\$return = \$this->config['extension'] -> " . $this->parseItem ( $check['action'] );
+				$return		= $this->executeEnvironment ( $evalcode, $pagenum, $varnum );
+				$value		= $return['value'];
+				$ok			= $return['isset'];
+				if ( !$ok )
 				{
-					if ( isset ( $this->config['pages'][$pagenum]['data'][$varnum]['valuecheck'] )
-					&& is_array ( $this->config['pages'][$pagenum]['data'][$varnum]['valuecheck'] )
-					)
-					{
-						$valueIsSet		= false;
-						foreach ( $this->config['pages'][$pagenum]['data'][$varnum]['valuecheck'] as $check )
-						{
-							$value		= "";
-							$evalcode	= "\$return = \$this->config['extension'] -> " . $this->parseItem ( $check['action'] );
-							$return		= $this->executeEnvironment ( $evalcode, $pagenum, $varnum );
-							$value		= $return['value'];
-							$valueIsSet	= $return['isset'];
-#							} elseif ( substr ( $check['action'], 0, 1 ) === "=" )
-#							{
-#								if ( $_POST[$var['varname']] == substr ( $check['action'], 1 ) )
-#								{
-#									$value	= $this->lang ( substr ( $check['action'], 1 ) );
-#									$valueIsSet	= true;
-#								}
-#							} elseif ( substr ( $check['action'], 0, 1 ) === "." ) {
-#								$data	= trim ( implode ( "", file ( $this->config['system']['directories']['scriptdir'] . '/files/' .substr ( $check['action'], 1 ) ) ) );
-#								if ( $_POST[$var['varname']] == $data )
-#								{
-#									$value	= $data;
-#									$valueIsSet	= true;
-#								}
-#							} else {
-#								die ( 'No parseable value ' . $check['action'] );
-#							}
-							if ( $valueIsSet == false )
-							{
-								$this->_setError ( $pagenum, $varnum, $check['errormessage'] );
-								if ( $check['required'] == 1 )
-								{
-									break;
-								}
-							}
-						}
-					} else {
-						$value	= $_POST[$var['varname']];
-						$valueIsSet	= true;
-					}
-				} else {
-					$value	= "";
-					$valueIsSet	= false;
+					$return		= false;
+					$this->_setError ( $pagenum, $varnum, $check['errormessage'] );
+					break;
 				}
 			}
-			if ( $var['valueRequired'] == 0 )
+			return $return;
+		}
+		function setVariable ( $pagenum, $varnum )
+		{
+			$var		= $this->config['pages'][$pagenum]['data'][$varnum];
+			if ( isset ( $_POST[$var['varname']] ) )
 			{
-				$valueIsSet	= true;
+				if ( isset ( $this->config['pages'][$pagenum]['data'][$varnum]['valuecheck'] )
+				&& is_array ( $this->config['pages'][$pagenum]['data'][$varnum]['valuecheck'] )
+				)
+				{
+					foreach ( $this->config['pages'][$pagenum]['data'][$varnum]['valuecheck'] as $check )
+					{
+						$value		= "";
+						$evalcode	= "\$return = \$this->config['extension'] -> " . $this->parseItem ( $check['action'] );
+						$return		= $this->executeEnvironment ( $evalcode, $pagenum, $varnum );
+						$value		= $return['value'];
+						$ok			= $return['isset'];
+						if ( !$ok )
+						{
+							$this->_setError ( $pagenum, $varnum, $check['errormessage'] );
+							break;
+						}
+					}
+				} else {
+					$value	= $_POST[$var['varname']];
+					$ok	= true;
+				}
+			} else {
+				$value	= $this->config['pages'][$pagenum]['data'][$varnum]['defaultSet']['defaultvalue'];
+				$ok		= false;
 			}
-			if ( !$valueIsSet )
+			if ( !$ok )
 			{
 				$this->config['pages'][$pagenum]['data'][$varnum]['error']	= 1;
 				if ( $this->config['system']['pageerror'] == 0 
@@ -82,9 +60,9 @@
 				}
 			}
 			
-			$form		= $this->setForm ( $var, $value, $valueIsSet, $uneditable );
+			$form		= $this->setForm ( $var, $value, $ok );
 			$this->config['pages'][$pagenum]['data'][$varnum]['editableValue']	= $form;
-			if ( $valueIsSet )
+			if ( $ok )
 			{
 				$this->config['pages'][$pagenum]['data'][$varnum]['uservalue'] = $value;
 				$this->config['hiddenValue'][$var['varname']]		= array (
