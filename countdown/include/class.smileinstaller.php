@@ -459,7 +459,7 @@ class installer extends smileinstaller_variable
 		{
 			foreach ( $functions as $function )
 			{
-				echo "IN";
+				#echo "IN";
 			}
 		} else {
 			$this->_setError ( 0, 0, 'setInstallerdataOnFinishActionCheck' );
@@ -471,7 +471,7 @@ class installer extends smileinstaller_variable
 		{
 			foreach ( $functions as $function )
 			{
-				echo "IN";
+				#echo "IN";
 			}
 		} else {
 			$this->_setError ( 0, 0, 'setInstallerdataOnFinishActionValue' );
@@ -483,7 +483,7 @@ class installer extends smileinstaller_variable
 		{
 			foreach ( $functions as $function )
 			{
-				echo "IN";
+				#echo "IN";
 			}
 		} else {
 			$this->_setError ( 0, 0, 'setInstallerdataOnFinishActionOutput' );

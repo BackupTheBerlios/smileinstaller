@@ -2,16 +2,25 @@ table.contenttable, table.tabs_top {
 	background-color:		#000000;
 	width:					90%;
 }
-caption.title {
-	font-size:				15px;
+table.gfxborder {
+	padding:				2px;
+	text-align:				2px;
+	min-height:				100%;
+	background-color:		#c6c6c6;
+	border-right:			#000000 2px solid;
+	border-bottom:			#000000 2px solid;
+	border-left:			#FFFFFF 2px solid;
+	border-top:				#FFFFFF 2px solid;
+}
+td.content_title {
+	font-size:				20px;
 	color:					#000000;
-	background:				#ffaa3b;
+	background:				#c6c6c6;
 	white-space:			nowrap;
-	vertical-align:			middle;
-	text-align:				center;
+	white-space:			nowrap;
+	text-align:				right;
 	font-weight:			bold;
 	padding:				3px;
-	border-bottom:			#000000 1px solid;
 }
 td.tabs_top {
 	font-size:				20px;
@@ -28,7 +37,7 @@ td.tabs_top {
 td.empty {
 	font-size:				1px;
 	color:					#000000;
-	background:				#ffaa3b;
+	background:				#c6c6c6;
 	white-space:			nowrap;
 	height:					10px;
 	max-height:				10px;
@@ -39,7 +48,7 @@ td.contenttable {
 	font-size:				14px;
 	color:					#FFFFFF;
 	white-space:			nowrap;
-	background:				#ffbb3b;
+	background:				#c6c6c6;
 	white-space:			nowrap;
 	BORDER-TOP:				#000000 3px solid; 
 	BORDER-BOTTOM:			#000000 3px solid;

@@ -27,24 +27,19 @@
 		</script>
 	</head>
 	<body bgcolor="#FFFFFF" text="#000000" link="#FF9966" vlink="#FF9966" alink="#FFCC99">
-<!--			<table cellspacing="0" cellpadding="0" border="0" style="width: 100%;height: 95%">
+		<br>
+		<div align="center">
+			<table cellspacing="0" cellpadding="0" border="0" class="contenttable">
+				<caption colspan="2" class="title">{htmlentities:var.installer.title}</caption>
 				<tr>
-					<td style="width:10px;height:9px;max-height:10px; background-image:url('./installer/{var.installer.name}/tpl/images/border_top_left.png');background-repeat: no-repeat;font-size:1px;">&nbsp;</td>
-					<td style="width:100%;height:9px;max-height:10px; background-image:url('./installer/{var.installer.name}/tpl/images/border_top.png');background-repeat:repeat-x;font-size:1px;">&nbsp;</td>
-					<td style="width:10px;height:9px;max-height:10px; background-image:url('./installer/{var.installer.name}/tpl/images/border_top_right.png');background-repeat: no-repeat;font-size:1px;">&nbsp;</td>
+					<td colspan="2" class="empty">
+						&nbsp;
+					</td>
 				</tr>
 				<tr>
-					<td style="width:10px;min-width:10px;height:90%;background-image:url('./installer/{var.installer.name}/tpl/images/border_left.png');background-repeat:repeat-y;">&nbsp;</td>
-					<td style="width:100%;height:100%;">
-	-->					
-			<table cellspacing="0" cellpadding="0" border="0" class="gfxborder" width="100%" height="100%">
-				<tr>
-					<td colspan="2" class="content_title">{htmlentities:var.installer.title}</td>
-				</tr>
-				<tr>
-					<td colspan="2">
+					<td colspan="2" class="tabs_top">
 						<div align="center">
-							<table cellspacing="1" cellpadding="2" border="0">
+							<table cellspacing="1" cellpadding="2" border="0" class="titletable">
 								<tr valign="top" >
 									<!-- BEGIN var.allPages -->
 									<form action="index.php" name="gotopage2_{ROWCNT}" method="post">
@@ -81,7 +76,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="tabhead">{htmlentities:var.installer.progress}&nbps;</td>
+					<td class="tabhead">&nbsp;</td>
 					<td class="contenttable" rowspan="{calc:var.totalPages,3}">
 						<div align="center">
 							<!-- CONTENT -->
@@ -196,16 +191,7 @@
 					</td>
 				</tr>
 			</table>
-<!--					</td>
-					<td style="width:10px;min-width:10px;height:90%;background-image:url('./installer/{var.installer.name}/tpl/images/border_right.png');background-repeat:repeat-y;">&nbsp;</td>
-				</tr>
-				<tr class="gfxborder">
-					<td style="width:10px;height:10px;"><img src="./installer/{var.installer.name}/tpl/images/border_bottom_left.png"></td>
-					<td style="width:100%;height:10px;background-image:url('./installer/{var.installer.name}/tpl/images/border_bottom.png');background-repeat:repeat-x;"></td>
-					<td style="width:10px;height:10px;"><img src="./installer/{var.installer.name}/tpl/images/border_bottom_right.png"></td>
-				</tr>
-			</table>
-			-->
+		</div>
 	</body>
 </html>
   
