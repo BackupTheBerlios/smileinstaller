@@ -2,19 +2,16 @@
 
 	class extensions_checks_finish extends extensions_checks_file {
 		
-		function _createDirectory ( $pagenum, $varnum, $path, $newDir, $mode )
+		function _createDirectory ( $pagenum, $varnum, $path, $mode )
 		{
 			$return		= array (
-				'value'		=> '',
+				'value'		=> "$path/$newDir",
 				'isset'		=> false
 			);
-			if ( is_dir ( $path ) )
+			@mkdir ( "$path/$newDir", $mode );
+			if ( is_dir ( "$path/$newDir" ) )
 			{
-				if ( @mkdir ( "$path/$newDir", $mode ) 
-				|| is_dir ( "$path/$newDir" ) )
-				{
-					$return['isset']		= true;
-				}
+				$return['isset']		= true;
 			}
 			return $return;
 		}

@@ -342,7 +342,7 @@
 					'pagenum'	=> 0,
 					'varnum'	=> 0
 				)
-			);			
+			);	
 			$return		= $this->parseItem ( $redirectTo, false, $code );
 			$this->config['installer']['info']['redirectTo']	= $this->config['system']['smarttemplate']['installer']['redirectTo']		= $return;
 		}

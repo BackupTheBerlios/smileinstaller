@@ -56,7 +56,6 @@
 			);
 			if ( $requireValue ) 
 			{
-				
 				if ( $_POST[$var['varname']] == $requireValue )
 				{
 					$return = array ( 

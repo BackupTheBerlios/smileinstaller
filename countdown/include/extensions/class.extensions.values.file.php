@@ -16,7 +16,6 @@
 				'isset'		=> true
 			);
 		}
-		
 		function _unpackScript ( $pagenum, $varnum, $path )
 		{
 			$return['isset']		= true;
@@ -70,7 +69,6 @@
 			}
 			return $return;
 		}
-	
 		function pc_mkdir_parents($d,$umask = 0777) {
 		    $dirs = array($d);
 		    $d = dirname($d);
@@ -94,17 +92,20 @@
 		    }
 		    return true;
 		}
-
 		function _getDemopaths ( $pagenum, $varnum )
 		{
 			$return		= array (
 				'value'		=> '',
 				'isset'		=> false
 			);
-			$roothpath		= str_replace ( "\\", "/", ROOTPATH . '/' );
+			$rootpath		= str_replace ( "\\", "/", ROOTPATH . '/' );
+			if ( $newRootpath = strstr ( $rootpath, ":" ) )
+			{
+				$rootpath	= $this->lang ( substr ( $newRootpath, 1 ) );
+			}
 			for ( $i = 1; $i <= 10; $i++ )
 			{
-				$return['value']		.= "," . $roothpath . $i;
+				$return['value']		.= "," . $rootpath . $i;
 			}
 			$return['value']	= substr ( $return['value'], 1 );
 			return $return;

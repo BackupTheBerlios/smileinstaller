@@ -5,7 +5,7 @@
 		<finishedstring>Installation complete</finishedstring>
 		<redirectTo>!_redirectTo:$smic_pma_absolute_uri,/index.php</redirectTo>
 		<finish>
-			<action>	!_createDirectory:$path</action>
+			<action>	!_createDirectory:$path,0777</action>
 			<required>	1</required>
 			<errormessage>
 				[Could not create directory]
