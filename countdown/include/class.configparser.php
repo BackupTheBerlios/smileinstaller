@@ -86,7 +86,7 @@
 				{
 					$this->config['pages'][$pagenum]['action'][]		= array (
 						'required'		=> $check['required'],
-						'action'		=> $this->parseValue ( $check['action'] ),
+						'action'		=> $this->parseItem ( $check['action'] ),
 						'errormessage'	=> $check['errormessage'],
 					);
 				}

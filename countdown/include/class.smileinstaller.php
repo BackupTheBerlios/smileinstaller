@@ -1,5 +1,5 @@
 <?
-	class installer extends configparser {
+	class installer extends smileinstaller_variable {
 		function installer ( $installer, $isExtension = false )
 		{ 
 			$this->config			= array (
@@ -82,31 +82,13 @@
 			$this->setConfig ();
 			$this->setPages ();
 			$abortFinish	= $this->checkExplicitPage ();
-			if ( $this->checkFinishedPage ( $abortFinish ) == 1 )
+			if ( $this->checkFinishPage ( $abortFinish ) == 1 )
 			{
 				$this->doFinish ();
 			}
 			$this->setForSmarttemplate ();
 			$return		= $this->tpl->result ();
 			return $return;
-		}
-		function loadLanguageitems ()
-		{
-			$languageitems		= file ( $this->config['files']['languageitems'] );
-			foreach ( $languageitems as $languageitem ) {
-				$this->config['languageitems'][]	= array ( 'itemname' => trim ( $languageitem ) );
-			}
-			if ( isset ( $_POST['setVar'] ) )
-			{
-				$setVar		= unserialize ( urldecode ( $_POST['setVar'] ) );
-				if ( is_array ( $setVar ) )
-				{
-					foreach ( $setVar as $varname => $varvalue )
-					{
-						$this->config['system']['setVar'][$varname]		= $varvalue;
-					}
-				}
-			}
 		}
 		function initializeExtension ()
 		{
@@ -174,7 +156,7 @@
 				$return		= false;
 			}
 		}
-		function checkFinishedPage ( $abortFinish )
+		function checkFinishpage ( $abortFinish )
 		{
 			$this->config['system']['dofinish']		= 0;					
 			if ( $this->config['system']['pageerror'] == 0 )
@@ -190,106 +172,6 @@
 			}
 			return $this->config['system']['dofinish'];
 		}
-		function setVariable ( $pagenum, $varnum )
-		{
-			$this->setDefaultValue ( $pagenum, $varnum );
-			$var						= $this->config['pages'][$pagenum]['data'][$varnum];
-			$postSet	= false;
-			$valueIsSet		= false;
-			if ( $var['canRecheck'] == 0 && isset ( $this->config['system']['setVar'][$var['varname']] ) )
-			{
-				$uneditable	= true;
-				$value		= $this->config['system']['setVar'][$var['varname']];
-				$valueIsSet		= true;
-				$postSet	= true;
-			} else {
-				$uneditable	= false;
-				if ( isset ( $_POST[$var['varname']] ) )
-				{
-					if ( isset ( $this->config['pages'][$pagenum]['data'][$varnum]['valuecheck'] )
-					&& is_array ( $this->config['pages'][$pagenum]['data'][$varnum]['valuecheck'] )
-					)
-					{
-						$valueIsSet		= false;
-						foreach ( $this->config['pages'][$pagenum]['data'][$varnum]['valuecheck'] as $check )
-						{
-							$value		= "";
-							if ( substr ( $check['action'], 0, 1 ) == "!" )
-							{
-								$evalcode		= "\$return = \$this->config['extension'] -> " . $this->parseValueAsFunction ( substr ( $check['action'], 1 ) );
-								$return		= $this->executeEnvironment ( $evalcode, $pagenum, $varnum );
-								$value		= $return['value'];
-								$valueIsSet		= $return['isset'];
-							} elseif ( substr ( $check['action'], 0, 1 ) === "=" )
-							{
-								if ( $_POST[$var['varname']] == substr ( $check['action'], 1 ) )
-								{
-									$value	= $this->lang ( substr ( $check['action'], 1 ) );
-									$valueIsSet	= true;
-								}
-							} elseif ( substr ( $check['action'], 0, 1 ) === "." ) {
-								$data	= trim ( implode ( "", file ( $this->config['system']['directories']['scriptdir'] . '/files/' .substr ( $check['action'], 1 ) ) ) );
-								if ( $_POST[$var['varname']] == $data )
-								{
-									$value	= $data;
-									$valueIsSet	= true;
-								}
-							} else {
-								die ( 'No parseable value ' . $check['action'] );
-							}
-							if ( $valueIsSet == false )
-							{
-								$this->_setError ( $pagenum, $varnum, $check['errormessage'] );
-								if ( $check['required'] == 1 )
-								{
-									break;
-								}
-							}
-						}
-					} else {
-						$value	= $_POST[$var['varname']];
-						$valueIsSet	= true;
-					}
-				} else {
-					$value	= "";
-					$valueIsSet	= false;
-				}
-			}
-			if ( $var['valueRequired'] == 0 )
-			{
-				$valueIsSet	= true;
-			}
-			if ( !$valueIsSet )
-			{
-				$this->config['pages'][$pagenum]['data'][$varnum]['error']	= 1;
-				if ( $this->config['system']['pageerror'] == 0 
-				|| $this->config['system']['pageerror'] > $pagenum )
-				{
-					$this->config['system']['pageerror']	= $pagenum;
-				}
-			}
-			
-			$form		= $this->setForm ( $var, $value, $valueIsSet, $uneditable );
-			$this->config['pages'][$pagenum]['data'][$varnum]['editableValue']	= $form;
-			if ( $valueIsSet )
-			{
-				$this->config['pages'][$pagenum]['data'][$varnum]['uservalue'] = $value;
-				$this->config['hiddenValue'][$var['varname']]		= array (
-					'varname'		=> $var['varname'],
-					'varvalue'		=> $value
-				);
-				$this->config['system']['setVar'][$var['varname']]	= $value;
-			}
-		}
-		function unsetVariable ( $pagenum, $varnum )
-		{
-			$var		= $this->config['pages'][$pagenum]['data'][$varnum];
-			unset ( $this->config['hiddenValue'][$var['varname']] );
-			unset ( $this->config['system']['setVar'][$var['varname']] );
-			$var		= $this->config['pages'][$pagenum]['data'][$varnum];
-			$form		= $this->setForm ( $var, "", false, false );
-			$this->config['pages'][$pagenum]['data'][$varnum]['editableValue']	= $form;
-		}
 		function setForm ( $var, $value, $isset, $uneditable )
 		{
 			if ( $uneditable )
@@ -298,20 +180,21 @@
 			} else {
 				$disabled	= "";
 			}
+			$defaultvalue	= $this->lang ( $var['defaultvalue'] );
 			switch ( strtolower ( $var['form'] ) )
 			{
 				case 'box' :
 				{
 					$form	= '<textarea readonly style="width: 100%; height: 200px">' .
-						$this->lang ( $var['defaultvalue'] ) .
+						$defaultvalue .
 						'</textarea>';
-					$this->config['executeEnvironment'][$var['varname']]	= $this->lang ( $var['defaultvalue'] );
+					$this->config['executeEnvironment'][$var['varname']]	= $defaultvalue;
 					break;
 				}
 				case 'html' :
 				{
-					$form	= $this->lang ( $var['defaultvalue'] );
-					$this->config['executeEnvironment'][$var['varname']]	= $this->lang ( $var['defaultvalue'] );
+					$form	= $defaultvalue;
+					$this->config['executeEnvironment'][$var['varname']]	= $defaultvalue;
 					break;
 				}
 				case 'input' :
@@ -322,7 +205,7 @@
 					{
 						$form	.= $executeEnvironmentvalue	= $value;
 					} else {
-						$form	.= $executeEnvironmentvalue	= $this->lang ( $var['defaultvalue'] );
+						$form	.= $executeEnvironmentvalue	= $defaultvalue;
 					}
 					$form	.= '">';
 					$this->config['executeEnvironment'][$var['varname']]	= $executeEnvironmentvalue;
@@ -336,7 +219,7 @@
 					{
 						$form	.= $executeEnvironmentvalue	= $value;
 					} else {
-						$form	.= $executeEnvironmentvalue	= $this->lang ( $var['defaultvalue'] );
+						$form	.= $executeEnvironmentvalue	= $defaultvalue;
 					}
 					$form	.= '">';
 					$this->config['executeEnvironment'][$var['varname']]	= $executeEnvironmentvalue;
@@ -350,7 +233,7 @@
 					{
 						$form	.= $executeEnvironmentvalue	= $value;
 					} else {
-						$form	.= $executeEnvironmentvalue	= $this->lang ( $var['defaultvalue'] );
+						$form	.= $executeEnvironmentvalue	= $defaultvalue;
 					}
 					$form	.= '</textarea>';
 					$this->config['executeEnvironment'][$var['varname']]	= $executeEnvironmentvalue;
@@ -391,8 +274,8 @@
 						$form	= '<input type="checkbox" name="' . $var['varname'] . '" CHECKED value="' . $value . '">';
 						$this->config['executeEnvironment'][$var['varname']]	= $value;
 					} else {
-						$form	= '<input type="checkbox" name="' . $var['varname'] . '" value="' . $this->lang ( $var['defaultvalue'] ) . '">';
-						$this->config['executeEnvironment'][$var['varname']]	= $this->lang ( $var['defaultvalue'] );
+						$form	= '<input type="checkbox" name="' . $var['varname'] . '" value="' . $defaultvalue . '">';
+						$this->config['executeEnvironment'][$var['varname']]	= $defaultvalue;
 					}
 					break;
 				}
@@ -403,76 +286,71 @@
 			}
 			return $form;
 		}
-		function parseValueAsFunction ( $check )
+		function parseItem ( $value, $getType = false, $executecode = false )
 		{
-			$return		= "";
-			if ( $check > "" ) 
+			echo "Item to parse :<b>" . htmlentities ( $value ) . "</b><br>";
+			$itemtype		= substr ( $value, 0, 1 );
+			$item			= substr ( $value, 1 );
+			switch ( $itemtype )
 			{
-				if ( $allFunctionoptions = strstr ( $check, ':' ) ) 
+				case '='	:
 				{
-					$allFunctionoptions		= substr ( $allFunctionoptions, 1 );
-					$functionname			= str_replace ( ":$allFunctionoptions", '', $check );
-					$options				= explode ( ',', $allFunctionoptions );
-					if ( is_array ( $options ) ) 
+					$return		= $item;
+					break;
+				}
+				case '!'	:
+				{
+					if ( $allFunctionoptions = strstr ( $item, ':' ) ) 
 					{
-						foreach ( $options as $key => $option )
+						$allFunctionoptions		= substr ( $allFunctionoptions, 1 );
+						$functionname			= str_replace ( ":$allFunctionoptions", '', $item );
+						$options				= explode ( ',', $allFunctionoptions );
+						if ( is_array ( $options ) ) 
 						{
-							$options[$key]	= $this->lang ( $option );							
+							foreach ( $options as $key => $option )
+							{
+								$options[$key]	= $this->lang ( $option );							
+							}
+							$options			= "\"" . implode ( "\", \"", $options ) . "\"";
 						}
-						$options			= "\"" . implode ( "\", \"", $options ) . "\"";
+						$return					= "$functionname ( \$pagenum, \$varnum, $options );";
+					} else {
+						$return					= "$item ( \$pagenum, \$varnum );";
 					}
-					$return					= "$functionname ( \$pagenum, \$varnum, $options );";
-				} else {
-					$return					= "$check ( \$pagenum, \$varnum );";
-				}
-			}
-			return $return;
-		}
-		function parseFinishaction ( $action )
-		{
-			$return		= "";
-			if ( $action > "" ) 
-			{
-				if ( $allFunctionoptions = strstr ( $action, ':' ) ) 
-				{
-					$allFunctionoptions		= substr ( $allFunctionoptions, 1 );
-					$functionname			= str_replace ( ":$allFunctionoptions", '', $action );
-					$options				= explode ( ',', $allFunctionoptions );
-					if ( is_array ( $options ) ) 
+					if ( $executecode )
 					{
-						$options			= "\"" . implode ( "\", \"", $options ) . "\"";
+						foreach ( $executecode['var'] as $varname => $varvalue )
+						{
+							$$varname	= $varvalue;
+						}
+						$return	= $this->execute ( $executecode['code'] . $return, $pagenum, $varnum );
 					}
-					$return					= "$functionname ( $options );";
-				} else {
-					$return					= "$action ();";
-				}
-			}
-			return $return;
-		}
-		function parseValue ( $value )
-		{
-			switch ( substr ( $value, 0, 1 ) )
-			{
-				case "="	:
-				{
-					$return		= substr ( $value, 1 );
 					break;
 				}
-				case "!"	:
+				case '.'	:
 				{
-					$return		= '!' . $this->parseValueAsFunction ( substr ( $value, 1 ) );
-					break;
-				}
-				case "."	:
-				{
-					$return		= implode ( "", file ( $this->config['system']['directories']['scriptdir'] . '/files/' . substr ( $value, 1 ) ) );
+					$return		= implode 
+					(
+						"", 
+						file
+						(
+							$this->config['system']['directories']['scriptdir'] . 
+							'/externals/' . $item
+						)
+					);
 					break;
 				}
 				default		:
 				{
-					die ( 'Kein erlaubter Wert ' . $value );
+					$itemtype		= "";
+					$item			= $value;
 				}
 			}
+			if ( $getType )
+			{
+				$return		= $itemtype . $return;
+			}
+			echo htmlentities ( $return ) . "<br>";
 			return $return;
 		}
 		function checkExplicitPage ()
@@ -508,41 +386,6 @@
 				}
 			}
 			return $return;
-		}
-		function checkLanguagepage ()
-		{
-			$this->config['languageSet']		= false;
-			if ( !isset ( $_POST['_installerlanguage'] ) )
-				return false;
-			if ( !$this->parseLanguagefile ( $_POST['_installerlanguage'] ) )
-				return false;
-			$this->config['system']['installerlanguage']		= $_POST['_installerlanguage'];
-			$this->config['languageSet']		= true;
-			if ( !isset ( $this->config['pages'] ) )
-				return false;
-			if ( !is_array (  $this->config['pages'] ) )
-				return false;
-			foreach ( $this->config['pages'] as $pagenum => $pagedata )
-			{
-				$this->config['pages'][$pagenum]['installerlanguage']	= $this->config['system']['installerlanguage'];
-			}
-		}
-		function parseLanguagefile ( $language )
-		{
-			$return		= 0;
-			if ( is_file ( $this->config['system']['directories']['languagedir'] . '/' . $language . '.txt' ) )
-			{
-				$languagedata		= file ( $this->config['system']['directories']['languagedir'] . '/' . $language . '.txt' );
-				foreach ( $languagedata as $line )
-				{
-					if ( preg_match ( $this->config['languagelinepattern'], trim ( $line ), $result ) )
-					{
-						$this->config['language'][trim ( $result[1] )]		= trim ( $result[2] );
-					}
-				}
-				$return		= 1;
-			}
-			return 1;
 		}
 		function setForSmarttemplate ()
 		{
@@ -623,80 +466,21 @@
 			$this->tpl->assign ( 'var', $this->config['system']['smarttemplate'] );
 			
 		}
-		function executeEnvironment ( $evalcode, $pagenum, $varnum )
-		{
-			$this->evalcode		= $evalcode;
-			unset ( $evalcode );
-			foreach ( $this->config['executeEnvironment'] as $varname => $varvalue )
-			{
-				$$varname = $varvalue;
-			}
-			unset ( $varname, $varvalue );
-			eval ( $this->evalcode );
-			return $return;
-		}
-		function executePageenvironment ( $evalcode, $pagenum )
-		{
-			$this->evalcode		= $evalcode;
-			unset ( $evalcode );
-			foreach ( $this->config['executeEnvironment'] as $varname => $varvalue )
-			{
-				$$varname = $varvalue;
-			}
-			unset ( $varname, $varvalue );
-			$varnum		= 0;
-			eval ( $this->evalcode );
-			return $return;
-		}
-		function executeFinishenvironment ( $evalcode )
-		{
-			$this->evalcode		= $evalcode;
-			unset ( $evalcode );
-			foreach ( $this->config['executeEnvironment'] as $varname => $varvalue )
-			{
-				$$varname = $varvalue;
-			}
-			unset ( $varname, $varvalue );
-			$varnum		= 0;
-			eval ( $this->evalcode );
-			return $return;
-		}
 		function setDefaultValue ( $pagenum, $varnum )
 		{
 			$var		= $this->config['pages'][$pagenum]['data'][$varnum];
 			$return		= "";
-			$command	= substr ( $var['defaultvalue'], 0, 1 );
-			switch ( $command )
+			$code		= array (
+				'code'		=> "\$return = \$this->config['extension']->",
+				'var'		=> array (
+					'pagenum'	=> $pagenum,
+					'varnum'	=> $varnum
+				)
+			);			
+			$return		= $this->parseItem ( $var['defaultvalue'], false, $code );
+			if ( isset ( $return['isset'] ) )
 			{
-				case '!' :
-				{
-					$evalcode		= "\$return = \$this->config['extension']->" . $this->parseValueAsFunction ( substr ( $var['defaultvalue'], 1 ) );
-					$return	= $this->executeEnvironment ( $evalcode, $pagenum, $varnum );
-					if ( $return['isset'] )
-					{
-						$return		= $return['value'];
-					} else {
-						$return 	= '';
-					}
-					break;
-				}
-				case '=' :
-				{
-					$return	= substr ( $var['defaultvalue'], 1 );
-					break;
-				}
-				case '.' :
-				{
-					$file		= $this->config['system']['directories']['scriptdir'] . '/externals/' . substr ( $var['defaultvalue'], 1 );
-					if ( !file_exists ( $file ) )
-						die ( 'No file ' . $file );
-					$return	= trim ( implode ( "", file ( $file ) ) );
-					break;
-				}
-				default :
-				{
-					die ( 'No parseable value ' . $var['defaultvalue'] );
-				}
+				$return		= $return['value'];
 			}
 			$this->config['pages'][$pagenum]['data'][$varnum]['defaultvalue'] = $return;
 			return $return;
@@ -708,7 +492,7 @@
 				case '<' :
 				{
 					$evalcode		= "\$return = \$this->config['extension']->" . 
-						$this->parseValueAsFunction ( substr ( $value, 1 ) );
+						$this->parseItem ( substr ( $value, 1 ) );
 					$return	= $this->executeEnvironment ( $evalcode, $pagenum, $varnum );
 					break;
 				}
@@ -733,22 +517,13 @@
 			}
 			return $return;
 		}
-		function lang ( $key )
-		{
-			if ( !preg_match ( '|^\[([^\[]{0,})\]$|', trim ( $key ), $result ) )
-				return $key;
-			if ( !isset ( $this->config['language'][$result[1]] )
-				|| $this->config['language'][$result[1]] == "" )
-				return $result[1];
-			return $this->config['language'][$result[1]];
-		}
 		function doFinish ()
 		{
 			
 			foreach ( $this->config['installer']['action'] as $action )
 			{
 				$action['action']		= substr ( $action['action'], 1 );
-				$evalcode	= "\$return = \$this->config['extension']->" . $this->parseValueAsFunction ( $action['action'] );
+				$evalcode	= "\$return = \$this->config['extension']->" . $this->parseItem ( $action['action'] );
 				$return		= $this->executeFinishenvironment ( $evalcode );
 				if ( !$return['isset'] )
 				{
@@ -760,7 +535,7 @@
 			if ( $return['isset'] )
 			{
 				$action		= substr ( $this->config['installer']['info']['redirectTo'], 1 );
-				$evalcode	= "\$return = \$this->config['extension']->" . $this->parseValueAsFunction ( $action );
+				$evalcode	= "\$return = \$this->config['extension']->" . $this->parseItem ( $action );
 				$return		= $this->executeFinishenvironment ( $evalcode );
 				$this->config['installer']['info']['redirectTo']		= $return['value'];
 			}
