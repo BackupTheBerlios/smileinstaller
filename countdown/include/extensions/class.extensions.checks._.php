@@ -29,12 +29,10 @@
 				'value'		=> '',
 				'isset'		=> false
 			);
-			if ( $pass1 == $pass2 )
+			if ( $pass1 === $pass2 )
 			{
 				$return['isset']	= true;
 			}
-
-#			if ( $return == false ) $this->_setError ( $pagenum, $varnum );
 			return $return;
 		}
 		function _writeToFile ( $pagenum, $varnum, $path, $file, $allowOnlyVariables = false )
@@ -51,19 +49,16 @@
 						$allowOnlyVariables		= "+" . $allowOnlyVariables . "+";
 					}
 					fputs ( $fh, "<?php\n" );
-					foreach ( $this->config['pages'] as $page )
+					foreach ( $this->config['hiddenValue'] as $variable )
 					{
-						foreach ( $page['data'] as $variable )
+						if ( $allowOnlyVariables )
 						{
-							if ( $allowOnlyVariables )
+							if ( preg_match ( '|\+(' . $variable['varname'] . ')\+|', $allowOnlyVariables ) )
 							{
-								if ( preg_match ( '|\+(' . $variable['varname'] . ')\+|', $allowOnlyVariables ) )
-								{
-									fputs ( $fh, "$" . $variable['varname'] . " = '" . $variable['uservalue'] . "';\n" );
-								}
-							} else {
-								fputs ( $fh, "$" . $variable['varname'] . " = '" . $variable['uservalue'] . "';\n" );
+								fputs ( $fh, "$" . $variable['varname'] . " = '" . $variable['varvalue'] . "';\n" );
 							}
+						} else {
+							fputs ( $fh, "$" . $variable['varname'] . " = '" . $variable['varvalue'] . "';\n" );
 						}
 					}
 					fputs ( $fh, "?>" );

@@ -100,7 +100,7 @@
 				foreach ( $this->config['pages'][$pagenum]['action'] as $check )
 				{
 					$evalcode	= "\$return = \$this->config['extension']->" . $check['action'];
-					$return		= $this->executePageenvironment ( $evalcode, $pagenum, 0 );
+					$return		= $this->execute ( $evalcode, $pagenum, 0 );
 					if ( !$return['isset'] )
 					{
 						$this->_setError ( $pagenum, 0, $check['errormessage'] );
@@ -136,7 +136,7 @@
 				case 'html' :
 				{
 					$form	= $defaultValues;
-					$this->config['executeEnvironment'][$var['varname']]	= $defaultValues;
+					$this->config['executeEnvironment'][$formname]	= $defaultValues;
 					break;
 				}
 				case 'input' :
@@ -162,7 +162,7 @@
 						$form	.= $executeEnvironmentvalue	= $defaultValues;
 					}
 					$form	.= "\">";
-					$this->config['executeEnvironment'][$var['varname']]	= $executeEnvironmentvalue;
+					$this->config['executeEnvironment'][$formname]	= $executeEnvironmentvalue;
 					break;
 				}
 				case 'text' :
@@ -175,7 +175,7 @@
 						$form	.= $executeEnvironmentvalue	= $defaultValues;
 					}
 					$form	.= '</textarea>';
-					$this->config['executeEnvironment'][$var['varname']]	= $executeEnvironmentvalue;
+					$this->config['executeEnvironment'][$formname]	= $executeEnvironmentvalue;
 					break;
 				}
 				case 'select' :
@@ -209,7 +209,7 @@
 					if ( $selectedValue )
 					{
 						$form	= "<input type=\"checkbox\" name=\"$formname\" CHECKED value=\"$defaultValues\">";
-						$this->config['executeEnvironment'][$var['varname']]	= $selectedValue;
+						$this->config['executeEnvironment'][$formname]	= $selectedValue;
 					} else {
 						$form	= "<input type=\"checkbox\" name=\"$formname\" value=\"$defaultValues\">";
 						$this->config['executeEnvironment'][$formname]	= $defaultValues;
