@@ -14,7 +14,7 @@ td.tabhead {
 	height:					20px;
 	width:					200px;
 }
-td.tabfoot {
+td.tabfoot, div.tabfoot {
 	font-size:				20px;
 	color:					#000000;
 	white-space:			nowrap;
@@ -25,9 +25,6 @@ td.tabfoot {
 	BORDER-LEFT:			#000000 0px solid;
 	BORDER-RIGHT:			#000000 3px solid;
 	padding:				0px;
-	text-align:				center;
-	font-weight:			bold;
-	height:					20px;
 	width:					200px;
 }
 

@@ -13,7 +13,7 @@ include/extensions/class.extensions.values.form.php	cextensions_values_form	o13
 include/extensions/class.extensions.values.finish.php	cextensions_values_finish	o13
 include/extensions/class.extensions.values.db.php	cextensions_values_db	o13	m_getTables	o76	m_writesql	o594
 include/extensions/class.extensions.checks.db.php	cextensions_checks_db	o13	m_checkConnection	o76
-installer/sample/index.php	csample	o13	mfinish	o57
 include/class.smileinstaller.php	cinstaller	o11	kinstaller	o67	mgo	o2830	minitializeExtension	o5233	msetPages	o5565	msetPageAfter	o6311	munsetPage	o7035	mcheckFinishpage	o7240	msetForm	o7788	mparseItem	o11103	mcheckExplicitPage	o12705	mdoFinish	o14149	m_setError	o14998
-include/installer/class.smileinstaller.language.php	csmileinstaller_language	o13	mloadLanguageitems	o84	mcheckLanguagepage	o636	mparseLanguagefile	o1320	mlang	o1892
+installer/sample/index.php	csample	o13	mfinish	o57
 include/extensions/class.extensions.checks.file.php	cextensions_checks_file	o13	m_checkInstalldir	o81
+include/installer/class.smileinstaller.language.php	csmileinstaller_language	o13	mloadLanguageitems	o84	mcheckLanguagepage	o636	mparseLanguagefile	o1320	mlang	o1892

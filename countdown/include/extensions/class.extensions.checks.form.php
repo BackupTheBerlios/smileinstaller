@@ -19,7 +19,7 @@
 		function _checkFormspecific ( $pagenum, $varnum, $requireValue = false )
 		{
 			$var		= $this->config['pages'][$pagenum]['data'][$varnum];
-			switch ( strtolower ( $var['form'] ) )
+			switch ( strtolower ( $var['formtype'] ) )
 			{
 				case 'select' :
 				{
@@ -43,10 +43,9 @@
 				}
 				default :
 				{
-					die ( 'no checkable element ' . $this->config['pages'][$pagenum]['data'][$varnum]['form'] );
+					die ( 'no checkable element "' . $this->config['pages'][$pagenum]['data'][$varnum]['form']  );
 				}
 			}
-			
 			return $return;
 		}
 		function __checkFormSelect ( $var, $requireValue = false )
@@ -57,6 +56,7 @@
 			);
 			if ( $requireValue ) 
 			{
+				
 				if ( $_POST[$var['varname']] == $requireValue )
 				{
 					$return = array ( 
@@ -70,10 +70,11 @@
 				{
 					if ( $newValue		= strstr ( $value, ":" ) )
 					{
-						$key	= str_replace ( $newValue, "", $value );
-						$value	= $newValue;
+						$key	= $this->lang ( str_replace ( $newValue, "", $value ) );
+						$value	= $this->lang ( $newValue );
 					}
 					else {
+						$value	= $this->lang ( $value );
 						$key	= $value;
 					}
 					if ( $_POST[$var['varname']] == $key )

@@ -4,6 +4,7 @@
 		{ 
 			$this->config			= array (
 				'system'				=> array (
+					'debug'					=> 1,
 					'isExtension'			=> $isExtension,
 					'errormessage'			=> '',
 					'installer'				=> $installer,
@@ -74,53 +75,13 @@
 		}
 		function go ()
 		{
+			if ( $this->config['system']['debug'] ) $this->_setError ( 'DEBUG', 'go', 'begin installation' );
 			if ( $this->config['system']['isExtension'] )
 				die ( 'not an installer' );
 			$this->loadLanguageitems ();
 			$this->initializeExtension ();
 			$this->checkLanguagepage ();
-			$this->setConfig ();
-#			$abortFinish	= $this->checkExplicitPage ();
-#			if ( $this->checkFinishPage ( $abortFinish ) == 1 )
-#			{
-#				$this->doFinish ();
-#			}
-			echo $this->config['system']['pageerror'];
-			if ( $this->config['languageSet'] )
-			{
-				if ( $this->config['finishSet'] )
-				{
-					$this->tpl		= new smarttemplate ( $this->config['files']['finishtemplate'] );
-				} else {
-					$this->tpl		= new smarttemplate ( $this->config['files']['installertemplate'] );
-				}
-			} else {
-				foreach ( $this->config['system']['installerlanguages'] as $language => $text ) {
-					$this->config['system']['smarttemplate']['installerlanguages'][]		= array (
-						'language'		=> $language,
-						'text'			=> $text,
-					);
-				}
-				$this->tpl		= new smarttemplate ( $this->config['files']['languagetemplate'] );
-			}
-			foreach ( $this->config['system']['smarttemplate']['allPages'] as $key => $value )
-			{
-				$this->config['system']['smarttemplate']['allPages'][$key]['currentPage']	= $this->config['system']['currentPage'];
-				if ( $key == $this->config['system']['currentPage'] )
-				{
-					$this->config['system']['smarttemplate']['allPages'][$key]['isCurrent']	= 1;
-				} else {
-					$this->config['system']['smarttemplate']['allPages'][$key]['isCurrent']	= 0;
-				}
-			}
-			$this->config['system']['smarttemplate']['currentPage']		= $this->config['system']['pageerror'];
-			$this->config['system']['smarttemplate']['displayPage']		= $this->config['system']['smarttemplate']['allPages'][$this->config['system']['pageerror']];
-			$this->config['system']['smarttemplate']['errormessage']		= $this->config['system']['errormessage'];
-			$this->config['system']['smarttemplate']['totalPages']			= $this->config['system']['totalPages'];
-			$this->config['system']['smarttemplate']['installerlanguage']	= $this->config['system']['installerlanguage'];
-			$this->config['system']['smarttemplate']['installer']				= $this->config['installer']['info'];
-			$this->config['system']['smarttemplate']['installer']['name']		= $this->config['system']['installer'];			
-			$this->tpl->assign ( 'var', $this->config['system']['smarttemplate'] );
+			$return	= $this->setConfig ();
 			$return		= $this->tpl->result ();
 			return $return;
 		}
@@ -130,35 +91,6 @@
 			$evalcode		= "\$this->config['extension'] = new " . $this->config['system']['classname'] . " ( \$this->config['system']['installer'], true );";
 			eval ( $evalcode );
 			$this->config['extension']->config	= &$this->config;
-		}
-		function setPages ()
-		{
-			foreach ( $this->config['pages'] as $pagenum => $pagedata )
-			{
-				foreach ( $this->config['pages'][$pagenum]['data'] as $varnum => $var )
-				{
-					$this->setVariable ( $pagenum, $varnum );
-				}
-				if ( $this->config['system']['pageerror'] > -1 )
-				{
-					if ( $this->config['system']['pageerror'] >= $pagenum )
-					{
-						$this->unsetPage ( $pagenum );
-						break;
-					}
-				}
-				if ( !$this->setPageAfter ( $pagenum ) )
-				{
-					break;
-				}
-			}
-			if ( $this->config['system']['pageerror'] > -1 )
-			{
-				for ( $i =  $this->config['system']['pageerror']; $i <=  $this->config['system']['totalPages']; $i++ )
-				{
-					$this->unsetPage ( $i );
-				}
-			}
 		}
 		function setPageAfter ( $pagenum )
 		{
@@ -279,11 +211,9 @@
 							$key	= $option;
 						}
 						$selected		= "";
-						if ( $isset ) {
-							if ( $key == $selectedValue )
-							{
-								$selected		= "SELECTED";
-							}
+						if ( $key == $selectedValue )
+						{
+							$selected		= "SELECTED";
 						}
 						$newOptions	.= "<option value=\"$key\" $selected>$option</option>";
 					}
@@ -308,11 +238,6 @@
 				}
 			}
 			return $form;
-		}
-		
-		function setForm ( $var, $value, $isset )
-		{
-			die ( "use genForm" );
 		}
 		function parseItem ( $value, $getType = false, $executecode = false )
 		{
@@ -379,40 +304,6 @@
 			}
 			return $return;
 		}
-		function checkExplicitPage ()
-		{
-			$return		= false;
-			if ( isset ( $_POST['explicit_page'] )
-			&& $_POST['explicit_page'] > 0
-			&& $_POST['explicit_page'] <= $this->config['system']['totalPages'] )
-			{
-				$return		= true;
-				if ( $this->config['system']['pageerror'] > -1 )
-				{
-					if ( $_POST['explicit_page'] <= $this->config['system']['pageerror'] )
-					{
-						$this->config['currentPage']			= $this->config['pages'][$_POST['explicit_page']];
-						$this->config['system']['currentPage']	= $_POST['explicit_page'];
-					} else {
-						$this->config['currentPage']			= $this->config['pages'][$this->config['system']['pageerror']];
-					$this->config['system']['currentPage']		= $this->config['system']['pageerror'];
-					}
-				} else {
-					$this->config['currentPage']				= $this->config['pages'][$_POST['explicit_page']];
-					$this->config['system']['currentPage']		= $_POST['explicit_page'];
-				}
-			} else {
-				if ( $this->config['system']['pageerror'] > -1 )
-				{
-					$this->config['currentPage']				= $this->config['pages'][$this->config['system']['pageerror']];
-					$this->config['system']['currentPage']		= $this->config['system']['pageerror'];
-				} else {
-					$this->config['currentPage']				= $this->config['pages'][$this->config['system']['totalPages']];
-					$this->config['system']['currentPage']		= $this->config['system']['totalPages'];
-				}
-			}
-			return $return;
-		}
 		function doFinish ()
 		{
 			
@@ -447,7 +338,6 @@
 			$errormessage		= $this->lang ( $errormessage );
 			$this->config['system']['errormessage'][]['text']		= $htmlname . ": " . $errormessage;
 		}
-		
 		function setErrorpage ( $pagenum )
 		{
 			if ( $this->config['system']['pageerror'] < $pagenum )

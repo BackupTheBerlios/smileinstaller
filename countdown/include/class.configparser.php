@@ -7,9 +7,11 @@
 			$pagenum	= 0;
 			foreach ( $settings['root']['pages']['page'] as $page )
 			{
+				if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setConfig', 'Set page' );
 				$this->setPageinfos ( $pagenum, $page );
 				if ( $this->config['system']['pageerror'] == -1 )
 				{
+					$this->config['system']['smarttemplate']['allPages'][$pagenum]['isActive']	= 1;
 					$this->setPageactions ( $pagenum, $page['check'] );
 					$this->setPagevariables ( $pagenum, $page['variable'] );
 					if ( $this->config['system']['totalPages'] < $pagenum )
@@ -20,9 +22,11 @@
 				}
 				$pagenum++;
 			}
+			$this->setPage ();
 		}
 		function loadConfig ()
 		{
+			if ( $this->config['system']['debug'] ) $this->_setError ( 'DEBUG', 'loadConfig', 'load configfile' );
 			if ( !file_exists ( $this->config['files']['config'] )
 				|| !is_readable ( $this->config['files']['config'] ) ) 
 			{
@@ -39,6 +43,7 @@
 		}
 		function setInstallerinfos ( $settings )
 		{
+			if ( $this->config['system']['debug'] ) $this->_setError ( 'DEBUG', 'setInstallerinfos', 'Set installerinfo' );
 			if ( isset ( $settings['root']['pages']['installer'] ) )
 			{
 				$installer		= $settings['root']['pages']['installer'];
@@ -69,22 +74,24 @@
 		}
 		function setPageinfos ( $pagenum, $settings )
 		{
-			$this->config['pages'][$pagenum]['info']		= array
-			(
-				'name'			=> $this->config['system']['installer'],
-				'pagetitle'		=> $this->lang ( $settings['title'] ),
-				'pagename'		=> $this->lang ( $settings['name'] ),
-				'pagedesc'		=> $this->lang ( $settings['desc'] ),
-			);
+			if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setPageinfos', 'Set pageinfos' );
 			$this->config['system']['smarttemplate']['allPages'][$pagenum]		= array
 			(
-				'info'		=> $pagedata['info'],
+				'info'		=> array
+				(
+					'name'			=> $this->config['system']['installer'],
+					'pagetitle'		=> $this->lang ( $settings['title'] ),
+					'pagename'		=> $this->lang ( $settings['name'] ),
+					'pagedesc'		=> $this->lang ( $settings['desc'] ),
+				),
 				'pagenum'	=> $pagenum,
-				'isCurrentPage'	=> 0,
+				'isActive'	=> 0,
 			);
+			if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setPageinfos', print_r ( $this->config['system']['smarttemplate']['allPages'][$pagenum], 1 ) );
 		}
 		function setPageactions ( $pagenum, $settings )
 		{
+			if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setPageactions', 'Set pageactions' );
 			if ( isset ( $settings['required'] ) )
 			{
 				$settings		= array ( $settings );
@@ -104,6 +111,7 @@
 		}
 		function setPagevariables ( $pagenum, $settings )
 		{
+			if ( $this->config['system']['debug'] ) { $this->_setError ( $pagenum, 'DEBUG', 'Set pagevariables' ); }
 			if ( isset ( $settings['name'] ) )
 			{
 				$settings = array ( $settings );
@@ -111,14 +119,15 @@
 			foreach ( $settings as $variable )
 			{
 				$varcount		= sizeof ( $this->config['pages'][$pagenum]['data'] );
-				echo $varcount;
+				if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setConfig', 'Set variable ' . $varcount );
 				$required		= $variable['required'];
 				$position		= $varcount;
 				$canRecheck		= $variable['recheckable'];
 				$newline		= $variable['newline'];
 				$varname		= $variable['name'];
 				$htmlname		= $variable['htmlname'];
-				$form			= $variable['formtype'];
+				$form			= $variable['form'];
+				$formtype		= $variable['formtype'];
 				if ( isset ( $_POST[$varname] ) )
 				{
 					$uservalue	= $_POST[$varname];
@@ -140,37 +149,91 @@
 					)
 				);			
 				$tempdefaultvalue	= $this->parseItem ( $defaultvalue, false, $code );
-				$defaultform	= $this->genForm ( $varname, $form, $tempdefaultvalue, false );
+				$defaultform	= $this->genForm ( $varname, $formtype, $tempdefaultvalue, false );
 				$this->config['pages'][$pagenum]['data'][$position]		= array (
+					'varname'		=> $variable['name'],
 					'htmlname'		=> $this->lang ( $htmlname ),
-					'form'			=> strtolower ( $form ),
 					'newline'		=> $newline,
-					'form'			=> $form,
+					'form'			=> $variable['form'],
+					'formtype'		=> $variable['formtype'],
+					'defaultvalue'	=> $defaultvalue,
 				);
 				if ( isset ( $variable['check']['required'] ) ) {
 					$variable['check']	= array ( $variable['check'] );
 				}
-				if ( $_POST[$varname] )
+				if ( isset ( $_POST[$varname] ) )
 				{
+					$this->config['pages'][$pagenum]['data'][$position]['checks']	= $variable['check'];
+					if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, $varcount, 'check variable = "' . $_POST[$varname] . '"' );
 					if ( $this->checkVariable ( $pagenum, $varcount, $variable['check'], $_POST[$varname] ) )
 					{
-						$form		= $this->genForm ( $varname, $form, $tempdefaultvalue, $_POST[$varname] );
+						$form		= $this->genForm ( $varname, $formtype, $tempdefaultvalue, $_POST[$varname] );
 					} else {
+						$this->setErrorpage ( $pagenum );
 						$form		= $defaultform;
 					}
 				} else {
-					echo "IN";
-					$this->setErrorpage ( $pagenum );
+					if ( $formtype != 'box' && $formtype != 'html' )
+					{
+						$this->setErrorpage ( $pagenum );
+					}
 					$form		= $defaultform;
 				}
-				$this->config['pages'][$pagenum]['data'][$position]		= array (
-					'htmlname'		=> $this->lang ( $htmlname ),
-					'form'			=> strtolower ( $form ),
-					'newline'		=> $newline,
-					'form'			=> $form,
-				);
+				$this->config['pages'][$pagenum]['data'][$position]['form']		= $form;
 			}
 			$this->config['system']['smarttemplate']['allPages'][$pagenum]['data']	= $this->config['pages'][$pagenum]['data']; 
+		}
+		function setPage ()
+		{
+			$usePage = -1;
+			if ( $this->config['languageSet'] )
+			{
+				if ( $this->config['system']['pageerror'] == -1 )
+				{
+					$this->config['system']['canFinish']	= 1;
+				} else {
+					$this->config['system']['canFinish']	= 0;
+				}
+				if ( isset ( $_POST['explicit_page'] )
+					&& is_numeric ( $_POST['explicit_page'] ) )
+				{
+					if ( $_POST['explicit_page'] > $this->config['system']['totalPages'] )
+					{
+						$_POST['explicit_page'] = $this->config['system']['totalPages'];
+					}
+					if ( $_POST['explicit_page'] <= $this->config['system']['pageerror'] )
+					{
+						$usePage		= $_POST['explicit_page'];
+					} else {
+						$usePage		= $this->config['system']['pageerror'];
+					}
+				}
+				if ( $this->config['system']['canFinish'] == 1 
+					&& $usePage == -1 )
+				{
+					$this->tpl		= new smarttemplate ( $this->config['files']['finishtemplate'] );
+				} else {
+					$usePage		= $this->config['system']['pageerror'];
+				}
+				$this->config['system']['smarttemplate']['allPages'][$usePage]['isCurrent']	= 1;
+				$this->config['system']['smarttemplate']['displayPage']	= $this->config['system']['smarttemplate']['allPages'][$usePage];
+				$this->tpl		= new smarttemplate ( $this->config['files']['installertemplate'] );
+			} else {
+				foreach ( $this->config['system']['installerlanguages'] as $language => $text ) {
+					$this->config['system']['smarttemplate']['installerlanguages'][]		= array (
+						'language'		=> $language,
+						'text'			=> $text,
+					);
+				}
+				$this->tpl		= new smarttemplate ( $this->config['files']['languagetemplate'] );
+			}
+			$this->config['system']['smarttemplate']['currentPage']			= $this->config['system']['pageerror'];
+			$this->config['system']['smarttemplate']['errormessage']		= $this->config['system']['errormessage'];
+			$this->config['system']['smarttemplate']['totalPages']			= sizeof ( $this->config['system']['smarttemplate']['allPages'] );
+			$this->config['system']['smarttemplate']['installerlanguage']	= $this->config['system']['installerlanguage'];
+			$this->config['system']['smarttemplate']['installer']			= $this->config['installer']['info'];
+			$this->config['system']['smarttemplate']['installer']['name']	= $this->config['system']['installer'];			
+			$this->tpl->assign ( 'var', $this->config['system']['smarttemplate'] );
 		}
 	}
 ?>
