@@ -16,7 +16,7 @@ Funktionen für Datenbanken
 		_value_SQLGetDatabases:Datenbanktyp,Datenbankserver,Benutzer,Passwort,Datenbank
 		_value_supportedDatabases:[NurBestimmteDatenbankenAusgeben]
 	Ausgabe
-		_output_SQL:Datenbanktyp,Datenbankserver,Benutzer,Passwort,AuswahlDatenbank,NeueDatenbank,Tabellenpräfix,SQLDateiInExternals
+		_output_SQL:Datenbanktyp,Datenbankserver,Benutzer,Passwort,AuswahlDatenbank,NeueDatenbank,SQLDateiInExternals
 
 Funktionen für das Dateisystem
 	Prüfungen

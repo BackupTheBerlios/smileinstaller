@@ -1,9 +1,11 @@
 <?
 class extensions_output_db extends extensions_checks_form
 {
-	function _outputSQL($pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbname, $dbname_user, $tableprefix, $sqlfile)
+	function _outputSQL($pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbname, $dbname_user, $sqlfile)
 	{
 		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_outputSQL' );		$return= array ('value' => '', 'isset' => false);
+		echo "Code aendern _outputSQL";
+		return $return;
 		if ($dbname_user > "")
 		{
 			$dbname= $dbname_user;
