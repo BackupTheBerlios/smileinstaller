@@ -1,6 +1,6 @@
 <pages>
 	<installer>
-		<title>[Install PHPbb2 2.0.11]</title>
+		<title>[Installerdemo 0.1]</title>
 		<nextstring>[next]</nextstring>
 		<completestring>[Setup complete.]</completestring>
 		<finishedstring>[Installation complete]</finishedstring>

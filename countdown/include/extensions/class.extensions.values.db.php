@@ -20,8 +20,5 @@ class extensions_values_db extends extensions_values
 	{
 		$this->_setError('0', '_value_SQLDetect', '[no code]');
 	}
-	function _value_SQLDatabasesUser($pagenum, $varnum);
-	{
-	}
 }
 ?>
