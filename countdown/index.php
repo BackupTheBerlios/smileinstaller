@@ -29,9 +29,10 @@ if ( preg_match ( '|<body([^>]{1,})>|', $content, $result ) )
 	);
 }
 */
-echo $content;
-echo "<pre>Setupfile in use ($configuration):\n";
-echo htmlentities ( implode ( file ( "./installer/$configuration/config.xml" ) ) );
-echo "</pre>";
+#echo $content;
+$additional_content		= "<pre>Setupfile in use ($configuration):\n";
+$additional_content		.= htmlentities ( implode ( file ( "./installer/$configuration/config.xml" ) ) );
+$additional_content		.= "</pre>";
+echo str_replace ( "</body>", $additional_content . "</body>", $content );
 
 ?>
