@@ -1,6 +1,23 @@
 <?
 	class configparser {
-		function parseConfig ()
+		function setConfig ()
+		{
+			$settings		= $this->loadConfig ();
+			$this->setInstallerinfos ( $settings );
+			$pagenum	= 1;
+			foreach ( $settings['root']['pages']['page'] as $page )
+			{
+				$this->setPageinfos ( $pagenum, $page );
+				$this->setPageactions ( $pagenum, $page['check'] );
+				$this->setPagevariables ( $pagenum, $page['variable'] );
+				if ( $this->config['system']['totalPages'] < $pagenum )
+				{
+					$this->config['system']['totalPages']	= $pagenum;
+				}
+				$pagenum++;
+			}
+		}
+		function loadConfig ()
 		{
 			if ( !file_exists ( $this->config['files']['config'] )
 				|| !is_readable ( $this->config['files']['config'] ) ) 
@@ -13,179 +30,31 @@
 			if ( PEAR::isError ( $root ) ) {
 			    die ( 'Error while reading configuration: ' . $root->getMessage () );
 			}
-			$settings	= $root->toArray();
-			$this->setInstallerinfos ( $settings );
-			$pagenum	= 1;
-			foreach ( $settings['root']['pages']['page'] as $page )
-			{
-				$this->config['pages'][$pagenum]['info']['name']			= $this->config['system']['installer'];
-				$this->config['pages'][$pagenum]['info']['pagetitle']		= $this->lang ( $page['title'] );
-				$this->config['pages'][$pagenum]['info']['pagename']		= $this->lang ( $page['name'] );
-				$this->config['pages'][$pagenum]['info']['pagedesc']		= $this->lang ( $page['desc'] );
-				if ( isset ( $page['checkafter']['required'] ) )
-				{
-					$page['checkafter']		= array ( $page['checkafter'] );
-				}
-				if ( isset ( $page['checkafter'] )
-					&& is_array ( $page['checkafter'] ) )
-				{
-					foreach ( $page['checkafter'] as $check )
-					{
-						$this->config['pages'][$pagenum]['action']['checkafter'][]		= array (
-							'required'		=> $check['required'],
-							'action'		=> $this->parseValue ( $check['action'] ),
-							'errormessage'	=> $check['errormessage'],
-						);
-					}
-				}
-
-				if ( $this->config['system']['totalPages'] < $pagenum )
-				{
-					$this->config['system']['totalPages']	= $pagenum;
-				}
-				if ( isset ( $page['variable']['name'] ) )
-				{
-					$page['variable'] = array ( $page['variable'] );
-				}
-				$varcount = 1;
-				foreach ( $page['variable'] as $variable )
-				{
-					$required		= $variable['required'];
-					$position		= $varcount;
-					$canRecheck		= $variable['recheckable'];
-					$newline		= $variable['newline'];
-					$varname		= $variable['name'];
-					$htmlname		= $variable['htmlname'];
-					$form			= $variable['formtype'];
-					$defaultvalue	= $variable['defaultvalue'];
-					if ( !isset ( $this->config['count'][$pagenum]['variables'] ) )
-						$this->config['count'][$pagenum]['variables']	= false;
-					if ( $position > $this->config['count'][$pagenum]['variables'] )
-					{
-						$this->config['count'][$pagenum]['variables']	= $position;
-					}
-
-					$this->config['pages'][$pagenum]['data'][$position]		= array (
-						'varname'		=> $varname,
-						'htmlname'		=> $this->lang ( $htmlname ),
-						'valueRequired'	=> $required,
-						'canRecheck'	=> $canRecheck,
-						'form'			=> $this->parseConfigoptionType ( $form ),
-						'newline'		=> $newline,
-						'defaultvalue'	=> $defaultvalue,
-						'successfulSet'	=> 0,
-						'installerlanguage'	=> '',
-					);
-					unset ( $check );
-					if ( isset ( $variable['check']['required'] ) ) {
-						$variable['check']	= array ( $variable['check'] );
-					}
-					$this->config['pages'][$pagenum]['data'][$position]['valuecheck']	= $variable['check'];
-					$this->config['pagevariables'][$varname]		= array (
-						'pagenum'		=> $pagenum,
-						'varnum'		=> $varcount
-					);
-					$varcount++;
-				}
-				$pagenum++;
-			}
-		}
-		function parseConfigoptionPos ( $pos )
-		{
-			$return		= "";
-			switch ( strtolower ( $pos ) ) 
-			{
-				case 'new'		: 
-				{
-					if ( $this->config['system']['largest_row_cached'] > $this->config['system']['largest_row'] )
-					{
-						$this->config['system']['largest_row']	= $this->config['system']['largest_row_cached'];
-					}
-					$this->config['system']['largest_row_cached']	= 1;
-					$return		= 'new';
-					break;
-				}
-				case 'same'		: 
-				{
-					$this->config['system']['largest_row_cached']++;
-					$return		= 'same';
-					break;
-				}
-				case 'none'		:
-				{
-					$return		= 'none';
-					break;
-				}
-			}
-			if ( $this->config['system']['largest_row_cached'] > $this->config['system']['largest_row'] )
-				$this->config['system']['largest_row']	= $this->config['system']['largest_row_cached'];
+			$return		= $root->toArray();
 			return $return;
 		}
-		function parseConfigoptionPage ( $page )
-		{
-			$page		= str_replace ( '-', '', $page );
-			if ( is_numeric ( $page ) ) 
-			{
-				return $page;
-			} else {
-				die ( 'Error in ParsePage' );
-			}
-		}
-		function parseConfigoptionRequired ( $page )
-		{
-			if ( preg_match ( '|^-|', $page ) ) 
-			{
-				return false;
-			} else {
-				return true;
-			}
-		}
-		function parseConfigoptionStartval ( $value )
-		{
-			$return			= "";
-			if ( $value > "" ) 
-			{
-				$real_value		= substr ( $value, 1 );
-				switch ( substr ( $value, 0, 1 ) ) 
-				{
-					case '<'		: 
-					{
-						require_once "./" . $this->config['system']['directories']['scriptdir'] . '/extensions/' . $real_value;
-						break;
-					}
-					case '='		: 
-					{
-						$return		= $real_value;
-						break;
-					}
-					default : 
-					{
-						die ( 'Cant parse value' );
-					}
-				}
-			}
-			return $return;
-		}
-		function parseConfigoptionType ( $type )
-		{
-			$return		= strtolower ( $type );
-			return $return;
-		}	
 		function setInstallerinfos ( $settings )
 		{
 			if ( isset ( $settings['root']['pages']['installer'] ) )
 			{
 				$installer		= $settings['root']['pages']['installer'];
-				$this->config['installer']['info']['title']			= $this->lang ( $installer['title'] );
-				$this->config['installer']['info']['nextstring']	= $this->lang ( $installer['nextstring'] );
-				$this->config['installer']['info']['finishstring']	= $this->lang ( $installer['finishstring'] );
-				$this->config['installer']['info']['finishedstring']	= $this->lang ( $installer['finishedstring'] );
-				$this->config['installer']['info']['redirectTo']	= $this->lang ( $installer['redirectTo'] );
+				$this->config['installer']['info']		= array
+				(
+					'title'				=> $this->lang ( $installer['title'] ),
+					'nextstring'		=> $this->lang ( $installer['nextstring'] ),
+					'finishstring'		=> $this->lang ( $installer['finishstring'] ),
+					'finishedstring'	=> $this->lang ( $installer['finishedstring'] ),
+					'redirectTo'		=> $this->lang ( $installer['redirectTo'] )
+				);
 				if ( isset ( $installer['finish'] ) )
 				{
+					if ( isset ( $installer['finish']['action'] ) )
+					{
+						$installer['finish']['action']	= array ( $installer['finish']['action'] );
+					}
 					foreach ( $installer['finish'] as $action )
 					{
-						$finishaction[]		= array ( 
+						$this->config['installer']['action'][]		= array ( 
 							'action'			=> $action['action'],
 							'required'			=> $action['required'],
 							'errormessage'		=> $action['errormessage']
@@ -193,7 +62,82 @@
 					}
 				}
 			}
-			$this->config['installer']['action']	= $finishaction;
+		}
+		function setPageinfos ( $pagenum, $settings )
+		{
+			$this->config['pages'][$pagenum]['info']		= array
+			(
+				'name'			=> $this->config['system']['installer'],
+				'pagetitle'		=> $this->lang ( $settings['title'] ),
+				'pagename'		=> $this->lang ( $settings['name'] ),
+				'pagedesc'		=> $this->lang ( $settings['desc'] ),
+			);
+		}
+		function setPageactions ( $pagenum, $settings )
+		{
+			if ( isset ( $settings['required'] ) )
+			{
+				$settings		= array ( $settings );
+			}
+			if ( isset ( $settings )
+				&& is_array ( $settings ) )
+			{
+				foreach ( $settings as $check )
+				{
+					$this->config['pages'][$pagenum]['action'][]		= array (
+						'required'		=> $check['required'],
+						'action'		=> $this->parseValue ( $check['action'] ),
+						'errormessage'	=> $check['errormessage'],
+					);
+				}
+			}
+		}
+		function setPagevariables ( $pagenum, $settings )
+		{
+			$varcount = 1;
+			if ( isset ( $settings['name'] ) )
+			{
+				$settings = array ( $settings );
+			}
+			foreach ( $settings as $variable )
+			{
+				$required		= $variable['required'];
+				$position		= $varcount;
+				$canRecheck		= $variable['recheckable'];
+				$newline		= $variable['newline'];
+				$varname		= $variable['name'];
+				$htmlname		= $variable['htmlname'];
+				$form			= $variable['formtype'];
+				$defaultvalue	= $variable['defaultvalue'];
+				if ( !isset ( $this->config['count'][$pagenum]['variables'] ) )
+					$this->config['count'][$pagenum]['variables']	= false;
+				if ( $position > $this->config['count'][$pagenum]['variables'] )
+				{
+					$this->config['count'][$pagenum]['variables']	= $position;
+				}
+
+				$this->config['pages'][$pagenum]['data'][$position]		= array (
+					'varname'		=> $varname,
+					'htmlname'		=> $this->lang ( $htmlname ),
+					'valueRequired'	=> $required,
+					'canRecheck'	=> $canRecheck,
+					'form'			=> strtolower ( $form ),
+					'newline'		=> $newline,
+					'defaultvalue'	=> $defaultvalue,
+					'successfulSet'	=> 0,
+					'installerlanguage'	=> '',
+				);
+				unset ( $check );
+				if ( isset ( $variable['check']['required'] ) ) {
+					$variable['check']	= array ( $variable['check'] );
+				}
+				$this->config['pages'][$pagenum]['data'][$position]['valuecheck']	= $variable['check'];
+				$this->config['pagevariables'][$varname]		= array (
+					'pagenum'		=> $pagenum,
+					'varnum'		=> $varcount
+				);
+				$varcount++;
+			}
 		}
 	}
 ?>

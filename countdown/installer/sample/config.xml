@@ -123,13 +123,13 @@
 			<formtype>		password</formtype>
 			<defaultvalue>	=</defaultvalue>
 		</variable>
-		<checkafter>
+		<check>
 			<required>	1</required>
 			<action>	!_checkConnection:mysql,$dbhost,$dbuser,$dbpass</action>
 			<errormessage>
 				[Verbindung zur Datenbank konnte nicht hergestellt werden]
 			</errormessage>
-		</checkafter>
+		</check>
 	</page>
 	<page>
 		<title>	[Datenbank auswaehlen]</title>
@@ -183,12 +183,12 @@
 			<formtype>		password</formtype>
 			<defaultvalue>	=</defaultvalue>
 		</variable>
-		<checkafter>
+		<check>
 			<required>	1</required>
 			<action>	!_newPasswordcheck:$adminpass,$adminpass_2</action>
 			<errormessage>
 				[Angegebene Passwoerter stimmen nicht ueberein]
 			</errormessage>
-		</checkafter>
+		</check>
 	</page>
 </pages>

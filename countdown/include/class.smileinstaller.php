@@ -79,7 +79,7 @@
 			$this->loadLanguageitems ();
 			$this->initializeExtension ();
 			$this->checkLanguagepage ();
-			$this->parseConfig ();
+			$this->setConfig ();
 			$this->setPages ();
 			$abortFinish	= $this->checkExplicitPage ();
 			if ( $this->checkFinishedPage ( $abortFinish ) == 1 )
@@ -147,9 +147,9 @@
 		function setPageAfter ( $pagenum )
 		{
 			$return['isset']	= true;
-			if ( isset ( $this->config['pages'][$pagenum]['action']['checkafter'] ) )
+			if ( isset ( $this->config['pages'][$pagenum]['action'] ) )
 			{
-				foreach ( $this->config['pages'][$pagenum]['action']['checkafter'] as $check )
+				foreach ( $this->config['pages'][$pagenum]['action'] as $check )
 				{
 					$evalcode	= "\$return = \$this->config['extension']->" . substr ( $check['action'], 1 );
 					$return		= $this->executePageenvironment ( $evalcode, $pagenum, 0 );
@@ -398,7 +398,7 @@
 				}
 				default :
 				{
-					die ( 'noform' . $var['form'] );
+					die ( 'noform' . print_r ( $var, 1 ) );
 				}
 			}
 			return $form;
@@ -744,6 +744,7 @@
 		}
 		function doFinish ()
 		{
+			
 			foreach ( $this->config['installer']['action'] as $action )
 			{
 				$action['action']		= substr ( $action['action'], 1 );
