@@ -1,4 +1,4 @@
-<?
+<?php
 
 class extensions_all extends installer
 {

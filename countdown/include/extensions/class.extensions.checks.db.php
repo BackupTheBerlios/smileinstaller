@@ -1,4 +1,4 @@
-<?
+<?php
 class extensions_checks_db extends extensions_checks
 {
 	function _check_SQLConnection ( $pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbname )

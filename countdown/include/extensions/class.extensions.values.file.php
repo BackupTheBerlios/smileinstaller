@@ -1,4 +1,4 @@
-<?
+<?php
 class extensions_values_file extends extensions_values_db
 {
 	function _value_rootdir($pagenum, $varnum)

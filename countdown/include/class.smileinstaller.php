@@ -1,4 +1,4 @@
-<?
+<?php
 class installer extends smileinstaller_variable
 {
 	// Erstellt alle Variablen die benoetigt werden. Keine Aktionen.	function installer ( $installer, $isExtension = false )

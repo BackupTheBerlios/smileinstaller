@@ -1,4 +1,4 @@
-<?
+<?php
 class configgenerator extends extensions
 {
 	function _output_setTotalPages ( $pagenum, $varnum, $totalPages )

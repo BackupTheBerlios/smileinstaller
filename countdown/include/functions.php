@@ -1,4 +1,4 @@
-<?
+<?php
 
 // Ein eigener Errorhandler um die Fehler in das Template aufzunehmen
 function onError ( $errno, $errstr, $errfile = false, $errline = false, $context = false )

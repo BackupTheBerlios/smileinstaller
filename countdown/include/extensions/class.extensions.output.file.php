@@ -1,4 +1,4 @@
-<?
+<?php
 class extensions_output_file extends extensions_output_db
 {
 	function _output_VarToFile($pagenum, $varnum, $path, $file, $allowOnlyVariables= false)

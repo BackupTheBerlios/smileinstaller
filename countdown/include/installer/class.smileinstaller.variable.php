@@ -1,4 +1,4 @@
-<?
+<?php
 class smileinstaller_variable extends smileinstaller_language
 {
 	function checkVariable($pagenum, $varnum, $checks, $selectedValue)

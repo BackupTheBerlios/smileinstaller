@@ -1,4 +1,4 @@
-<?
+<?php
 class extensions_output_db extends extensions_checks_form
 {
 	function _outputSQL($pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbname, $dbname_user, $sqlfile)

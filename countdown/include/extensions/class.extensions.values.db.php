@@ -1,4 +1,4 @@
-<?
+<?php
 class extensions_values_db extends extensions_values
 {
 	function _value_SQLGetDatabases ( $pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbname )

@@ -1,4 +1,4 @@
-<?
+<?php
 class extensions_values extends extensions_output_form
 {
 	function _value_redirectTo($pagenum, $varnum, $preurl, $file)

@@ -1,4 +1,4 @@
-<?
+<?php
 class extensions_checks_form extends extensions_checks_finish
 {
 	function _check_Formspecific($pagenum, $varnum, $requireValue= false)

@@ -1,4 +1,4 @@
-<?
+<?php
 class configparser
 {
 	function setConfig()

@@ -1,4 +1,4 @@
-<?
+<?php
 class smileinstaller_language extends smileinstaller_execute
 {
 	function loadLanguageitems()

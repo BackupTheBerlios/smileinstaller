@@ -1,4 +1,4 @@
-<?
+<?php
 class extensions_checks extends extensions_all
 {
 	function _check_none($pagenum, $varnum)

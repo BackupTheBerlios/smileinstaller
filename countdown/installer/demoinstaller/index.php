@@ -1,4 +1,4 @@
-<?
+<?php
 class demoinstaller extends extensions
 {
 	function finish($pagenum, $varnum, $dbms, $dbhost, $dbuser, $dbpasswd, $dbname, $table_prefix, $admin_name, $admin_pass1, $admin_pass2, $board_email, $script_path, $server_name, $server_port)

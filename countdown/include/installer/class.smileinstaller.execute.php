@@ -1,4 +1,4 @@
-<?
+<?php
 class smileinstaller_execute extends configparser
 {
 	function execute($evalcode, $pagenum= false, $varnum= false)
