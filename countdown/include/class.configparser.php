@@ -18,9 +18,9 @@
 			$pagenum	= 1;
 			foreach ( $settings['root']['pages']['page'] as $page )
 			{
-				$this->config['pages'][$pagenum]['info']['pagetitle']		= $page['title'];
-				$this->config['pages'][$pagenum]['info']['pagename']		= $page['name'];
-				$this->config['pages'][$pagenum]['info']['pagedesc']		= $page['desc'];
+				$this->config['pages'][$pagenum]['info']['pagetitle']		= $this->lang ( $page['title'] );
+				$this->config['pages'][$pagenum]['info']['pagename']		= $this->lang ( $page['name'] );
+				$this->config['pages'][$pagenum]['info']['pagedesc']		= $this->lang ( $page['desc'] );
 				if ( isset ( $page['checkafter']['required'] ) )
 				{
 					$page['checkafter']		= array ( $page['checkafter'] );
@@ -192,7 +192,9 @@
 			if ( isset ( $settings['root']['pages']['installer'] ) )
 			{
 				$installer		= $settings['root']['pages']['installer'];
-				$installer['title']		= $installer['title'];
+				$this->config['installer']['info']['title']			= $this->lang ( $installer['title'] );
+				$this->config['installer']['info']['nextstring']	= $this->lang ( $installer['nextstring'] );
+				$this->config['installer']['info']['finishstring']	= $this->lang ( $installer['finishstring'] );
 				if ( isset ( $installer['finish']['action'] )
 					&& !is_array ( $installer['finish']['action'] )
 				) {

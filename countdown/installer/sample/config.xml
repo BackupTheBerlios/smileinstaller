@@ -1,15 +1,17 @@
 <pages>
 	<installer>
-		<title>Beispielinstaller</title>
+		<title>[Beispiel installieren]</title>
 		<finish>
 			<action>_createDirectory:$path,$dir,0777</action>
 			<action>_writeToFile:config.php,dbhost+dbname</action>
 		</finish>
+		<nextstring>[Weiter]</nextstring>
+		<finishstring>[Fertigstellen]</finishstring>
 	</installer>
 	<page>
 		<title>	[Lizenz]</title>
-		<name>	[]</name>
-		<desc>	[Beispiel fuer den ersten Schritt]</desc>
+		<name>	</name>
+		<desc>	Beispiel fuer den ersten Schritt</desc>
 		<variable>
 			<name>			none1</name>
 			<htmlname>		[Lizenz]</htmlname>				
@@ -26,17 +28,17 @@
 			<newline>		1</newline>
 			<recheckable>	0</recheckable>
 			<formtype>		select</formtype>
-			<defaultvalue>	=Nein,Ja</defaultvalue>
+			<defaultvalue>	=[Nein],[Ja]</defaultvalue>
 			<check>
 				<required>	1</required>
-				<action>	!_checkFormspecific:Ja</action>
+				<action>	!_checkFormspecific:[Ja]</action>
 			</check>
 		</variable>
 	</page>
 	<page>
 		<title>	[Pfad waehlen]</title>
-		<name>	=[]</name>
-		<desc>	=[]</desc>
+		<name>	[]</name>
+		<desc>	[]</desc>
 		<variable>
 			<name>			path</name>
 			<htmlname>		[Pfad]</htmlname>
@@ -62,7 +64,7 @@
 		</checkafter>
 	</page>
 	<page>
-		<title>	[Datenbank auswaehlen]</title>
+		<title>	[Datenbankserver auswaehlen]</title>
 		<name>	[]</name>
 		<desc>	[]</desc>
 		<checkbefore>
@@ -102,7 +104,7 @@
 		</checkafter>
 	</page>
 	<page>
-		<title>	[Tabelle auswaehlen]</title>
+		<title>	[Datenbank auswaehlen]</title>
 		<name>	[]</name>
 		<desc>	[]</desc>
 		<variable>

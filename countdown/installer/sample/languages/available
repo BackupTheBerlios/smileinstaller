@@ -1,33 +1,20 @@
-Men&uuml;
-weiter
-Abschliessen
-Schritt
-Schritt Nr.
-Pfade
-Angabe der Pfade um die Konfiguration aus THWB auszulesen
-Pfad zum THWBoard
-Standardeinstellungen
-Diese Einstellungen werden jedem angelegten Benutzer mitgegeben
-Text hinter dem Benutzernamen
-Gruppe
-Aktivieren
-Optionale Informationen
-Vorname
-Nachname
-Strasse
-PLZ
-Stadt
-Telefon
-Fax
-eMail
-Variablentext
-Variablenname
-Wert
-Aktuelles System ohne Ablaufsteuerung
-Installer f&uuml;r
-Bitte lesen Sie f&uuml;r weitere Informationen in <a href='./doc/index.html'>dieser</a> Datei nach
-Ja
-Nein
-Ich akzeptiere die Vereinbarung?
+Beispiel installieren
 Lizenz
-Akzeptieren Sie obenstehende Lizenz?
+Beispiel fuer den ersten Schritt
+Ich akzeptiere die Lizenz
+Nein
+Ja
+Pfad waehlen
+Pfad
+(Neues) Verzeichniss fuer das Skript
+Datenbankserver auswaehlen
+Datenbankserver
+Benutzername
+Passwort
+Datenbank auswaehlen
+Datenbank
+Administrator anlegen
+Name des Administrators
+Passwort wiederholen
+Weiter
+Fertigstellen

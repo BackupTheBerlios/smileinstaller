@@ -250,7 +250,7 @@
 							{
 								if ( $_POST[$var['varname']] == substr ( $check['action'], 1 ) )
 								{
-									$value	= substr ( $check['action'], 1 );
+									$value	= $this->lang ( substr ( $check['action'], 1 ) );
 									$valueIsSet	= true;
 								}
 							} elseif ( substr ( $check['action'], 0, 1 ) === "." ) {
@@ -328,15 +328,15 @@
 				case 'box' :
 				{
 					$form	= '<textarea readonly style="width: 100%; height: 200px">' .
-						$var['defaultvalue'] .
+						$this->lang ( $var['defaultvalue'] ) .
 						'</textarea>';
-					$this->config['executeEnvironment'][$var['varname']]	= $var['defaultvalue'];
+					$this->config['executeEnvironment'][$var['varname']]	= $this->lang ( $var['defaultvalue'] );
 					break;
 				}
 				case 'html' :
 				{
-					$form	= $var['defaultvalue'];
-					$this->config['executeEnvironment'][$var['varname']]	= $var['defaultvalue'];
+					$form	= $this->lang ( $var['defaultvalue'] );
+					$this->config['executeEnvironment'][$var['varname']]	= $this->lang ( $var['defaultvalue'] );
 					break;
 				}
 				case 'input' :
@@ -347,7 +347,7 @@
 					{
 						$form	.= $executeEnvironmentvalue	= $value;
 					} else {
-						$form	.= $executeEnvironmentvalue	= $var['defaultvalue'];
+						$form	.= $executeEnvironmentvalue	= $this->lang ( $var['defaultvalue'] );
 					}
 					$form	.= '">';
 					$this->config['executeEnvironment'][$var['varname']]	= $executeEnvironmentvalue;
@@ -361,7 +361,7 @@
 					{
 						$form	.= $executeEnvironmentvalue	= $value;
 					} else {
-						$form	.= $executeEnvironmentvalue	= $var['defaultvalue'];
+						$form	.= $executeEnvironmentvalue	= $this->lang ( $var['defaultvalue'] );
 					}
 					$form	.= '">';
 					$this->config['executeEnvironment'][$var['varname']]	= $executeEnvironmentvalue;
@@ -371,9 +371,12 @@
 				{
 					$form	= '<textarea ' . $disabled . ' name="' . $var['varname'] . 
 						'" style="width: 100%; height:150px">';
-					if ( $isset )				$form	.= $executeEnvironmentvalue	= $value;
-						elseif ( $postSet ) 	$form	.= $executeEnvironmentvalue	= $_POST[$var['varname']];
-						else					$form	.= $executeEnvironmentvalue	= $var['defaultvalue'];
+					if ( $isset )
+					{
+						$form	.= $executeEnvironmentvalue	= $value;
+					} else {
+						$form	.= $executeEnvironmentvalue	= $this->lang ( $var['defaultvalue'] );
+					}
 					$form	.= '</textarea>';
 					$this->config['executeEnvironment'][$var['varname']]	= $executeEnvironmentvalue;
 					break;
@@ -385,6 +388,7 @@
 					$newOptions		= "";
 					foreach ( $options as $option )
 					{
+						$option	= $this->lang ( $option ); 
 						if ( $newValue		= strstr ( $option, ":" ) )
 						{
 							$key	= str_replace ( $newValue, "", $option );
@@ -411,12 +415,9 @@
 					{
 						$form	= '<input type="checkbox" name="' . $var['varname'] . '" CHECKED value="' . $value . '">';
 						$this->config['executeEnvironment'][$var['varname']]	= $value;
-					} elseif ( $postSet ) {
-						$form	= '<input type="checkbox" name="' . $var['varname'] . '" CHECKED value="' . $_POST[$var['varname']] . '">';
-						$this->config['executeEnvironment'][$var['varname']]	= $_POST[$var['varname']];
 					} else {
-						$form	= '<input type="checkbox" name="' . $var['varname'] . '" value="' . $var['defaultvalue'] . '">';
-						$this->config['executeEnvironment'][$var['varname']]	= $var['defaultvalue'];
+						$form	= '<input type="checkbox" name="' . $var['varname'] . '" value="' . $this->lang ( $var['defaultvalue'] ) . '">';
+						$this->config['executeEnvironment'][$var['varname']]	= $this->lang ( $var['defaultvalue'] );
 					}
 					break;
 				}
@@ -439,6 +440,10 @@
 					$options				= explode ( ',', $allFunctionoptions );
 					if ( is_array ( $options ) ) 
 					{
+						foreach ( $options as $key => $option )
+						{
+							$options[$key]	= $this->lang ( $option );							
+						}
 						$options			= "\"" . implode ( "\", \"", $options ) . "\"";
 					}
 					$return					= "$functionname ( \$pagenum, \$varnum, $options );";
@@ -633,7 +638,9 @@
 				}
 				$this->tpl		= new smarttemplate ( $this->config['files']['languagetemplate'] );
 			}
+			$this->config['system']['smarttemplate']['installer']		= $this->config['installer']['info'];
 			$this->tpl->assign ( 'var', $this->config['system']['smarttemplate'] );
+			
 		}
 		function executeEnvironment ( $evalcode, $pagenum, $varnum )
 		{

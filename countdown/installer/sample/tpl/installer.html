@@ -3,11 +3,16 @@
 <meta http-equiv="Content-Language" content="en" />
 <meta name="GENERATOR" content="PHPEclipse 1.0" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>{htmlentities:var.installertitle}</title>
+<title>{htmlentities:var.installer.title}</title>
 <link rel="stylesheet" href="include/templates/css.css" type="text/css">
 </head>
 <body bgcolor="#FFFFFF" text="#000000" link="#FF9966" vlink="#FF9966" alink="#FFCC99">
 	<table width="100%" cellspacing="0" cellpadding="0" border="0">
+		<tr style="height: 20px">
+			<td colspan="2" class="headline">
+				{htmlentities:var.installer.title}
+			</td>
+		</tr>
 		<tr>
 			<td colspan="2">
 				<div align="center">
@@ -21,8 +26,7 @@
 							<input type="hidden" name="{varname}" value="{varvalue}">
 						<!-- END hiddenValue -->
 							<td class="<!-- IF isActive=="1" --><!-- IF isCurrentPage=="1" -->currentpage_top<!-- ELSE -->activepage_top" onclick="document.gotopage2_{ROWCNT}.submit ()<!-- ENDIF isCurrentPage=="1" --><!-- ELSE -->inactivepage_top<!-- ENDIF isActive=="1" -->">
-								[Schritt] {calc:ROWCNT,1}
-								<br>{info.pagetitle}
+								{info.pagetitle}
 							</td>
 						</form>
 						<!-- END var.allPages -->
@@ -82,7 +86,7 @@
 							<!-- END var.displayPage.data -->
 							</tr>
 							<tr>
-								<td class="content_foot" colspan="2"><input class="pagesubmitactivepage" type="submit" value="[weiter]"></td>
+								<td class="content_foot" colspan="2"><input class="pagesubmitactivepage" type="submit" value="{var.installer.nextstring}"></td>
 							</tr>
 							</form>
 						</table>
@@ -102,8 +106,7 @@
 		<!-- END hiddenValue -->
 		<tr valign="top" style="height: 50px">
 			<td class="<!-- IF isActive=="1" --><!-- IF isCurrentPage=="1" -->currentpage<!-- ELSE -->activepage" onclick="document.gotopage_{ROWCNT}.submit ()<!-- ENDIF isCurrentPage=="1" --><!-- ELSE -->inactivepage<!-- ENDIF isActive=="1" -->">
-				[Schritt] {calc:ROWCNT,1}
-				<br>{info.pagetitle}
+				{info.pagetitle}
 			</td>
 		</tr>
 		</form>
