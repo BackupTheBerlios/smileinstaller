@@ -167,13 +167,13 @@
 			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		input</formtype>
-			<defaultvalue>	=root</defaultvalue>
-			<autovalue>		=root</autovalue>
+			<defaultvalue>	=test</defaultvalue>
+			<autovalue>		=[In demo: test]</autovalue>
 			<check>
-				<action>	!_check_NotNull</action>
+				<action>	!_check_Formspecific:test</action>
 				<required>	1</required>
 				<errormessage>
-					[Username is required]
+					[Allowed username is test]
 				</errormessage>
 			</check>
 		</variable>
@@ -184,8 +184,15 @@
 			<required>		0</required>
 			<newline>		1</newline>
 			<formtype>		password</formtype>
-			<defaultvalue>	=</defaultvalue>
-			<autovalue>		=</autovalue>
+			<defaultvalue>	=test</defaultvalue>
+			<autovalue>		=[In demo: test]</autovalue>
+			<check>
+				<action>	!_check_Formspecific:test</action>
+				<required>	1</required>
+				<errormessage>
+					[Allowed password is test]
+				</errormessage>
+			</check>
 		</variable>
 		<variable>
 			<name>			testdb</name>
@@ -195,7 +202,14 @@
 			<newline>		1</newline>
 			<formtype>		input</formtype>
 			<defaultvalue>	=</defaultvalue>
-			<autovalue>		=[Is very important!]</autovalue>
+			<autovalue>		=[In demo: test]</autovalue>
+			<check>
+				<action>	!_check_Formspecific:test</action>
+				<required>	1</required>
+				<errormessage>
+					[Allowed testdb is test]
+				</errormessage>
+			</check>
 		</variable>
 		<check>
 			<action>		!_check_SQLConnection:$dbms,$dbhost,$dbuser,$dbpasswd,$testdb</action>
