@@ -119,7 +119,7 @@ require_once "./include/class.extensions.php";
 genTemplatedir();
 setTemplatevariables();
 stripPostvariables();
-$install= new installer('smileinstaller_phpbb-2.0.11');
+$install= new installer('demoinstaller');
 $content= $install->go();
 unset ($_top);
 $tpl= new smarttemplate('./include/templates/debug.html');

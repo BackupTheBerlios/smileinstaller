@@ -1,25 +1,31 @@
 <?
 class extensions_checks_db extends extensions_checks
 {
-	function _check_SQLConnection ( $pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbname )
-	{		if ( $this->config['system']['debug'] >= 0 ) parent::_setError ( $pagenum, $varnum, '_check_SQLConnection', false );		$return		= array
-		(
-			'value' => '',
-			'isset' => false
-		);
+	function _SQLConnect ( $dbtype, $dbhost, $dbuser, $dbpass, $dbname, &$conn )
+	{
+		if ( $this->config['system']['debug'] >= 0 ) parent::_setError ( $pagenum, $varnum, '_SQLConnect', false );
+		$return		= false;
 		if ( parent::_validateSupportedDatabase ( $dbtype ) )
 		{
 			$dsn	= "$dbtype://$dbuser:$dbpass@$dbhost/$dbname";
 			$conn	= ADONewConnection ( $dsn );
 			if ( is_object ( $conn ) )
 			{
-				$rs		= $conn->Execute('SHOW DATABASES');
-				if ( $rs )
-				{
-					$rs		= $rs->getArray ();
-					$return['isset']	= true;
-				}
+				$return		= true;
 			}
+		}
+		return $return;
+	}
+	function _check_SQLConnection ( $pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbname )
+	{		if ( $this->config['system']['debug'] >= 0 ) parent::_setError ( $pagenum, $varnum, '_check_SQLConnection', false );		$return		= array
+		(
+			'value' => '',
+			'isset' => false
+		);
+		if ( $this->_SQLConnect ( $dbtype, $dbhost, $dbuser, $dbpass, $dbname, &$conn ) )
+		{
+			$conn	->close ();
+			$return['isset']	= true;
 		}
 		return $return;
 	}
