@@ -18,41 +18,6 @@
 			}
 			return $return;
 		}
-		function _writeToFile ( $filename, $allowOnlyVariables = false )
-		{
-			$return		= array (
-				'value'		=> '',
-				'isset'		=> false
-			);
-			$fh		= fopen ( $this->config['system']['directories']['scriptdir'] . '/files/script/' . $filename, 'w+' );
-			if ( $fh )
-			{
-				if ( $allowOnlyVariables )
-				{
-					$allowOnlyVariables		= "+" . $allowOnlyVariables . "+";
-				}
-				fputs ( $fh, "<?php\n" );
-				foreach ( $this->config['pages'] as $page )
-				{
-					foreach ( $page['data'] as $variable )
-					{
-						if ( $allowOnlyVariables )
-						{
-							if ( preg_match ( '|\+(' . $variable['varname'] . ')\+|', $allowOnlyVariables ) )
-							{
-								fputs ( $fh, "$" . $variable['varname'] . " = '" . $variable['uservalue'] . "';\n" );
-							}
-						} else {
-							fputs ( $fh, "$" . $variable['varname'] . " = '" . $variable['uservalue'] . "';\n" );
-						}
-					}
-				}
-				fputs ( $fh, "?>" );
-				fclose ( $fh );
-				$return['isset']		= true;
-			}
-			return $return;
-		}
 	}
 
 ?>

@@ -179,6 +179,7 @@
 				$this->config['installer']['info']['title']			= $this->lang ( $installer['title'] );
 				$this->config['installer']['info']['nextstring']	= $this->lang ( $installer['nextstring'] );
 				$this->config['installer']['info']['finishstring']	= $this->lang ( $installer['finishstring'] );
+				$this->config['installer']['info']['finishedstring']	= $this->lang ( $installer['finishedstring'] );
 				if ( isset ( $installer['finish'] ) )
 				{
 					foreach ( $installer['finish'] as $action )

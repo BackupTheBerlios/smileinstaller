@@ -9,15 +9,22 @@
 			</errormessage>
 		</finish>
 		<finish>
-			<action>	_writeToFile:config.php,dbhost+dbname</action>
+			<action>	!_writeToFile:$path,config.php,dbhost+dbname</action>
 			<required>	1</required>
 			<errormessage>
 				[Konnte Variablen nicht speichern]
 			</errormessage>
 		</finish>
-
+		<finish>
+			<action>	!_writeToFile:$path,config.all.php</action>
+			<required>	1</required>
+			<errormessage>
+				[Konnte Variablen nicht speichern]
+			</errormessage>
+		</finish>
 		<nextstring>[Weiter]</nextstring>
 		<finishstring>[Fertigstellen]</finishstring>
+		<finishedstring>Installation abgeschlossen</finishedstring>
 	</installer>
 	<page>
 		<title>	[Lizenz]</title>

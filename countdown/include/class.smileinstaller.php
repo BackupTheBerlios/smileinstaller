@@ -32,6 +32,7 @@
 					'config'				=> addslashes ( dirname ( __FILE__ ) )  . '/../installer/' . $installer . '/config.xml',
 					'installertemplate'		=> addslashes ( dirname ( __FILE__ ) )  . '/../installer/' . $installer . '/tpl/installer.html',
 					'languagetemplate'		=> addslashes ( dirname ( __FILE__ ) )  . '/../installer/' . $installer . '/tpl/language.html',
+					'finishtemplate'		=> addslashes ( dirname ( __FILE__ ) )  . '/../installer/' . $installer . '/tpl/finish.html',
 				),
 				'varpattern'			=> '/^' .
 					'([0-9]{1,10})\s{1,}' .
@@ -84,9 +85,8 @@
 			if ( $this->checkFinishedPage ( $abortFinish ) == 1 )
 			{
 				$this->doFinish ();
-			} else {
-				$this->setForSmarttemplate ();
 			}
+			$this->setForSmarttemplate ();
 			$return		= $this->tpl->result ();
 			return $return;
 		}
@@ -460,7 +460,7 @@
 				}
 				case "!"	:
 				{
-					$return		= '<' . $this->parseValueAsFunction ( substr ( $value, 1 ) );
+					$return		= '!' . $this->parseValueAsFunction ( substr ( $value, 1 ) );
 					break;
 				}
 				case "."	:
@@ -603,7 +603,12 @@
 				$this->config['system']['smarttemplate']['totalPages']			= $this->config['system']['totalPages'];
 				$this->config['system']['smarttemplate']['installerlanguage']	= $this->config['system']['installerlanguage'];
 				$this->config['system']['smarttemplate']['currentPage']			= $this->config['system']['currentPage']-1;
-				$this->tpl		= new smarttemplate ( $this->config['files']['installertemplate'] );
+				if ( $this->config['finishSet'] )
+				{
+					$this->tpl		= new smarttemplate ( $this->config['files']['finishtemplate'] );
+				} else {
+					$this->tpl		= new smarttemplate ( $this->config['files']['installertemplate'] );
+				}
 			} else {
 				foreach ( $this->config['system']['installerlanguages'] as $language => $text ) {
 					$this->config['system']['smarttemplate']['installerlanguages'][]		= array (
@@ -631,6 +636,19 @@
 			return $return;
 		}
 		function executePageenvironment ( $evalcode, $pagenum )
+		{
+			$this->evalcode		= $evalcode;
+			unset ( $evalcode );
+			foreach ( $this->config['executeEnvironment'] as $varname => $varvalue )
+			{
+				$$varname = $varvalue;
+			}
+			unset ( $varname, $varvalue );
+			$varnum		= 0;
+			eval ( $this->evalcode );
+			return $return;
+		}
+		function executeFinishenvironment ( $evalcode )
 		{
 			$this->evalcode		= $evalcode;
 			unset ( $evalcode );
@@ -728,14 +746,16 @@
 		{
 			foreach ( $this->config['installer']['action'] as $action )
 			{
-				$evalcode	= "\$return = \$this->config['extension']->" . $action;
-				$return		= $this->executeEnvironment ( $evalcode, $this->config['system']['totalPages']+1 );
-				if ( $return == 0 )
+				$action['action']		= substr ( $action['action'], 1 );
+				$evalcode	= "\$return = \$this->config['extension']->" . $this->parseValueAsFunction ( $action['action'] );
+				$return		= $this->executeFinishenvironment ( $evalcode );
+				if ( !$return['isset'] )
 				{
-					die ( 'Error in ' . htmlentities ( $evalcode ) );
+					$this->_setError ( $action['errormessage'] );
+					break;
 				}
 			}
-			$this->tpl		= new smarttemplate ( $this->config['system']['directories']['scriptdir'] . "/files/templates/finish.html" );
+			$this->config['finishSet']	= $return['isset'];
 		}
 		function _setError ( $pagenum, $varnum, $errormessage )
 		{
