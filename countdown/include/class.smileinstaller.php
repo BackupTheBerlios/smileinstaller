@@ -1,12 +1,18 @@
 <?php
-class installer
+class installer extends smilelog
 {
+	// Erstellt alle wichtigen Variablen
 	function installer ( $installer, $isExtension = false )
 	{
-		$this->config		= array 		(			'system' => array
+		$this->config		= array 		(			'system'			=> array
 			(
-				'debug' => 0, 				'isExtension' => $isExtension, 				'errormessage' => '', 				'installer' => $installer, 				'installerlanguage' => "", 				'largest_row' => 0, 				'largest_row_cached' => 0, 				'totalPages' => -1, 				'currentPage' => 0, 				'explicit_page' => 0, 				'installerlanguages' => array 				(					'englisch' => 'Please select your language', 					'deutsch' => 'Bitte w&auml;hlen Sie Ihre Sprache', 					'franzoesisch' => 'Veuillez choisir votre langue',				), 				'classname' => preg_replace('|([^a-zA-Z0-9])|', '_', $installer ),				'pageerror' => -1, 'allow_db' => false, 				'directories' => array 				(					'scriptdir' => addslashes(dirname(__FILE__)).'/../installer/'.$installer, 					'languagedir' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/languages',
+				'debug'					=> 5, 				'isExtension'			=> $isExtension, 				'errormessage'			=> '', 				'installer'				=> $installer, 				'installerlanguage'		=> "", 				'largest_row'			=> 0, 				'largest_row_cached'	=> 0, 				'totalPages'			=> -1, 				'currentPage'			=> 0, 				'explicit_page'			=> 0, 				'installerlanguages'	=> array 				(					'englisch'				=> 'Please select your language', 					'deutsch'				=> 'Bitte w&auml;hlen Sie Ihre Sprache', 					'franzoesisch'			=> 'Veuillez choisir votre langue',				),				'classname'				=> preg_replace('|([^a-zA-Z0-9])|', '_', $installer ),				'pageerror'				=> -1,
+				'directories'			=> array 				(					'scriptdir'				=> addslashes ( dirname ( __FILE__ ) ) 
+						. '/../installer/' . $installer, 					'languagedir'			=> addslashes ( dirname ( __FILE__ ) ) 
+						. '/../installer/' . $installer . '/languages',
 				),
+				
+				// Aus der AdoDB-Supportseite (manches geht scheinbar doch nicht?)
 				'supportedDatabases'	=> array
 				(
 					'access'		=> 'Microsoft Access',
@@ -45,93 +51,147 @@ class installer
 					'sqlitepo'		=> 'SQLite (portable)',
 					'sybase'		=> 'Sybase'
 				),
-			), 			'files' => array 			(				'languageitems' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/languages/available', 				'extension' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/index.php', 				'config' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/config.xml', 				'installertemplate' => addslashes(dirname(__FILE__)).'/templates/installer.html', 				'languagetemplate' => addslashes(dirname(__FILE__)).'/templates/language.html', 				'completetemplate' => addslashes(dirname(__FILE__)).'/templates/complete.html', 				'finishtemplate' => addslashes(dirname(__FILE__)).'/templates/finish.html',			), 			'varpattern' => '/^'.'([0-9]{1,10})\s{1,}'.'([12]{1})\s{1,}'.'([0-9]{1,})\s{1,}'.'([01]{1})\s{1,}'.'([01]{1})\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'varrequirepattern' => '/^'.'([0-9]{1,10})\s{1,}'.'([12]{1})\s{1,}'.'([0-9]{1,})\s{1,}'.'([01]{1})\s{1,}'.'([01]{1})\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'pagetextpattern' => '/^'.'([0-9]{1,})\s{1,}'.'"(pagetitle|pagename|pagedesc{1})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'pageactionpattern' => '/^'.'([0-9]{1,10})\s{1,}'.'([12]{1})\s{1,}'.'([0-9]{1,10})\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'languagelinepattern' => '/^'.'([^=]{1,})=(.*)'.'$/',		);
+			), 			'files'						=> array 			(				'languageitems'				=> addslashes ( dirname ( __FILE__ ) )
+					. '/../installer/' . $installer . '/languages/available', 				'extension'					=> addslashes ( dirname ( __FILE__ ) )
+					. '/../installer/' . $installer . '/index.php', 				'config'					=> addslashes ( dirname ( __FILE__ ) )
+					. '/../installer/' . $installer . '/config.xml', 				'installertemplate'			=> addslashes ( dirname ( __FILE__ ) )
+					. '/templates/installer.html', 				'languagetemplate'			=> addslashes ( dirname ( __FILE__ ) )
+					. '/templates/language.html', 				'completetemplate'			=> addslashes ( dirname ( __FILE__ ) )
+					. '/templates/complete.html', 				'finishtemplate'			=> addslashes ( dirname ( __FILE__ ) )
+					. '/templates/finish.html',			), 			'languagelinepattern'			=> '/^' . '([^=]{1,})=(.*)' . '$/',
+			'log'							=> array (
+				'allNodes'						=> -1,
+				'currentLog'					=> array (),
+				'currentNode'					=> 0,
+			),
+		);
 	}
 
-	function _setError($pagenum, $varnum, $errormessage, $translate= true)
+	// Setzt eine Fehlermeldung ohne Fehlerseite
+	function _setError ( $pagenum, $varnum, $errormessage, $translate = true )
 	{
-		$htmlname= $pagenum;
+		$htmlname	= $pagenum;
 		if ($varnum > 0)
 		{
 			$htmlname .= " (".$this->config['pages'][$pagenum]['data'][$varnum]['htmlname'].")";
 		}
-		if ($translate)
-			$errormessage= $this->lang($errormessage);
-		$this->config['system']['errormessage'][]['text']= $htmlname.": ".$errormessage;
+		// Fuehrt zur Rekursivitaet wenn die Fehlermeldung nicht uebersetzbar ist.
+		if ( $translate )
+		{
+			$errormessage		= $this->lang ( $errormessage );
+		}
+		return parent::log ( $htmlname . ": " . $errormessage );
 	}
-	function checkLanguagepage()
+	// Prüft ob die Installationssprache gesetzt ist
+	function checkLanguagepage ()
 	{
-		$this->config['languageSet']= false;
-		if (!isset ($_POST['_installerlanguage']))
+		$this->config['languageSet']	= false;
+		// Wenn keine Sprache ausgewaehlt wurde
+		if ( !isset ( $_POST['_installerlanguage'] ) )
+		{
 			return false;
-		if (!$this->parseLanguagefile($_POST['_installerlanguage']))
+		}
+		// Wenn Sprachdatei/en nicht ladbar
+		if ( !$this->parseLanguagefile ( $_POST['_installerlanguage'] ) )
+		{
 			return false;
-		$this->config['system']['installerlanguage']= $_POST['_installerlanguage'];
-		$this->config['languageSet']= true;
-		if (!isset ($this->config['pages']))
+		}
+		$this->config['system']['installerlanguage']	= $_POST['_installerlanguage'];
+		$this->config['languageSet']	= true;
+		// Keine Seiten
+		if ( !isset ( $this->config['pages'] ) )
 			return false;
-		if (!is_array($this->config['pages']))
+		// Seiten falsch angelegt
+		if ( !is_array ( $this->config['pages'] ) )
 			return false;
+		// Jeder Seite die gewaehlte Sprache setzen
 		foreach ($this->config['pages'] as $pagenum => $pagedata)
 		{
 			$this->config['pages'][$pagenum]['installerlanguage']= $this->config['system']['installerlanguage'];
 		}
 	}
-	function checkInstallerpage($pagenum)
+	// Prueft die Aktionen einer Seite
+	function checkInstallerpage ( $pagenum )
 	{
-		$return['isset']= true;
-		if (isset ($this->config['pages'][$pagenum]['action']))
+		$return['isset']	= true;
+		// Wenn Aktionen vorhanden
+		if ( isset ( $this->config['pages'][$pagenum]['action'] ) )
 		{
-			foreach ($this->config['pages'][$pagenum]['action'] as $check)
+			// Alle durchlaufen
+			foreach ( $this->config['pages'][$pagenum]['action'] as $check )
 			{
-				$evalcode= "\$return = \$this->config['extension']->".$check['action'];
-				$return= $this->execute($evalcode, $pagenum, 0);
-				if ($this->config['system']['debug'] >= 3)
-					$this->lang($check['errormessage']);
-				if (!$return['isset'])
+				$evalcode	= "\$return = \$this->config['extension']->" . $check['action'];
+				$return		= $this->execute($evalcode, $pagenum, 0);
+				if ( $this->config['system']['debug'] >= 3 )
+					$this->lang ( $check['errormessage'] );
+				// Ween Fehler bei Aktion
+				if ( !$return['isset'] )
 				{
-					$this->_setError($pagenum, 0, $check['errormessage']);
-					if ($this->config['system']['pageerror'] == -1 || $this->config['system']['pageerror'] > $pagenum)
+					if ( $check['required'] == 1 )
 					{
-						$this->config['system']['pageerror']= $pagenum;
+						$this->setError ( $pagenum, 0, $check['errormessage'] );
+					} else {
+						$this->_setError ( $pagenum, 0, $check['errormessage'] );
 					}
 				}
 			}
 		}
 		return $return['isset'];
 	}
-	function checkVariable($pagenum, $varnum, $checks, $selectedValue)
+	// Prueft die Aktionen einer Variable
+	function checkVariable ( $pagenum, $varnum, $checks, $selectedValue )
 	{
 		$return= true;
-		if (is_array($checks))
+		// Wenn Checks verfuegbar
+		if ( is_array ( $checks ) )
 		{
-			if ($this->config['pages'][$pagenum]['data'][$varnum]['formtype'] != 'box' && $this->config['pages'][$pagenum]['data'][$varnum]['formtype'] != 'html')
+			// Wenn Variable keine "Nur-Anzeige"-Variable
+			if ( $this->config['pages'][$pagenum]['data'][$varnum]['formtype'] != 'box'
+				&& $this->config['pages'][$pagenum]['data'][$varnum]['formtype'] != 'html' )
 			{
-				if ($this->config['system']['debug'] >= 5)
-					$this->_setError($pagenum, 'checkVariable', "$pagenum, $varnum, $selectedValue");
-				foreach ($checks as $check)
+				if ( $this->config['system']['debug'] >= 5 )
+					$this->_setError( $pagenum, 'checkVariable', "$pagenum, $varnum, $selectedValue" );
+				// Alle Checks durchlaufen
+				foreach ( $checks as $check )
 				{
-					$value= "";
-					$evalcode= "\$return = \$this->config['extension'] -> ".$this->parseItem($check['action']);
-					if ($this->config['system']['debug'] >= 5)
-						$this->_setError($pagenum, 'checkVariable', "execute $evalcode");
-					$return= $this->execute($evalcode, $pagenum, $varnum);
-					$value= $return['value'];
-					$ok= $return['isset'];
-					if ($this->config['system']['debug'] >= 5)
-						$this->lang($check['errormessage']);
+					$value		= "";
+					$evalcode	= "\$return = \$this->config['extension'] -> " 
+						. $this->parseItem ( $check['action'] );
+					if ( $this->config['system']['debug'] >= 5 )
+					{
+						$this->_setError ( $pagenum, 'checkVariable', "execute $evalcode" );
+					}
+					$return		= $this->execute ( $evalcode, $pagenum, $varnum );
+					$value		= $return['value'];
+					$ok			= $return['isset'];
+					if ( $this->config['system']['debug'] >= 5 )
+					{
+						$this->lang ( $check['errormessage'] );
+					}
+					// Wenn Prüfung nicht OK
 					if (!$ok)
 					{
-						if ($this->config['system']['debug'] >= 5)
-							$this->_setError($pagenum, 'checkVariable', "check false");
-						$return= false;
-						$this->_setError($pagenum, $varnum, $check['errormessage']);
+						if ( $this->config['system']['debug'] >= 5 )
+						{
+							$this->_setError ( $pagenum, $varnum, "checkVariable: check false" );
+						}
+						if ( $check['required'] == 1 )
+						{ 
+							$return		= false;
+							$this		->setError ( $pagenum, $varnum, "checkVariable: " . $check['errormessage'] );
+						} else {
+							if ( $this->config['system']['debug'] >= 5 )
+							{
+								$this->_setError ( $pagenum, $varnum, "... but its ok" );
+							}
+						}
+							
 						break;
-					}
-					else
-					{
-						if ($this->config['system']['debug'] >= 5)
+					} else {
+						if ( $this->config['system']['debug'] >= 5 )
+						{
 							$this->_setError($pagenum, 'checkVariable', "check true");
+						}
 					}
 				}
 			}
@@ -356,9 +416,14 @@ class installer
 	}
 	function go()
 	{
-		if ( $this->config['system']['debug'] >= 5 ) $this->_setError('DEBUG', 'go', 'begin installation');
+		if ( $this->config['system']['debug'] >= 5 )
+		{
+			$this->_setError ( 'DEBUG', 'go', 'begin installation' );
+		}
 		if ( $this->config['system']['isExtension'] )
+		{
 			die ( 'not an installer' );
+		}
 		$this->loadLanguages ();
 		$this->initializeExtension ();
 		$this->checkLanguagepage ();
@@ -370,7 +435,7 @@ class installer
 	{
 		if (!is_string($key))
 		{
-			if ($this->config['system']['debug'] >= 1)
+			if ($this->config['system']['debug'] >= 6)
 			{
 				$this->_setError(0, 0, 'lang: not a string: ". '.print_r($key, 1).'"', false);
 			}
@@ -380,7 +445,7 @@ class installer
 			if (!preg_match('|^\[(.*)\]$|', trim($key), $result))
 			{
 				$return= $key;
-				if ($this->config['system']['debug'] >= 1)
+				if ($this->config['system']['debug'] >= 6)
 					$this->_setError(0, 0, 'lang: No languagestring "'.$return.'"', false);
 			}
 			else
@@ -388,7 +453,7 @@ class installer
 				if (!isset ($this->config['language'][$result[1]]) || $this->config['language'][$result[1]] == "")
 				{
 					$return= $result[1];
-					if ($this->config['system']['debug'] >= 1)
+					if ($this->config['system']['debug'] >= 6)
 						$this->_setError(0, 0, 'lang: No languagedefinition "'.$return.'"', false);
 				}
 				else
@@ -518,16 +583,17 @@ class installer
 		$pagenum	= 0;
 		foreach ( $pages as $page )
 		{
-			if ($this->config['system']['debug'] >= 5)
-				$this->_setError($pagenum, 'setConfig', 'Set page');
+			parent::useNode ( parent::log ( "Page $pagenum" ) );
+			if ( $this->config['system']['debug'] >= 5 )
+				$this->_setError ( $pagenum, 'setConfig', 'Set page' );
 			$this->setInstallerpageDataInfos ( $pagenum, $page );
-			if ($this->config['system']['pageerror'] == -1)
+			if ( $this->config['system']['pageerror'] == -1 )
 			{
 				$this->setFinishvalueTitle ( $this->config['system']['smarttemplate']['allPages'][$pagenum]['info'] );
 				$this->setInstallerpageDataActive ( $pagenum );
 				$this->setInstallerpageDataChecks ( $pagenum, $page['check'] );
 				$this->setInstallerpageDataVariables ( $pagenum, $page['variable'] );
-				if ($this->config['system']['pageerror'] == -1)
+				if ( $this->config['system']['pageerror'] == -1 )
 				{
 					$this->checkInstallerpage ( $pagenum );
 				}
@@ -586,9 +652,9 @@ class installer
 		$this->setAllRuntimeGeneratedInstallerpages ();
 		$this->setInstallerpageComplete ( $settings['root']['pages']['installer']['onComplete'] );
 		$this->setFinishOrComplete ();
-		$this->setPage();
+		$this->setHTMLPage();
 	}
-	function setErrorpage($pagenum, $varnum= false, $errormessage= false)
+	function setError($pagenum, $varnum= false, $errormessage= false)
 	{
 		if ($this->config['system']['pageerror'] < $pagenum)
 		{
@@ -596,7 +662,7 @@ class installer
 		}
 		if ($errormessage || $varnum)
 		{
-			$this->_setError($pagenum, $varnum, $errormessage);
+			return $this->_setError($pagenum, $varnum, $errormessage);
 		}
 	}
 	function setFinish($redirectTo)
@@ -665,15 +731,15 @@ class installer
 			$this->_setError($pagenum, 'setPageinfos', 'Set pageinfos');
 		if (!isset ($settings['title']))
 		{
-			$this->setErrorpage($pagenum, 'setPageinfos', 'No pagetitle');
+			$this->setError($pagenum, 'setPageinfos', 'No pagetitle');
 		}
 		if (!isset ($settings['name']))
 		{
-			$this->setErrorpage($pagenum, 'setPageinfos', 'No pagename');
+			$this->setError($pagenum, 'setPageinfos', 'No pagename');
 		}
 		if (!isset ($settings['desc']))
 		{
-			$this->setErrorpage($pagenum, 'setPageinfos', 'No pagedescription');
+			$this->setError($pagenum, 'setPageinfos', 'No pagedescription');
 		}
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]	= array
 		(
@@ -706,15 +772,15 @@ class installer
 			{
 				if (!isset ($check['required']))
 				{
-					$this->setErrorpage($pagenum, 'setPageactions', 'No required for action');
+					$this->setError($pagenum, 'setPageactions', 'No required for action');
 				}
 				if (!isset ($check['action']))
 				{
-					$this->setErrorpage($pagenum, 'setPageactions', 'No action for action?!?');
+					$this->setError($pagenum, 'setPageactions', 'No action for action?!?');
 				}
 				if (!isset ($check['errormessage']))
 				{
-					$this->setErrorpage($pagenum, 'setPageactions', 'No errormessage for action');
+					$this->setError($pagenum, 'setPageactions', 'No errormessage for action');
 				}
 				if ($this->config['system']['debug'] >= 3)
 					$this->lang($check['errormessage']);
@@ -739,28 +805,28 @@ class installer
 				$this->_setError($pagenum, 'setConfig', 'Set variable '.$varcount);
 			if (!isset ($variable['name']))
 			{
-				$this->setErrorpage($pagenum, $variable['name'].'('.$varcount.')', 'setPagevariables, No name for variable');
+				$this->setError($pagenum, $variable['name'].'('.$varcount.')', 'setPagevariables, No name for variable');
 				$variable['name']= "";
 			}
 			if (!isset ($variable['required']))
 			{
-				$this->setErrorpage($pagenum, $varcount, 'setPagevariables '.$variable['name'].', No required for variable');
+				$this->setError($pagenum, $varcount, 'setPagevariables '.$variable['name'].', No required for variable');
 			}
 			if (!isset ($variable['newline']))
 			{
-				$this->setErrorpage($pagenum, $varcount, 'setPagevariables '.$variable['name'].', No newline for variable');
+				$this->setError($pagenum, $varcount, 'setPagevariables '.$variable['name'].', No newline for variable');
 			}
 			if (!isset ($variable['htmlname']))
 			{
-				$this->setErrorpage($pagenum, $varcount, 'setPagevariables '.$variable['name'].', No htmlname for variable');
+				$this->setError($pagenum, $varcount, 'setPagevariables '.$variable['name'].', No htmlname for variable');
 			}
 			if (!isset ($variable['htmldesc']))
 			{
-				$this->setErrorpage($pagenum, $varcount, 'setPagevariables '.$variable['name'].', No htmldesc for variable');
+				$this->setError($pagenum, $varcount, 'setPagevariables '.$variable['name'].', No htmldesc for variable');
 			}
 			if (!isset ($variable['formtype']))
 			{
-				$this->setErrorpage($pagenum, $varcount, 'setPagevariables '.$variable['name'].', No formtype for variable');
+				$this->setError($pagenum, $varcount, 'setPagevariables '.$variable['name'].', No formtype for variable');
 			}
 			if (!isset ($variable['autovalue']))
 			{
@@ -830,7 +896,7 @@ class installer
 				}
 				else
 				{
-					$this->setErrorpage($pagenum);
+					$this->setError($pagenum);
 					$form= $defaultform;
 				}
 
@@ -840,7 +906,7 @@ class installer
 			{
 				if ($formtype != 'box' && $formtype != 'html')
 				{
-					$this->setErrorpage($pagenum);
+					$this->setError($pagenum);
 				}
 				$form= $defaultform;
 			}
@@ -961,7 +1027,7 @@ class installer
 			$this->_setError ( 0, 0, 'setInstallerdataOnFinishActionValue' );
 		}
 	}
-	function setPage()
+	function setHTMLPage()
 	{
 		$usePage= -1;
 		if ($this->config['languageSet'])
@@ -1002,7 +1068,7 @@ class installer
 		}
 		$this->config['system']['smarttemplate']['allPages'][$usePage]['isActive']	= 2;
 		$this->config['system']['smarttemplate']['currentPage']		= $this->config['system']['pageerror'];
-		$this->config['system']['smarttemplate']['errormessage']	= $this->config['system']['errormessage'];
+		$this->config['system']['smarttemplate']['errormessage']	= parent::getLogHTML ();#$this->config['system']['errormessage'];
 		$this->config['system']['smarttemplate']['totalPages']		= sizeof($this->config['system']['smarttemplate']['allPages']);
 		$this->config['system']['smarttemplate']['installerlanguage']= $this->config['system']['installerlanguage'];
 		$this->config['system']['smarttemplate']['installer']= $this->config['installer']['info'];

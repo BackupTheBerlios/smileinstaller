@@ -115,25 +115,6 @@
 					</errormessage>
 				</check>
 			</variable>
-			<variable>
-				<name>			no_db</name>
-				<htmlname>		[Use a database]</htmlname>
-				<htmldesc>		[Experiments for jumpToPage:#]</htmldesc>
-				<required>		1</required>
-				<newline>		1</newline>
-				<formtype>		select</formtype>
-				<defaultvalue>	=[Yes],[No]</defaultvalue>
-				<autovalue>		=[No for experiments]</autovalue>
-				<check>		
-					<required>	1</required>
-					<action>	!_check_Formspecific:[No]</action>
-					<errormessage>
-						[Only the experimental way of install allowed]
-					</errormessage>
-					<jumpIfOk>+1</jumpIfOk>
-					<jumpIfWrong>+0</jumpIfWrong>
-				</check>
-			</variable>
 		</page>	
 		<page>
 			<title>	[Server]</title>

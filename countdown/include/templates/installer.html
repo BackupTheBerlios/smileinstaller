@@ -147,11 +147,7 @@
 						<br>
 						<!-- IF var.errormessage>"" -->
 							<div class="error">
-								<ol>
-									<!-- BEGIN var.errormessage -->
-										<li>{htmlentities:text}</li>
-									<!-- END var.errormessage -->
-								</ol>
+								{var.errormessage}
 							</div>
 							<br>
 						<!-- ENDIF var.errormessage -->

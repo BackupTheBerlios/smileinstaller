@@ -47,6 +47,7 @@ stripPostvariables ();
 
 require_once "./../adodb/adodb.inc.php";
 require_once "./../smarttemplate/class.smarttemplate.php";
+require_once "./include/class.smilelog.php";
 require_once "./include/class.smileinstaller.php";
 require_once "./include/extensions/class.extensions.all.php";
 require_once "./include/extensions/class.extensions.checks._.php";
