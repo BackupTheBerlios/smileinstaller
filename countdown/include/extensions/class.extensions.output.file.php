@@ -1,7 +1,7 @@
 <?
 	class extensions_output_file extends extensions_output_db
 	{
-		function _outputVarToFile ( $pagenum, $varnum, $path, $file, $allowOnlyVariables = false )
+		function _output_VarToFile ( $pagenum, $varnum, $path, $file, $allowOnlyVariables = false )
 			{
 				$return		= array (
 					'value'		=> '',
@@ -33,7 +33,7 @@
 				}
 				return $return;
 			}
-		function _outputCreateDirectory ( $pagenum, $varnum, $path, $mode )
+		function _output_CreateDirectory ( $pagenum, $varnum, $path, $mode )
 		{
 			$return		= array (
 				'value'		=> "$path/$newDir",
@@ -46,7 +46,7 @@
 			}
 			return $return;
 		}
-		function _outputUnpackScript ( $pagenum, $varnum, $path )
+		function _output_UnpackScript ( $pagenum, $varnum, $path )
 		{
 			$return['isset']		= true;
 			// the first argument is the zip file

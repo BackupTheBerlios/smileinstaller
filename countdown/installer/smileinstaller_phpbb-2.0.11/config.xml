@@ -29,7 +29,7 @@
 	<page>
 		<title>	[License]</title>
 		<name>	[License agreement]</name>
-		<desc>	[]</desc>
+		<desc>	[Script's license]</desc>
 		<variable>
 			<name>			none1</name>
 			<htmlname>		[License]</htmlname>				
@@ -61,16 +61,16 @@
 	<page>
 		<title>		[Installation directory]</title>
 		<name>		[Installation directory]</name>
-		<desc>		[]</desc>
+		<desc>		[Directory to install this script]</desc>
 		<variable>
 			<name>			script_path</name>
 			<htmlname>		[Path for PHPbb2]</htmlname>
-			<htmldesc>		[]</htmldesc>
+			<htmldesc>		[Smileinstallerdemo. No user defined path allowed.]</htmldesc>
 			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		select</formtype>
 			<defaultvalue>	!_value_demopaths</defaultvalue>
-			<autovalue>		=</autovalue>
+			<autovalue>		!_uservalue_installerdir</autovalue>
 			<check>		
 				<required>	1</required>
 				<action>	!_check_Formspecific</action>
@@ -90,7 +90,7 @@
 	<page>
 		<title>	[Server]</title>
 		<name>	[Server]</name>
-		<desc>	[]</desc>
+		<desc>	[Informations for Webserver and SQL-Server]</desc>
 		<variable>
 			<name>			server_name</name>
 			<htmlname>		[Server name]</htmlname>
@@ -157,7 +157,7 @@
 	<page>
 		<title>	[Select database]</title>
 		<name>	[Select database]</name>
-		<desc>	[]</desc>
+		<desc>	[Database and tables to use]</desc>
 		<variable>
 			<name>			dbname</name>
 			<htmlname>		[Existing databases]</htmlname>

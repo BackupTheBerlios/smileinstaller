@@ -4,11 +4,7 @@
 <meta name="GENERATOR" content="PHPEclipse 1.0" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>{htmlentities:var.installer.title}</title>
-<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.css" type="text/css">
-<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.tab.side.css" type="text/css">
-<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.tab.top.css" type="text/css">
-<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.document.css" type="text/css">
-<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.contenttable.css" type="text/css">
+<link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.css" type="text/css"><link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.tab.side.css" type="text/css"><link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.tab.top.css" type="text/css"><link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.document.css" type="text/css"><link rel="stylesheet" href="./installer/{var.installer.name}/tpl/css/installer.contenttable.css" type="text/css"><script type="text/javascript" language="javascript" src="./include/templates/domtt/domlib.js"></script><script type="text/javascript" language="javascript" src="./include/templates/domtt/domtt.js"></script><script language="JavaScript" type="text/javascript"> <!-- BEGIN var.displayPage.data --><!-- IF htmldesc>"" -->var htmldesc_{ROWCNT} = '{addslashes_javascript:htmldesc}'; <!-- ENDIF htmldesc>"" --> <!-- END var.displayPage.data --> <!-- BEGIN var.allPages --> <!-- IF info.pagedesc>"" --> var pagedesc_{ROWCNT} = '{addslashes_javascript:info.pagedesc}'; <!-- ENDIF info.pagedesc>"" --> <!-- END var.allPages --> </script>
 </head>
 <body bgcolor="#FFFFFF" text="#000000" link="#FF9966" vlink="#FF9966" alink="#FFCC99">
 	<br>
@@ -32,19 +28,21 @@
 								<!-- BEGIN hiddenValue -->
 									<input type="hidden" name="{varname}" value="{varvalue}">
 								<!-- END hiddenValue -->
+								<td 
+									<!-- IF info.pagedesc>"" -->
+									onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{pagetitle}', 'content', pagedesc_{ROWCNT}, 'trail', true ) );"
+									<!-- ENDIF info.pagedesc>"" -->
+									class="
 									<!-- IF isActive=="0" -->
-										<td class="unavailable_tab_top">
-										{info.pagetitle}
-										</td>
+									unavailable_tab_top
 									<!-- ELSEIF isActive=="1" -->
-										<td class="available_tab_top" onclick="document.gotopage2_{ROWCNT}.submit ()">
-										{info.pagetitle}
-										</td>
+									available_tab_top" onclick="document.gotopage2_{ROWCNT}.submit ()
 									<!-- ELSEIF isActive=="2" -->
-										<td class="current_tab_top">
-										{info.pagetitle}
-										</td>
+									current_tab_top
 									<!-- ENDIF isActive=="1" -->
+									">
+									{info.pagetitle}
+								</td>
 								</form>
 								<!-- END var.allPages -->
 							</tr>
@@ -76,7 +74,7 @@
 								</td>
 							</tr>
 							<!-- BEGIN var.displayPage.data -->
-							<tr  class="contenttable_row_{ROWBIT}" >
+							<tr  class="contenttable_row_{ROWBIT}" <!-- IF htmldesc>"" -->onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{htmlname}', 'content', htmldesc_{ROWCNT}, 'trail', true ) );"><!-- ENDIF htmldesc>"" -->
 								<td>{htmlname}<!-- IF error="1" -->*<!-- ENDIF error --></td>
 								<td>{form}</td>
 								<td class="contenttable_row_disabled_{ROWBIT}">{autovalue}</td>
@@ -112,8 +110,19 @@
 				<input type="hidden" name="{varname}" value="{varvalue}">
 			<!-- END hiddenValue -->
 			<tr valign="top">
-				<td class="<!-- IF isActive=="1" --><!-- IF isCurrentPage=="1" -->current_tab_side<!-- ELSE -->available_tab_side" onclick="document.gotopage_{ROWCNT}.submit ()<!-- ENDIF isCurrentPage=="1" --><!-- ELSE -->unavailable_tab_side<!-- ENDIF isActive=="1" -->">
-					{info.pagetitle}
+				<td 
+					<!-- IF info.pagedesc>"" -->
+						onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{pagetitle}', 'content', pagedesc_{ROWCNT}, 'trail', true ) );"
+					<!-- ENDIF info.pagedesc>"" -->
+					class="
+					<!-- IF isActive=="0" -->
+					unavailable_tab_side
+					<!-- ELSEIF isActive=="1" -->
+					available_tab_side" onclick="document.gotopage2_{ROWCNT}.submit ()
+					<!-- ELSEIF isActive=="2" -->
+					current_tab_side
+					<!-- ENDIF isActive=="1" -->
+					">{info.pagetitle}</td>
 				</td>
 			</tr>
 			</form>

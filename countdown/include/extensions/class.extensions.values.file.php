@@ -9,6 +9,13 @@
 				'isset'		=> true
 			);
 		}
+		function _value_installerdir ( $pagenum, $varnum )
+		{
+			return array (
+				'value'		=> str_replace ( "\\", "/", INSTALLERPATH ),
+				'isset'		=> true
+			);
+		}
 		function _value_rooturl ( $pagenum, $varnum )
 		{
 			return array (

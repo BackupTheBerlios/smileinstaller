@@ -17,3 +17,4 @@ Server=Server
 Select database=Datenbank waehlen
 Existing databases=Verfuegbare Datenbanken
 Tableprefix=Tabellenpraefix
+Path to installer=Pfad zum Installer

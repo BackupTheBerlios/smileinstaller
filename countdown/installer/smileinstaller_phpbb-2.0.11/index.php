@@ -184,6 +184,12 @@
 			@fclose($fp);
 			$upgrade_now = $lang['upgrade_submit'];
 		}
+		function _uservalue_installerdir ( $pagenum, $varnum )
+		{
+			$return		= parent::_value_installerdir ( $pagenum, $varnum );
+			$return['value']	= parent::lang ( '[Path to installer]' ) . ' ' . $return['value'];
+			return $return;
+		}
 	}
 	
 ?>

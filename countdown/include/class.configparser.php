@@ -198,6 +198,7 @@
 				$newline		= $variable['newline'];
 				$varname		= $variable['name'];
 				$htmlname		= $variable['htmlname'];
+				$htmldesc		= $variable['htmldesc'];
 				$formtype		= $variable['formtype'];
 				if ( isset ( $_POST[$varname] ) )
 				{
@@ -227,6 +228,7 @@
 				$this->config['pages'][$pagenum]['data'][$position]		= array (
 					'varname'		=> $variable['name'],
 					'htmlname'		=> $this->lang ( $htmlname ),
+					'htmldesc'		=> $this->lang ( $htmldesc ),
 					'newline'		=> $newline,
 					'form'			=> $variable['formtype'],
 					'formtype'		=> $variable['formtype'],

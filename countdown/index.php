@@ -1,6 +1,7 @@
 <?
 
 	define ( 'ROOTPATH', dirname ( dirname ( __FILE__ ) . '*' ) );
+	define ( 'INSTALLERPATH', dirname ( __FILE__ ) );
 	// Ziparchiv des Scripts muss den neuen Pfad enthalten!
 	///////////////////////////////////////////////////////
 	// Nichts quoten. Ganz schlecht!
@@ -135,7 +136,7 @@
 	);
 	$debug		= $tpl->result();
 	unset ( $_top );
-	if ( preg_match ( '|<body([^>]{1,})>|', $content, $result ) )
+	/*if ( preg_match ( '|<body([^>]{1,})>|', $content, $result ) )
 	{
 		$content	= str_replace
 		( 
@@ -145,7 +146,7 @@
 		);
 	} else {
 		$content		.= 'no debug added';
-	}
+	}*/
 	removeTemplatedir ();
 	
 	echo $content;
