@@ -104,7 +104,7 @@ class configparser
 		{
 			$this->setErrorpage($pagenum, 'setPageinfos', 'No pagedescription');
 		}
-		$this->config['system']['smarttemplate']['allPages'][$pagenum]= array ('info' => array ('name' => $this->config['system']['installer'], 'pagetitle' => $this->lang($settings['title']), 'pagename' => $this->lang($settings['name']), 'pagedesc' => $this->lang($settings['desc']),), 'pagenum' => $pagenum, 'isActive' => 0,);
+		$this->config['system']['smarttemplate']['allPages'][$pagenum]= array		(			'info' => array			(				'name' => $this->config['system']['installer'], 				'pagetitle' => $this->lang($settings['title']), 				'pagename' => $this->lang($settings['name']),				'pagedesc' => $this->lang($settings['desc']),			),			'pagenum' => $pagenum, 			'isActive' => 0,		);
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]['installerlanguage']= $this->config['system']['installerlanguage'];
 		if ($this->config['system']['debug'] >= 5)
 			$this->_setError($pagenum, 'setPageinfos', print_r($this->config['system']['smarttemplate']['allPages'][$pagenum], 1));

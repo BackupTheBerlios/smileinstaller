@@ -3,7 +3,7 @@ class extensions_output_file extends extensions_output_db
 {
 	function _output_VarToFile($pagenum, $varnum, $path, $file, $allowOnlyVariables= false)
 	{
-		$return= array ('value' => '', 'isset' => false);
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_output_VarToFile' );		$return= array ('value' => '', 'isset' => false);
 		$fh= fopen($path."/".$file, 'w+');
 		if ($fh)
 		{
@@ -34,7 +34,7 @@ class extensions_output_file extends extensions_output_db
 	}
 	function _output_CreateDirectory($pagenum, $varnum, $path, $mode)
 	{
-		$return= array ('value' => "$path/$newDir", 'isset' => false);
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_output_CreateDirectory' );		$return= array ('value' => "$path/$newDir", 'isset' => false);
 		@ mkdir("$path/$newDir", $mode);
 		if (is_dir("$path/$newDir"))
 		{
@@ -44,7 +44,7 @@ class extensions_output_file extends extensions_output_db
 	}
 	function _output_UnpackScript($pagenum, $varnum, $path)
 	{
-		$return['isset']= true;
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_output_UnpackScript' );		$return['isset']= true;
 		// the first argument is the zip file
 		//$in_file = $_SERVER['argv'][1];
 		$in_file= $this->config['system']['directories']['scriptdir'].'/script.zip';

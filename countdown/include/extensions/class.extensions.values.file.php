@@ -3,19 +3,19 @@ class extensions_values_file extends extensions_values_db
 {
 	function _value_rootdir($pagenum, $varnum)
 	{
-		return array ('value' => str_replace("\\", "/", ROOTPATH), 'isset' => true);
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_value_rootdir' );		return array ('value' => str_replace("\\", "/", ROOTPATH), 'isset' => true);
 	}
 	function _value_installerdir($pagenum, $varnum)
 	{
-		return array ('value' => str_replace("\\", "/", INSTALLERPATH), 'isset' => true);
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_value_installerdir' );		return array ('value' => str_replace("\\", "/", INSTALLERPATH), 'isset' => true);
 	}
 	function _value_rooturl($pagenum, $varnum)
 	{
-		return array ('value' => str_replace("\\", "/", ROOTURL), 'isset' => true);
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_value_rooturl' );		return array ('value' => str_replace("\\", "/", ROOTURL), 'isset' => true);
 	}
 	function _value_Demopaths($pagenum, $varnum)
 	{
-		$return= array ('value' => '', 'isset' => false);
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_value_Demopaths' );		$return= array ('value' => '', 'isset' => false);
 		$rootpath= str_replace("\\", "/", ROOTPATH.'/');
 		if ($newRootpath= strstr($rootpath, ":"))
 		{

@@ -3,7 +3,7 @@ class extensions_checks_form extends extensions_checks_finish
 {
 	function __check_string($pagenum, $varnum)
 	{
-		$return= array ('value' => $var['defaultvalue'], 'isset' => false);
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '__check_string' );		$return= array ('value' => $var['defaultvalue'], 'isset' => false);
 		@ mkdir($return['value'], 0777);
 		if ($_POST[$var['varname']] > "")
 		{
@@ -13,7 +13,7 @@ class extensions_checks_form extends extensions_checks_finish
 	}
 	function _check_Formspecific($pagenum, $varnum, $requireValue= false)
 	{
-		$var= $this->config['pages'][$pagenum]['data'][$varnum];
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_check_Formspecific' );		$var= $this->config['pages'][$pagenum]['data'][$varnum];
 		switch (strtolower($var['formtype']))
 		{
 			case 'select' :
@@ -45,7 +45,7 @@ class extensions_checks_form extends extensions_checks_finish
 	}
 	function __checkFormSelect($var, $requireValue= false)
 	{
-		$return= array ('value' => $var['defaultvalue'], 'isset' => false);
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '__checkFormSelect' );		$return= array ('value' => $var['defaultvalue'], 'isset' => false);
 		if ($requireValue)
 		{
 			if ($_POST[$var['varname']] == $requireValue)
@@ -78,7 +78,7 @@ class extensions_checks_form extends extensions_checks_finish
 	}
 	function __checkFormCheckbox($var, $requireValue= false)
 	{
-		$return= array ('value' => $var['defaultvalue'], 'isset' => false);
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '__checkFormCheckbox' );		$return= array ('value' => $var['defaultvalue'], 'isset' => false);
 		if ($requireValue)
 		{
 			if ($_POST[$var['varname']] == $requireValue)
@@ -97,7 +97,7 @@ class extensions_checks_form extends extensions_checks_finish
 	}
 	function __checkFormInput($var, $requireValue= false)
 	{
-		$return= array ('value' => $var['defaultvalue'], 'isset' => false);
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '__checkFormInput' );		$return= array ('value' => $var['defaultvalue'], 'isset' => false);
 		if ($requireValue)
 		{
 			if ($_POST[$var['varname']] == $requireValue)
@@ -116,7 +116,7 @@ class extensions_checks_form extends extensions_checks_finish
 	}
 	function __checkFormPassword($var, $requireValue= false)
 	{
-		$return= array ('value' => $var['defaultvalue'], 'isset' => false);
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '__checkFormPassword' );		$return= array ('value' => $var['defaultvalue'], 'isset' => false);
 		if ($requireValue)
 		{
 			if ($_POST[$var['varname']] == $requireValue)

@@ -3,7 +3,7 @@ class extensions_values_db extends extensions_values
 {
 	function _value_SQLTables($pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass)
 	{
-		$return= array ('value' => '', 'isset' => false);
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_value_SQLTables' );		$return= array ('value' => '', 'isset' => false);
 		if ($link= mysql_connect($dbhost, $dbuser, $dbpass))
 		{
 			$db_list= mysql_list_dbs($link);
@@ -18,7 +18,7 @@ class extensions_values_db extends extensions_values
 	}
 	function _value_SQLDetect($pagenum, $varnum)
 	{
-		$this->_setError('0', '_value_SQLDetect', '[no code]');
+		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_value_SQLDetect' );		$this->_setError('0', '_value_SQLDetect', '[no code]');
 	}
 }
 ?>
