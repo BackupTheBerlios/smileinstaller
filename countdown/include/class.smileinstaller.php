@@ -1,4 +1,6 @@
 <?php
+	define ( 'ERRORINFO', 0 );
+	define ( 'DEBUGINFO', 5 );
 class installer extends smilelog
 {
 	// Erstellt alle wichtigen Variablen
@@ -6,7 +8,7 @@ class installer extends smilelog
 	{
 		$this->config		= array 		(			'system'			=> array
 			(
-				'debug'					=> 5, 				'isExtension'			=> $isExtension, 				'errormessage'			=> '', 				'installer'				=> $installer, 				'installerlanguage'		=> "", 				'largest_row'			=> 0, 				'largest_row_cached'	=> 0, 				'totalPages'			=> -1, 				'currentPage'			=> 0, 				'explicit_page'			=> 0, 				'installerlanguages'	=> array 				(					'englisch'				=> 'Please select your language', 					'deutsch'				=> 'Bitte w&auml;hlen Sie Ihre Sprache', 					'franzoesisch'			=> 'Veuillez choisir votre langue',				),				'classname'				=> preg_replace('|([^a-zA-Z0-9])|', '_', $installer ),				'pageerror'				=> -1,
+				'debug'					=> 0, 				'isExtension'			=> $isExtension, 				'errormessage'			=> '', 				'installer'				=> $installer, 				'installerlanguage'		=> "", 				'largest_row'			=> 0, 				'largest_row_cached'	=> 0, 				'totalPages'			=> -1, 				'currentPage'			=> 0, 				'explicit_page'			=> 0, 				'installerlanguages'	=> array 				(					'englisch'				=> 'Please select your language', 					'deutsch'				=> 'Bitte w&auml;hlen Sie Ihre Sprache', 					'franzoesisch'			=> 'Veuillez choisir votre langue',				),				'classname'				=> preg_replace('|([^a-zA-Z0-9])|', '_', $installer ),				'pageerror'				=> -1,
 				'directories'			=> array 				(					'scriptdir'				=> addslashes ( dirname ( __FILE__ ) ) 
 						. '/../installer/' . $installer, 					'languagedir'			=> addslashes ( dirname ( __FILE__ ) ) 
 						. '/../installer/' . $installer . '/languages',
@@ -59,28 +61,33 @@ class installer extends smilelog
 					. '/templates/language.html', 				'completetemplate'			=> addslashes ( dirname ( __FILE__ ) )
 					. '/templates/complete.html', 				'finishtemplate'			=> addslashes ( dirname ( __FILE__ ) )
 					. '/templates/finish.html',			), 			'languagelinepattern'			=> '/^' . '([^=]{1,})=(.*)' . '$/',
-			'log'							=> array (
-				'allNodes'						=> -1,
-				'currentLog'					=> array (),
-				'currentNode'					=> 0,
-			),
+			'log'							=> array (),
 		);
 	}
 
 	// Setzt eine Fehlermeldung ohne Fehlerseite
-	function _setError ( $errotype, $pagenum, $varnum, $errormessage, $translate = true )
+	function _setError ( $errortype, $pagenum, $varnum, $errormessage, $translate = true )
 	{
-		$htmlname	= $pagenum;
-		if ($varnum > 0)
+		if ( $errortype <= $this->config['system']['debug'] )
 		{
-			$htmlname .= " (".$this->config['pages'][$pagenum]['data'][$varnum]['htmlname'].")";
+			if ( $pagenum != -1 && $varnum != -1 )
+			{
+				$htmlname	= "$pagenum, $varnum ";
+			} else {
+				$htmlname	= "---- ";
+			}
+			if ( $this->config['pages'][$pagenum]['data'][$varnum]['htmlname'] > "" )
+			{
+				$htmlname .= "(".$this->config['pages'][$pagenum]['data'][$varnum]['htmlname'].") ";
+			}
+			
+			// Fuehrt zur Rekursivitaet wenn die Fehlermeldung nicht uebersetzbar ist.
+			if ( $translate )
+			{
+				$errormessage		= $this->lang ( $errormessage );
+			}
+			return parent::log ( $htmlname . ": " . $errormessage );
 		}
-		// Fuehrt zur Rekursivitaet wenn die Fehlermeldung nicht uebersetzbar ist.
-		if ( $translate )
-		{
-			$errormessage		= $this->lang ( $errormessage );
-		}
-		return parent::log ( $htmlname . ": " . $errormessage );
 	}
 	// Prüft ob die Installationssprache gesetzt ist
 	function checkLanguagepage ()
@@ -129,9 +136,9 @@ class installer extends smilelog
 				{
 					if ( $check['required'] == 1 )
 					{
-						$this->setError ( $pagenum, 0, $check['errormessage'] );
+						$this->setError ( $pagenum, 0, __METHOD__ . " " . $check['errormessage'] );
 					} else {
-						$this->_setError ( ERRORINFO, $pagenum, 0, $check['errormessage'] );
+						$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . $check['errormessage'] );
 					}
 				}
 			}
@@ -149,14 +156,14 @@ class installer extends smilelog
 			if ( $this->config['pages'][$pagenum]['data'][$varnum]['formtype'] != 'box'
 				&& $this->config['pages'][$pagenum]['data'][$varnum]['formtype'] != 'html' )
 			{
-				$this->_setError( DEBUGINFO, $pagenum, 'checkVariable', "$pagenum, $varnum, $selectedValue" );
+				$this->_setError( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . "$pagenum, $varnum, $selectedValue" );
 				// Alle Checks durchlaufen
 				foreach ( $checks as $check )
 				{
 					$value		= "";
 					$evalcode	= "\$return = \$this->config['extension'] -> " 
 						. $this->parseItem ( $check['action'] );
-					$this->_setError ( DEBUGINFO, $pagenum, 'checkVariable', "execute $evalcode" );
+					$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "execute $evalcode" );
 					$return		= $this->execute ( $evalcode, $pagenum, $varnum );
 					$value		= $return['value'];
 					$ok			= $return['isset'];
@@ -167,18 +174,18 @@ class installer extends smilelog
 					// Wenn Prüfung nicht OK
 					if (!$ok)
 					{
-						$this->_setError ( DEBUGINFO, $pagenum, $varnum, "checkVariable: check false" );
+						$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "checkVariable: check false" );
 						if ( $check['required'] == 1 )
 						{ 
 							$return		= false;
 							$this		->setError ( $pagenum, $varnum, "checkVariable: " . $check['errormessage'] );
 						} else {
-							$this->_setError ( DEBUGINFO, $pagenum, $varnum, "... but its ok" );
+							$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "... but its ok" );
 						}
 							
 						break;
 					} else {
-						$this->_setError ( DEBUGINFO, $pagenum, 'checkVariable', "check true");
+						$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "check true");
 					}
 				}
 			}
@@ -200,12 +207,12 @@ class installer extends smilelog
 	function executeFinishActions($checks, $pagenum= 0, $varnum= 0)
 	{
 		$return= true;
-		$this->_setError ( DEBUGINFO, $pagenum, 'checkVariable', "$pagenum, $varnum, $selectedValue");
+		$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "$pagenum, $varnum, $selectedValue");
 		foreach ($checks as $check)
 		{
 			$value= "";
 			$evalcode= "\$return = \$this->config['extension'] -> ".$this->parseItem($check['action']);
-			$this->_setError ( DEBUGINFO, $pagenum, 'checkVariable', "execute $evalcode");
+			$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "execute $evalcode");
 			$return= $this->execute($evalcode, $pagenum, $varnum);
 			$value= $return['value'];
 			$ok= $return['isset'];
@@ -213,14 +220,14 @@ class installer extends smilelog
 				$this->lang($check['errormessage']);
 			if (!$ok)
 			{
-				$this->_setError ( DEBUGINFO, $pagenum, 'checkVariable', "check false");
+				$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "check false");
 				$return		= false;
-				$this->_setError( ERRORINFO, $pagenum, $varnum, $check['errormessage']);
+				$this->_setError( ERRORINFO, $pagenum, $varnum, __METHOD__ . " " . $check['errormessage']);
 				break;
 			}
 			else
 			{
-				$this->_setError ( DEBUGINFO, $pagenum, 'checkVariable', "check true");
+				$this->_setError ( DEBUGINFO, $pagenum, $varnum, __METHOD__ . " " . "check true");
 			}
 		}
 		return $return;
@@ -389,7 +396,7 @@ class installer extends smilelog
 	}
 	function initializeExtension()
 	{
-		$this->_setError ( DEBUGINFO, 0, 0, 'initializeExtension ' . $this->config['files']['extension'], false );
+		$this->_setError ( DEBUGINFO, -1, -1, __METHOD__ . " " . $this->config['files']['extension'], false );
 		require_once ( $this->config['files']['extension'] );
 		$evalcode	= "\$this->config['extension'] = new " 
 			. $this->config['system']['classname']
@@ -399,7 +406,7 @@ class installer extends smilelog
 	}
 	function go()
 	{
-		$this->_setError ( DEBUGINFO, 0, 0, 'begin installation' );
+		$this->_setError ( DEBUGINFO, -1, -1, __METHOD__ . " " . 'begin installation' );
 		if ( $this->config['system']['isExtension'] )
 		{
 			die ( 'not an installer' );
@@ -415,21 +422,21 @@ class installer extends smilelog
 	{
 		if (!is_string($key))
 		{
-			$this->_setError ( DEBUGINFO, 0, 0, 'lang: not a string: ". '.print_r($key, 1).'"', false);
+			$this->_setError ( DEBUGINFO, -1, -1, __METHOD__ . " " . 'not a string: ". '.print_r($key, 1).'"', false);
 		}
 		else
 		{
 			if (!preg_match('|^\[(.*)\]$|', trim($key), $result))
 			{
 				$return= $key;
-				$this->_setError ( DEBUGINFO, 0, 0, 'lang: No languagestring "'.$return.'"', false);
+				$this->_setError ( DEBUGINFO, -1, -1, __METHOD__ . " " . 'No languagestring "'.$return.'"', false);
 			}
 			else
 			{
 				if (!isset ($this->config['language'][$result[1]]) || $this->config['language'][$result[1]] == "")
 				{
 					$return= $result[1];
-					$this->_setError ( DEBUGINFO, 0, 0, 'lang: No languagedefinition "'.$return.'"', false);
+					$this->_setError ( DEBUGINFO, -1, -1, __METHOD__ . " " . 'No languagedefinition "'.$return.'"', false);
 				}
 				else
 				{
@@ -441,7 +448,7 @@ class installer extends smilelog
 	}
 	function loadConfig ()
 	{
-		$this->_setError ( DEBUGINFO, 0, 0, __METHODENAME__ 
+		$this->_setError ( DEBUGINFO, -1, -1, __METHOD__ 
 			. ' begin installation' );
 		if (!file_exists($this->config['files']['config']) || !is_readable($this->config['files']['config']))
 		{
@@ -558,8 +565,7 @@ class installer extends smilelog
 		$pagenum	= 0;
 		foreach ( $pages as $page )
 		{
-			parent::useNode ( parent::log ( "Page $pagenum" ) );
-			$this->_setError ( DEBUGINFO, $pagenum, 'setConfig', 'Set page' );
+			$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . 'Set page' );
 			$this->setInstallerpageDataInfos ( $pagenum, $page );
 			if ( $this->config['system']['pageerror'] == -1 )
 			{
@@ -579,7 +585,7 @@ class installer extends smilelog
 	{
 		foreach ( $this->config['pagesToAdd'] as $pagenum => $page)
 		{
-			$this->_setError ( DEBUGINFO, $pagenum, 'setConfig', 'Set page');
+			$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . 'Set runtimepage');
 			$this->setInstallerpageDataInfos($pagenum, $page);
 			if ($this->config['system']['pageerror'] == -1)
 			{
@@ -700,18 +706,18 @@ class installer extends smilelog
 	}
 	function setInstallerpageDataInfos ( $pagenum, $settings )
 	{
-		$this->_setError ( DEBUGINFO, $pagenum, 'setPageinfos', 'Set pageinfos');
-		if (!isset ($settings['title']))
+		$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . 'Set pageinfos');
+		if ( !isset ($settings['title'] ) )
 		{
-			$this->setError($pagenum, 'setPageinfos', 'No pagetitle');
+			$this->setError ( $pagenum, 0, __METHOD__ . " " . 'No pagetitle' );
 		}
-		if (!isset ($settings['name']))
+		if ( !isset ( $settings['name'] ) )
 		{
-			$this->setError($pagenum, 'setPageinfos', 'No pagename');
+			$this->setError ( $pagenum, 0, __METHOD__ . " " . 'No pagename' );
 		}
-		if (!isset ($settings['desc']))
+		if ( !isset ( $settings['desc'] ) )
 		{
-			$this->setError($pagenum, 'setPageinfos', 'No pagedescription');
+			$this->setError ( $pagenum, 0, __METHOD__ . " " . 'No pagedescription');
 		}
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]	= array
 		(
@@ -727,11 +733,11 @@ class installer extends smilelog
 			'isActive' => 0,
 		);
 		$this->config['system']['smarttemplate']['allPages'][$pagenum]['installerlanguage']= $this->config['system']['installerlanguage'];
-		$this->_setError ( DEBUGINFO, $pagenum, 'setPageinfos', print_r($this->config['system']['smarttemplate']['allPages'][$pagenum], 1));
+		$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . print_r($this->config['system']['smarttemplate']['allPages'][$pagenum], 1));
 	}
 	function setInstallerpageDataChecks ( $pagenum, $settings )
 	{
-		$this->_setError ( DEBUGINFO, $pagenum, 'setPageactions', 'Set pageactions');
+		$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . 'Set pageactions');
 		if (isset ($settings['required']))
 		{
 			$settings= array ($settings);
@@ -742,15 +748,15 @@ class installer extends smilelog
 			{
 				if (!isset ($check['required']))
 				{
-					$this->setError($pagenum, 'setPageactions', 'No required for action');
+					$this->setError ( $pagenum, 0, __METHOD__ . " " . 'No required for action');
 				}
 				if (!isset ($check['action']))
 				{
-					$this->setError($pagenum, 'setPageactions', 'No action for action?!?');
+					$this->setError ( $pagenum, 0, __METHOD__ . " " . 'No action for action?!?');
 				}
 				if (!isset ($check['errormessage']))
 				{
-					$this->setError($pagenum, 'setPageactions', 'No errormessage for action');
+					$this->setError ( $pagenum, 0, __METHOD__ . " " . 'No errormessage for action');
 				}
 				if ($this->config['system']['debug'] >= 3)
 					$this->lang($check['errormessage']);
@@ -760,7 +766,7 @@ class installer extends smilelog
 	}
 	function setInstallerpageDataVariables ( $pagenum, $settings )
 	{
-		$this->_setError ( DEBUGINFO, $pagenum, 'DEBUG', 'Set pagevariables');
+		$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . 'Set pagevariables');
 		if (isset ($settings['name']))
 		{
 			$settings= array ($settings);
@@ -768,35 +774,35 @@ class installer extends smilelog
 		foreach ($settings as $variable)
 		{
 			$varcount= sizeof($this->config['pages'][$pagenum]['data']);
-			$this->_setError ( DEBUGINFO, $pagenum, 'setConfig', 'Set variable '.$varcount);
+			$this->_setError ( DEBUGINFO, $pagenum, 0, __METHOD__ . " " . 'Set variable '.$varcount);
 			if (!isset ($variable['name']))
 			{
-				$this->setError($pagenum, $variable['name'].'('.$varcount.')', 'setPagevariables, No name for variable');
+				$this->setError ( $pagenum, 0, __METHOD__ . " " . 'No name for variable ' . $variable['varname'] );
 				$variable['name']= "";
 			}
-			if (!isset ($variable['required']))
+			if ( !isset ($variable['required'] ) )
 			{
-				$this->setError($pagenum, $varcount, 'setPagevariables '.$variable['name'].', No required for variable');
+				$this->setError ( $pagenum, $varcount, __METHOD__ . " " . 'No required for variable ' . $variable['varname'] );
 			}
 			if (!isset ($variable['newline']))
 			{
-				$this->setError($pagenum, $varcount, 'setPagevariables '.$variable['name'].', No newline for variable');
+				$this->setError ( $pagenum, $varcount, __METHOD__ . " " . 'No newline for variable ' . $variable['varname'] );
 			}
 			if (!isset ($variable['htmlname']))
 			{
-				$this->setError($pagenum, $varcount, 'setPagevariables '.$variable['name'].', No htmlname for variable');
+				$this->setError ( $pagenum, $varcount, __METHOD__ . " " . 'No htmlname for variable ' . $variable['varname'] );
 			}
 			if (!isset ($variable['htmldesc']))
 			{
-				$this->setError($pagenum, $varcount, 'setPagevariables '.$variable['name'].', No htmldesc for variable');
+				$this->setError ( $pagenum, $varcount, __METHOD__ . " " . 'No htmldesc for variable ' . $variable['varname'] );
 			}
 			if (!isset ($variable['formtype']))
 			{
-				$this->setError($pagenum, $varcount, 'setPagevariables '.$variable['name'].', No formtype for variable');
+				$this->setError ( $pagenum, $varcount, __METHOD__ . " " . 'No formtype for variable ' . $variable['varname'] );
 			}
 			if (!isset ($variable['autovalue']))
 			{
-				$this->_setError ( ERRORINFO, $pagenum, $varcount, 'setPagevariables '.$variable['name'].', No autovalue for variable');
+				$this->_setError ( ERRORINFO, $pagenum, $varcount, __METHOD__ . " " . 'No autovalue for variable ' . $variable['varname'] );
 			}
 			$required= $variable['required'];
 			$position= $varcount;
@@ -834,7 +840,7 @@ class installer extends smilelog
 			if (isset ($_POST[$varname]))
 			{
 				$this->config['pages'][$pagenum]['data'][$position]['checks']= $variable['check'];
-				$this->_setError ( DEBUGINFO, $pagenum, $varcount, 'check variable = "'.$_POST[$varname].'"');
+				$this->_setError ( DEBUGINFO, $pagenum, $varcount, __METHOD__ . " " . 'check variable = "'.$_POST[$varname].'"');
 				if ($this->checkVariable($pagenum, $varcount, $variable['check'], $_POST[$varname]))
 				{
 					if ($formtype == 'box' || $formtype == 'html')
@@ -861,7 +867,7 @@ class installer extends smilelog
 				}
 				else
 				{
-					$this->setError($pagenum);
+					$this->setError ( $pagenum, $varcount, __METHOD__ . " " . 'checks failed for ' . $varname );
 					$form= $defaultform;
 				}
 
@@ -871,7 +877,7 @@ class installer extends smilelog
 			{
 				if ($formtype != 'box' && $formtype != 'html')
 				{
-					$this->setError($pagenum);
+					$this->_setError ( DEBUGINFO, $pagenum, $varcount, __METHOD__ . " " . 'not posted ' . $varname );
 				}
 				$form= $defaultform;
 			}
@@ -905,7 +911,7 @@ class installer extends smilelog
 	function setInstallerdataInfos ( $infos )
 	{
 		
-		$this->_setError ( DEBUGINFO, 'DEBUG', 'setInstallerinfos', 'Set installerinfo');
+		$this->_setError ( DEBUGINFO, -1, -1, __METHOD__ . " " . 'Set installerinfo');
 		$this->config['installer']['info']		= array
 		(
 			'title'				=> $this->lang ( $infos['title'] ),
@@ -932,15 +938,15 @@ class installer extends smilelog
 	{
 		if ( !isset ( $settings['title'] ) )
 		{
-			$this->_setError ( ERRORINFO , 0, 0, 'setInstallerOnFinish title not set' );
+			$this->_setError ( ERRORINFO , -1, -1, __METHOD__ . " " . 'title not set' );
 		}
 		if ( !isset ( $settings['name'] ) )
 		{
-			$this->_setError ( ERRORINFO, 0, 0, 'setInstallerOnFinish name not set' );
+			$this->_setError ( ERRORINFO, -1, -1, __METHOD__ . " " . 'name not set' );
 		}
 		if ( !isset ( $settings['desc'] ) )
 		{
-			$this->_setError ( ERRORINFO, 0, 0, 'setInstallerOnFinish desc not set' );
+			$this->_setError ( ERRORINFO, -1, -1, __METHOD__ . " " . 'desc not set' );
 		}
 		if ( isset ( $settings['check'] ) )
 		{
@@ -964,7 +970,7 @@ class installer extends smilelog
 				#echo "IN";
 			}
 		} else {
-			$this->_setError ( ERRORINFO, 0, 0, 'setInstallerdataOnFinishActionCheck' );
+			$this->_setError ( ERRORINFO, -1, -1, __METHOD__ . " " . 'no finishactions for check' );
 		}
 	}
 	function setInstallerdataOnFinishActionOutput ( $functions )
@@ -976,7 +982,7 @@ class installer extends smilelog
 				#echo "IN";
 			}
 		} else {
-			$this->_setError ( ERRORINFO, 0, 0, 'setInstallerdataOnFinishActionOutput' );
+			$this->_setError ( ERRORINFO, -1, -1, __METHOD__ . " " . 'no finishactions for output' );
 		}
 	}
 	function setInstallerdataOnFinishActionValue ( $functions )
@@ -988,7 +994,7 @@ class installer extends smilelog
 				#echo "IN";
 			}
 		} else {
-			$this->_setError ( ERRORINFO, 0, 0, 'setInstallerdataOnFinishActionValue' );
+			$this->_setError ( ERRORINFO, -1, -1, __METHOD__ . " " . 'no finishactions for value' );
 		}
 	}
 	function setHTMLPage()

@@ -42,7 +42,7 @@ class extensions_all extends installer
 	}
 	function _SQLConnect ( $dbtype, $dbhost, $dbuser, $dbpass, $dbname, &$conn )
 	{
-		if ( $this->config['system']['debug'] >= 0 ) parent::_setError ( $pagenum, $varnum, '_SQLConnect', false );
+		parent::_setError ( ERRORINFO, -1, -1, __METHOD__ . ' start', false );
 		$return		= false;
 		if ( $this->_validateSupportedDatabase ( $dbtype ) )
 		{

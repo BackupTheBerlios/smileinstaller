@@ -63,7 +63,7 @@
 				<name>			accept_license</name>
 				<htmlname>		[Accept license?]</htmlname>				
 				<htmldesc>		</htmldesc>
-				<required>		0</required>
+				<required>		1</required>
 				<newline>		1</newline>
 				<formtype>		checkbox</formtype>
 				<defaultvalue>	=[Yes]</defaultvalue>

@@ -3,44 +3,16 @@
 	class smilelog
 	{
 		// Erstellt einen Logeintrag
-		function log ( $message = 'setMessage!' )
+		function log ( $message )
 		{
-			$this->config['log']['allNodes']++;
-			$useThisNode	= $this->config['log']['currentNode'];
-			$this->config['log']['node'][$this->config['log']['allNodes']]['text']	= $message;
-			if ( $useThisNode !=  $this->config['log']['allNodes'] )
-			{
-				if ( !isset ( $this->config['log']['currentLog'][$useThisNode]['text'] ) )
-				{
-					$this->config['log']['currentLog'][$useThisNode]['text']	=
-						$this->config['log']['node'][$useThisNode]['text'];
-				}
-				$this->config['log']['currentLog'][$useThisNode]['subnode'][]	= $this->config['log']['node'][$this->config['log']['allNodes']];
-			}
-			return $this->config['log']['allNodes'];
+			$this->config['log'][]	= $message;
 		}
-		function useNode ( $useThisNode )
+		function getLogHTML ()
 		{
-			$this->config['log']['currentNode']		= $useThisNode;
-		}
-		function getLogHTML ( $log = false )
-		{
-			if ( !$log )
-			{
-				$log	= $this->config['log']['currentLog'];
-			}
 			$return		= "<ul>";
-			foreach ( $log as $key => $logentry )
+			foreach ( $this->config['log'] as $key => $logentry )
 			{
-				if ( isset ( $logentry['text'] ) )
-				{
-					$return			.= '<li><pre>' . htmlentities ( $logentry['text'] ) . '</pre>';
-					if ( is_array ( $logentry['subnode'] ) )
-					{
-						$return		.= $this->getLogHTML ( $logentry['subnode'] );
-					}
-					$return		.= "</li>";
-				}
+				$return			.= '<li><pre>' . htmlentities ( $logentry ) . '</pre></li>';
 			}
 			$return		.= "</ul>";
 			return $return;
