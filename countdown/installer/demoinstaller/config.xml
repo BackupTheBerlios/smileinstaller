@@ -151,6 +151,11 @@
 			<formtype>		select</formtype>
 			<defaultvalue>	!_value_supportedDatabases</defaultvalue>
 			<autovalue>		=</autovalue>
+			<check>
+				<action>	!_check_formspecific:mysql</action>
+				<required>	1</required>
+				<errormessage>[Only MySQL allowed]</errormessage>
+			</check>
 		</variable>
 		<variable>
 			<name>			dbhost</name>
@@ -250,7 +255,7 @@
 			<newline>		1</newline>
 			<formtype>		input</formtype>
 			<defaultvalue>	=demoscript</defaultvalue>
-			<autovalue>		=</autovalue>
+			<autovalue>		=demoscript</autovalue>
 		</variable>
 		<variable>
 			<name>			tableprefix</name>
@@ -259,7 +264,7 @@
 			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		input</formtype>
-			<defaultvalue>	=</defaultvalue>
+			<defaultvalue>	=demoscript</defaultvalue>
 			<autovalue>		=demoscript</autovalue>
 		</variable>
 	</page>
