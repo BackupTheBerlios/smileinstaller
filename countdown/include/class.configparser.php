@@ -5,6 +5,13 @@
 			$settings		= $this->loadConfig ();
 			$this->setInstallerinfos ( $settings );
 			$pagenum	= 0;
+			if ( isset ( $settings['root']['pages']['page']['variable'] ) )
+			{
+				$settings['root']['pages']['page']	= array ( $settings['root']['pages']['page'] );
+			}
+#			echo "<pre>";
+#			print_r ( $settings );
+#			echo "</pre>";
 			foreach ( $settings['root']['pages']['page'] as $page )
 			{
 				if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setConfig', 'Set page' );

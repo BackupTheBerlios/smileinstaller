@@ -4,6 +4,7 @@
 	{
 		function _checkConnection ( $pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass )
 		{
+			echo "$pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass )";
 			$return = array (
 				'value'		=> '',
 				'isset'		=> false

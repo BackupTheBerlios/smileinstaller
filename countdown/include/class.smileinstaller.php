@@ -129,7 +129,7 @@
 			{
 				case 'box' :
 				{
-					$form	= '<textarea readonly style="width: 100%; height: 200px">' . $defaultValues . '</textarea>';
+					$form	= '<textarea readonly style="white-space: nowrap; width: 100%; height: 300px">' . $defaultValues . '</textarea>';
 					$this->config['executeEnvironment'][$formname]	= $defaultValues;
 					break;
 				}
@@ -167,7 +167,7 @@
 				}
 				case 'text' :
 				{
-					$form	= "<textarea name=\"$formname\" style=\"width: 100%; height:150px\">";
+					$form	= "<textarea name=\"$formname\" style=\"white-space: nowrap; width: 100%; height:150px\">";
 					if ( $selectedValue )
 					{
 						$form	.= $executeEnvironmentvalue	= $selectedValue;
