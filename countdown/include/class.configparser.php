@@ -72,7 +72,19 @@ class configparser
 		if (isset ($settings['root']['pages']['installer']))
 		{
 			$installer= $settings['root']['pages']['installer'];
-			$this->config['installer']['info']= array ('title' => $this->lang($installer['title']), 'nextstring' => $this->lang($installer['nextstring']), 'finishstring' => $this->lang($installer['finishstring']), 'finishedstring' => $this->lang($installer['finishedstring']), 'redirectTo' => $installer['redirectTo']);
+			$this->config['installer']['info']		= array
+			(
+				'title'				=> $this->lang ( $installer['title'] ),
+				'nextstring'		=> $this->lang ( $installer['nextstring'] ),
+				'onComplete'			=> 
+					$this->setInstallerOnComplete ( $installer['onComplete'] ),
+				'onFinish'			=> 
+					$this->setInstallerOnFinish ( $installer['onFinish'] ),
+				#'finishstring'		=> $this->lang ( $installer['finishstring'] ),
+				#'finishedstring'	=> $this->lang ( $installer['finishedstring'] ),
+				'redirectTo'		=> $installer['redirectTo']
+			);
+			
 			if (isset ($installer['finish']))
 			{
 				if (isset ($installer['finish']['action']))
@@ -86,6 +98,31 @@ class configparser
 					$this->config['installer']['action'][]= array ('action' => $action['action'], 'required' => $action['required'], 'errormessage' => $action['errormessage']);
 				}
 			}
+		}
+	}
+	function setInstallerOnComplete ( $settings )
+	{
+		if ( !isset ( $settings['showVars'] ) )
+		{
+			$this->_setError ( 0, 0, 'setInstallerOnComplete showVars not set' );
+		}
+		if ( !isset ( $settings['string'] ) )
+		{
+			$this->_setError ( 0, 0, 'setInstallerOnComplete string not set' );
+		}
+	}
+	function setInstallerOnFinish ( $settings )
+	{
+		if ( !isset ( $settings['string'] ) )
+		{
+			$this->_setError ( 0, 0, 'setInstallerOnFinish string not set' );
+		}
+	}
+	function setInstallerOnFinishfunctions ( $functions )
+	{
+		if ( is_array ( $functions ) )
+		{
+			foreach ( $functions
 		}
 	}
 	function setPageinfos($pagenum, $settings)
