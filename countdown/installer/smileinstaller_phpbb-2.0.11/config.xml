@@ -5,21 +5,21 @@
 		<completestring>[Setup complete.]</completestring>
 		<finishedstring>[Installation complete]</finishedstring>
 		<finish>
-			<action>	!_output_createDirectory:$script_path,0777</action>
+			<action>	!_output_createInstalldirectory:$installdir</action>
 			<required>	1</required>
 			<errormessage>
 				[Installation failed. Could not create directory.]
 			</errormessage>
 		</finish>
 		<finish>
-			<action>	!_output_unpackScript:$script_path</action>
+			<action>	!_output_unpackScript:$installdir</action>
 			<required>	1</required>
 			<errormessage>
 				[Installation failed. Could not extract script.]
 			</errormessage>
 		</finish>
 		<finish>
-			<action>	!_output_VarToFile:$script_path,/config.php,dbms+dbhost+dbname+dbuser+dbpasswd+table_prefix</action>
+			<action>	!_output_VarToFile:$installdir/democonfig.php,dbms+dbhost+dbname+dbuser+dbpasswd+table_prefix</action>
 			<required>	1</required>
 			<errormessage>
 				[Installation failed. Could not write variables.]
@@ -32,7 +32,7 @@
 				[Installation failed. Could not finish installation.]
 			</errormessage>
 		</finish>
-		<redirectTo>!_value_redirectTo:$script_path,/index.php</redirectTo>
+		<redirectTo>!_value_redirectTo:$installdir/index.php</redirectTo>
 	</installer>
 	<page>
 		<title>	[License]</title>
@@ -71,14 +71,14 @@
 		<name>		[Installation directory]</name>
 		<desc>		[Directory to install this script]</desc>
 		<variable>
-			<name>			script_path</name>
-			<htmlname>		[Path for PHPbb2]</htmlname>
+			<name>			installdir</name>
+			<htmlname>		[Path for demoscript]</htmlname>
 			<htmldesc>		[Smileinstallerdemo. No user defined path allowed.]</htmldesc>
 			<required>		1</required>
 			<newline>		1</newline>
 			<formtype>		select</formtype>
 			<defaultvalue>	!_value_demopaths</defaultvalue>
-			<autovalue>		!_uservalue_installerdir</autovalue>
+			<autovalue>		=</autovalue>
 			<check>		
 				<required>	1</required>
 				<action>	!_check_Formspecific</action>

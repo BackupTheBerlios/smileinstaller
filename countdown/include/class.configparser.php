@@ -208,8 +208,7 @@ class configparser
 			}
 			$code= array ('code' => "\$return = \$this->config['extension']->", 'var' => array ('pagenum' => $pagenum, 'varnum' => $varnum));
 			$tempdefaultvalue= $this->parseItem($defaultvalue, false, $code);
-			$autovalue= $this->parseItem($autovalue, false, $code);
-			$autovalue= $this->lang($autovalue);
+			$autovalue= $this->parseItem($autovalue, false, $code);			$autovalue= $this->lang($autovalue);
 			$defaultform= $this->genForm($varname, $formtype, $tempdefaultvalue, false);
 			$this->config['pages'][$pagenum]['data'][$position]= array ('varname' => $variable['name'], 'htmlname' => $this->lang($htmlname), 'htmldesc' => $this->lang($htmldesc), 'newline' => $newline, 'form' => $variable['formtype'], 'formtype' => $variable['formtype'], 'defaultvalue' => $tempdefaultvalue, 'autovalue' => $autovalue,);
 			if (isset ($variable['check']['required']))

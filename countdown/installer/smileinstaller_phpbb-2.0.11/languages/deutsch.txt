@@ -39,3 +39,4 @@ Installation failed. Could not create directory.=Installation fehlgeschlagen. Ko
 Installation failed. Could not extract script.=Installation fehlgeschlagen. Konnte Skript nicht entpacken.
 Installation failed. Could not write variables.=Installation fehlgeschlagen. Konnte Variablen nicht schreiben.
 Installation failed. Could not finish installation.=Installation fehlgeschlagen. Konnte Installation nicht beenden.
+Yes, Selectfield, defaultvalue '&eckigauf;No&eckigzu;,&eckigauf;Yes&eckigzu;'=Jo

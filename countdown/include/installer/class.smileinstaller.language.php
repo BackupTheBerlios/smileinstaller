@@ -47,8 +47,7 @@ class smileinstaller_language extends smileinstaller_execute
 			foreach ($languagedata as $line)
 			{
 				if (preg_match($this->config['languagelinepattern'], trim($line), $result))
-				{
-					$this->config['language'][trim($result[1])]= trim($result[2]);
+				{					$this->config['language'][trim($result[1])]= trim($result[2]);
 				}
 			}
 			$return= 1;
@@ -66,7 +65,7 @@ class smileinstaller_language extends smileinstaller_execute
 		}
 		else
 		{
-			if (!preg_match('|^\[([^\[]{0,})\]$|', trim($key), $result))
+			if (!preg_match('|^\[(.*)\]$|', trim($key), $result))
 			{
 				$return= $key;
 				if ($this->config['system']['debug'] >= 1)
