@@ -13,47 +13,95 @@ td.installersteprow {
 	height:					40px;
 }
 
-a.installersteptable_current_step {
+div.installersteptable_current_step {
 	text-decoration:		none;
 	font-size:				15px;
-	color:					#FFFFFF;
-	height:					20px;
-	background:				#d5d2cd;
+	position:				relative;
+	top:					-16px;
+	left:					+1px;
+	line-height:			17px;
+	color:					#969696;
 	text-align:				left;
+	vertical-align:			top;
 	font-weight:			bold;
-	cursor:					pointer;
+	cursor:					wait;
 }
-a.installersteptable_available_step {
+div.installersteptable_current_step_shadow {
 	text-decoration:		none;
 	font-size:				15px;
-	height:					20px;
+	line-height:			17px;
+	position:				relative;
+	top:					+2px;
+	left:					+2px;
 	color:					#000000;
-	white-space:			nowrap;
-	background:				#d5d2cd;
 	text-align:				left;
+	vertical-align:			top;
+	font-weight:			bold;
+	cursor:					wait;
+}
+div.installersteptable_available_step {
+	text-decoration:		none;
+	font-size:				15px;
+	position:				relative;
+	top:					-16px;
+	left:					+1px;
+	line-height:			17px;
+	color:					#d5d2cd;
+	text-align:				left;
+	vertical-align:			top;
 	font-weight:			bold;
 	cursor:					pointer;
 }
-a.installersteptable_available_step:hover {
+div.installersteptable_available_step_shadow {
 	text-decoration:		none;
 	font-size:				15px;
-	height:					20px;
-	color:					#FFFFFF;
-	white-space:			nowrap;
-	background:				#d5d2cd;
+	line-height:			17px;
+	position:				relative;
+	top:					+2px;
+	left:					+2px;
+	color:					#000000;
 	text-align:				left;
+	vertical-align:			top;
+	font-weight:			bold;
+	cursor:					pointer;
+}
+div.installersteptable_available_step:hover {
+	text-decoration:		none;
+	font-size:				15px;
+	position:				relative;
+	top:					-16px;
+	left:					+1px;
+	line-height:			17px;
+	color:					#969696;
+	text-align:				left;
+	vertical-align:			top;
 	font-weight:			bold;
 	cursor:					pointer;
 }
 
-a.installersteptable_unavailable_step {
+div.installersteptable_unavailable_step {
 	text-decoration:		none;
 	font-size:				15px;
-	height:					20px;
+	position:				relative;
+	top:					-16px;
+	left:					+1px;
+	line-height:			17px;
 	color:					#777777;
-	white-space:			nowrap;
-	background:				#d5d2cd;
-	white-space:			nowrap;
 	text-align:				left;
+	vertical-align:			top;
+	font-weight:			bold;
+	cursor:					wait;
+}
+div.installersteptable_unavailable_step_shadow {
+	text-decoration:		none;
+	font-size:				15px;
+	line-height:			17px;
+	position:				relative;
+	top:					+2px;
+	left:					+2px;
+	color:					#FFFFFF;
+	text-align:				left;
+	vertical-align:			top;
+	font-weight:			bold;
 	cursor:					wait;
 }

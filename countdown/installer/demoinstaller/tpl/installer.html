@@ -44,19 +44,30 @@
 						<!-- END hiddenValue -->
 						<tr valign="middle">
 							<td class="installersteprow">&nbsp;*&nbsp;</td>
-							<td><a href="#" 
-								<!-- IF info.pagedesc>"" -->
-									onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{pagetitle}', 'content', pagedesc_{ROWCNT}, 'trail', true ) );"
-								<!-- ENDIF info.pagedesc>"" -->
-								class="
+							<td>
 								<!-- IF isActive=="0" -->
-								installersteptable_unavailable_step
+									<div class="installersteptable_unavailable_step_shadow">{info.pagetitle}</div>
+									<div class="installersteptable_unavailable_step"
+											<!-- IF info.pagedesc>"" -->
+												onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{pagetitle}', 'content', pagedesc_{ROWCNT}, 'trail', true ) );"
+											<!-- ENDIF info.pagedesc>"" -->
+									>{info.pagetitle}</div>
 								<!-- ELSEIF isActive=="1" -->
-								installersteptable_available_step" onclick="document.gotopage2_{ROWCNT}.submit ()
+									<div class="installersteptable_available_step_shadow">{info.pagetitle}</div>
+									<div class="installersteptable_available_step" 
+										onclick="document.gotopage2_{ROWCNT}.submit ()"
+											<!-- IF info.pagedesc>"" -->
+												onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{pagetitle}', 'content', pagedesc_{ROWCNT}, 'trail', true ) );"
+											<!-- ENDIF info.pagedesc>"" -->
+									>{info.pagetitle}</div>
 								<!-- ELSEIF isActive=="2" -->
-								installersteptable_current_step
-								<!-- ENDIF isActive=="1" -->
-								">{info.pagetitle}</a></td>
+									<div class="installersteptable_current_step_shadow">{info.pagetitle}</div>
+									<div class="installersteptable_current_step"
+											<!-- IF info.pagedesc>"" -->
+												onmouseover="makeTrue ( domTT_activate ( this, event, 'statusText', '', 'caption', '{pagetitle}', 'content', pagedesc_{ROWCNT}, 'trail', true ) );"
+											<!-- ENDIF info.pagedesc>"" -->
+									>{info.pagetitle}</div>
+								<!-- ENDIF isActive=="0" -->
 							</td>
 						</tr>
 						</form>
@@ -146,6 +157,9 @@
 						<!-- ENDIF var.errormessage -->
 						<br><br><hr style="border-bottom: #FFFFFF 1px solid;border-top: #FFFFFF 0px solid;border-left: #FFFFFF 0px solid;border-right: #FFFFFF 0px solid;width: 90%;">
 						<hr style="border-bottom: #FFFFFF 1px solid;border-top: #FFFFFF 0px solid;border-left: #FFFFFF 0px solid;border-right: #FFFFFF 0px solid;width: 60%;">
+						<div class="copyright_shadow">&copy; 2005 smileing peoples</div>
+						<div class="copyright">&copy; 2005 smileing peoples</div>
+						
 					</div>
 				</td>
 			</tr>
