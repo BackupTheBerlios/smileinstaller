@@ -877,7 +877,7 @@ class installer extends smilelog
 			{
 				if ($formtype != 'box' && $formtype != 'html')
 				{
-					$this->_setError ( DEBUGINFO, $pagenum, $varcount, __METHOD__ . " " . 'not posted ' . $varname );
+					$this->setError ( $pagenum, $varcount, __METHOD__ . " " . 'not posted ' . $varname );
 				}
 				$form= $defaultform;
 			}
