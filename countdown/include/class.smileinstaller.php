@@ -75,7 +75,7 @@
 		}
 		function go ()
 		{
-			if ( $this->config['system']['debug'] ) $this->_setError ( 'DEBUG', 'go', 'begin installation' );
+			if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( 'DEBUG', 'go', 'begin installation' );
 			if ( $this->config['system']['isExtension'] )
 				die ( 'not an installer' );
 			$this->loadLanguageitems ();
@@ -101,6 +101,7 @@
 				{
 					$evalcode	= "\$return = \$this->config['extension']->" . $check['action'];
 					$return		= $this->execute ( $evalcode, $pagenum, 0 );
+					if ( $this->config['system']['debug'] >= 3 ) $this->lang ( $check['errormessage'] );
 					if ( !$return['isset'] )
 					{
 						$this->_setError ( $pagenum, 0, $check['errormessage'] );
@@ -289,14 +290,14 @@
 			}
 			return $return;
 		}
-		function _setError ( $pagenum, $varnum, $errormessage )
+		function _setError ( $pagenum, $varnum, $errormessage, $translate = true )
 		{
 			$htmlname		= $pagenum;
 			if ( $varnum > 0 )
 			{
 				$htmlname		.= " (" . $this->config['pages'][$pagenum]['data'][$varnum]['htmlname'] . ")";
 			}
-			$errormessage		= $this->lang ( $errormessage );
+			if ( $translate ) $errormessage		= $this->lang ( $errormessage );
 			$this->config['system']['errormessage'][]['text']		= $htmlname . ": " . $errormessage;
 		}
 		function setErrorpage ( $pagenum, $varnum = false, $errormessage = false )

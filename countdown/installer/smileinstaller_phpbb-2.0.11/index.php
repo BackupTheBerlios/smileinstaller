@@ -190,6 +190,10 @@
 			$return['value']	= parent::lang ( '[Path to installer]' ) . ' ' . $return['value'];
 			return $return;
 		}
+		function _value_SQLDatabasesUser ( $pagenum, $varnum )
+		{
+			$this->_setError ( $pagenum, $varnum, '[no code]' );
+		}
 	}
 	
 ?>

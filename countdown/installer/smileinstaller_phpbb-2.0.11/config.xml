@@ -1,27 +1,34 @@
 <pages>
 	<installer>
-		<title>[Install PHPbb2 2.0.11</title>
+		<title>[Install PHPbb2 2.0.11]</title>
 		<nextstring>[next]</nextstring>
-		<finishedstring>Installation complete</finishedstring>
+		<finishedstring>[Installation complete]</finishedstring>
 		<finish>
 			<action>	!_output_createDirectory:$script_path,0777</action>
 			<required>	1</required>
 			<errormessage>
-				[Could not create directory]
+				[Installation failed. Could not create directory.]
 			</errormessage>
 		</finish>
 		<finish>
 			<action>	!_output_unpackScript:$script_path</action>
 			<required>	1</required>
 			<errormessage>
-				[Could not extract script]
+				[Installation failed. Could not extract script.]
 			</errormessage>
 		</finish>
 		<finish>
 			<action>	!_output_VarToFile:$script_path,/config.php,dbms+dbhost+dbname+dbuser+dbpasswd+table_prefix</action>
 			<required>	1</required>
 			<errormessage>
-				[Could not write variables]
+				[Installation failed. Could not write variables.]
+			</errormessage>
+		</finish>
+		<finish>
+			<action>	!_finish</action>
+			<required>	1</required>
+			<errormessage>
+				[Installation failed. Could not finish installation.]
 			</errormessage>
 		</finish>
 		<redirectTo>!_value_redirectTo:$script_path,/index.php</redirectTo>
@@ -100,6 +107,13 @@
 			<formtype>		input</formtype>
 			<defaultvalue>	!_value_Servername</defaultvalue>
 			<autovalue>		!_value_Servername</autovalue>
+			<check>
+				<action>	!_check_notNull</action>
+				<required>	1</required>
+				<errormessage>
+					[Server name is required]
+				</errormessage>
+			</check>
 		</variable>
 		<variable>
 			<name>			server_port</name>
@@ -110,9 +124,14 @@
 			<formtype>		input</formtype>
 			<defaultvalue>	!_value_Serverport</defaultvalue>
 			<autovalue>		!_value_Serverport</autovalue>
+			<check>
+				<action>	!_check_notNull</action>
+				<required>	1</required>
+				<errormessage>
+					[Server port is required]
+				</errormessage>
+			</check>
 		</variable>
-
-
 		<variable>
 			<name>			dbms</name>
 			<htmlname>		[Databasetype]</htmlname>
@@ -132,6 +151,13 @@
 			<formtype>		input</formtype>
 			<defaultvalue>	=localhost</defaultvalue>
 			<autovalue>		!_value_Servername</autovalue>
+			<check>
+				<action>	!_check_NotNull</action>
+				<required>	1</required>
+				<errormessage>
+					[Database server is required]
+				</errormessage>
+			</check>
 		</variable>
 		<variable>
 			<name>			dbuser</name>
@@ -142,6 +168,13 @@
 			<formtype>		input</formtype>
 			<defaultvalue>	=phpbb2user</defaultvalue>
 			<autovalue>		=phpbb2user</autovalue>
+			<check>
+				<action>	!_check_NotNull</action>
+				<required>	1</required>
+				<errormessage>
+					[Username is required]
+				</errormessage>
+			</check>
 		</variable>
 		<variable>
 			<name>			dbpasswd</name>
@@ -165,7 +198,7 @@
 			<required>		0</required>
 			<newline>		1</newline>
 			<formtype>		select</formtype>
-			//<defaultvalue>	!_value_SQLDatabasesUser:$dbms,$dbhost,$dbuser,$dbpasswd</defaultvalue>
+			<defaultvalue>	!_value_SQLDatabasesUser:$dbms,$dbhost,$dbuser,$dbpasswd</defaultvalue>
 			<autovalue>		=</autovalue>
 		</variable>
 		<variable>

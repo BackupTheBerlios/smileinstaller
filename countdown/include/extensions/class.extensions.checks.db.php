@@ -8,6 +8,7 @@
 				'value'		=> '',
 				'isset'		=> false
 			);
+			$this->_setError ( $pagenum, $varnum, 'No types supported now' );
 			if ( $link = mysql_connect ( $dbhost, $dbuser, $dbpass ) )
 			{
 				$return['isset']	= true;

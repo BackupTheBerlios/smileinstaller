@@ -11,7 +11,7 @@
 			}
 			foreach ( $settings['root']['pages']['page'] as $page )
 			{
-				if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setConfig', 'Set page' );
+				if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( $pagenum, 'setConfig', 'Set page' );
 				$this->setPageinfos ( $pagenum, $page );
 				if ( $this->config['system']['pageerror'] == -1 )
 				{
@@ -45,7 +45,7 @@
 		}
 		function loadConfig ()
 		{
-			if ( $this->config['system']['debug'] ) $this->_setError ( 'DEBUG', 'loadConfig', 'load configfile' );
+			if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( 'DEBUG', 'loadConfig', 'load configfile' );
 			if ( !file_exists ( $this->config['files']['config'] )
 				|| !is_readable ( $this->config['files']['config'] ) ) 
 			{
@@ -62,7 +62,7 @@
 		}
 		function setInstallerinfos ( $settings )
 		{
-			if ( $this->config['system']['debug'] ) $this->_setError ( 'DEBUG', 'setInstallerinfos', 'Set installerinfo' );
+			if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( 'DEBUG', 'setInstallerinfos', 'Set installerinfo' );
 			if ( isset ( $settings['root']['pages']['installer'] ) )
 			{
 				$installer		= $settings['root']['pages']['installer'];
@@ -72,7 +72,7 @@
 					'nextstring'		=> $this->lang ( $installer['nextstring'] ),
 					'finishstring'		=> $this->lang ( $installer['finishstring'] ),
 					'finishedstring'	=> $this->lang ( $installer['finishedstring'] ),
-					'redirectTo'		=> $this->lang ( $installer['redirectTo'] )
+					'redirectTo'		=> $installer['redirectTo']
 				);
 				if ( isset ( $installer['finish'] ) )
 				{
@@ -82,6 +82,7 @@
 					}
 					foreach ( $installer['finish'] as $action )
 					{
+						if ( $this->config['system']['debug'] >= 3 ) $this->lang ( $action['errormessage'] );
 						$this->config['installer']['action'][]		= array ( 
 							'action'			=> $action['action'],
 							'required'			=> $action['required'],
@@ -93,7 +94,7 @@
 		}
 		function setPageinfos ( $pagenum, $settings )
 		{
-			if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setPageinfos', 'Set pageinfos' );
+			if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( $pagenum, 'setPageinfos', 'Set pageinfos' );
 			if ( !isset ( $settings['title'] ) )
 			{
 				$this->setErrorpage ( $pagenum, 'setPageinfos', 'No pagetitle' );
@@ -119,11 +120,11 @@
 				'isActive'	=> 0,
 			);
 			$this->config['system']['smarttemplate']['allPages'][$pagenum]['installerlanguage']	= $this->config['system']['installerlanguage'];
-			if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setPageinfos', print_r ( $this->config['system']['smarttemplate']['allPages'][$pagenum], 1 ) );
+			if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( $pagenum, 'setPageinfos', print_r ( $this->config['system']['smarttemplate']['allPages'][$pagenum], 1 ) );
 		}
 		function setPageactions ( $pagenum, $settings )
 		{
-			if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setPageactions', 'Set pageactions' );
+			if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( $pagenum, 'setPageactions', 'Set pageactions' );
 			if ( isset ( $settings['required'] ) )
 			{
 				$settings		= array ( $settings );
@@ -143,8 +144,10 @@
 					}
 					if ( !isset ( $check['errormessage'] ) )
 					{
+						
 						$this->setErrorpage ( $pagenum, 'setPageactions', 'No errormessage for action' );
 					}
+					if ( $this->config['system']['debug'] >= 3 ) $this->lang ( $check['errormessage'] );
 					$this->config['pages'][$pagenum]['action'][]		= array (
 						'required'		=> $check['required'],
 						'action'		=> $this->parseItem ( $check['action'] ),
@@ -155,7 +158,7 @@
 		}
 		function setPagevariables ( $pagenum, $settings )
 		{
-			if ( $this->config['system']['debug'] ) { $this->_setError ( $pagenum, 'DEBUG', 'Set pagevariables' ); }
+			if ( $this->config['system']['debug'] >= 5 ) { $this->_setError ( $pagenum, 'DEBUG', 'Set pagevariables' ); }
 			if ( isset ( $settings['name'] ) )
 			{
 				$settings = array ( $settings );
@@ -163,7 +166,7 @@
 			foreach ( $settings as $variable )
 			{
 				$varcount		= sizeof ( $this->config['pages'][$pagenum]['data'] );
-				if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'setConfig', 'Set variable ' . $varcount );
+				if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( $pagenum, 'setConfig', 'Set variable ' . $varcount );
 				if ( !isset ( $variable['name'] ) )
 				{
 					$this->setErrorpage ( $pagenum, $variable['name'] . '(' . $varcount . ')', 'setPagevariables, No name for variable' );
@@ -241,7 +244,7 @@
 				if ( isset ( $_POST[$varname] ) )
 				{
 					$this->config['pages'][$pagenum]['data'][$position]['checks']	= $variable['check'];
-					if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, $varcount, 'check variable = "' . $_POST[$varname] . '"' );
+					if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( $pagenum, $varcount, 'check variable = "' . $_POST[$varname] . '"' );
 					if ( $this->checkVariable ( $pagenum, $varcount, $variable['check'], $_POST[$varname] ) )
 					{
 						$this->config['hiddenValue'][]		= array
@@ -324,23 +327,24 @@
 		function finishActions ( $checks, $pagenum = 0, $varnum = 0 )
 		{
 			$return	= true;
-			if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'checkVariable', "$pagenum, $varnum, $selectedValue" );
+			if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( $pagenum, 'checkVariable', "$pagenum, $varnum, $selectedValue" );
 			foreach ( $checks as $check )
 			{
 				$value		= "";
 				$evalcode	= "\$return = \$this->config['extension'] -> " . $this->parseItem ( $check['action'] );
-				if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'checkVariable', "execute $evalcode" );
+				if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( $pagenum, 'checkVariable', "execute $evalcode" );
 				$return		= $this->execute ( $evalcode, $pagenum, $varnum );
 				$value		= $return['value'];
 				$ok			= $return['isset'];
+				if ( $this->config['system']['debug'] >= 3 ) $this->lang ( $check['errormessage'] );
 				if ( !$ok )
 				{
-					if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'checkVariable', "check false" );
+					if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( $pagenum, 'checkVariable', "check false" );
 					$return		= false;
 					$this->_setError ( $pagenum, $varnum, $check['errormessage'] );
 					break;
 				} else {
-					if ( $this->config['system']['debug'] ) $this->_setError ( $pagenum, 'checkVariable', "check true" );
+					if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( $pagenum, 'checkVariable', "check true" );
 				}					
 			}
 			return $return;

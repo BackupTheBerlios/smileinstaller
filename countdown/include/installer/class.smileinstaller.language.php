@@ -59,16 +59,26 @@
 		{
 			if ( !is_string ( $key ) )
 			{
-				if ( $this->config['system']['debug'] ){
-					$this->_setError ( 0, 0, 'lang: not a string: . ' . print_r ( $key, 1 ) );
+				if ( $this->config['system']['debug'] >= 1 ){
+					$this->_setError ( 0, 0, 'lang: not a string: ". ' . print_r ( $key, 1 ) . '"', false );
 				}
-			} 
-			if ( !preg_match ( '|^\[([^\[]{0,})\]$|', trim ( $key ), $result ) )
-				return $key;
-			if ( !isset ( $this->config['language'][$result[1]] )
-				|| $this->config['language'][$result[1]] == "" )
-				return $result[1];
-			return $this->config['language'][$result[1]];
+			} else { 
+				if ( !preg_match ( '|^\[([^\[]{0,})\]$|', trim ( $key ), $result ) )
+				{
+					$return = $key;
+					if ( $this->config['system']['debug'] >= 1 ) $this->_setError ( 0, 0, 'lang: No languagestring "' . $return . '"', false );
+				} else {
+					if ( !isset ( $this->config['language'][$result[1]] )
+						|| $this->config['language'][$result[1]] == "" )
+					{
+						$return = $result[1];
+						if ( $this->config['system']['debug'] >= 1 ) $this->_setError ( 0, 0, 'lang: No languagedefinition "' . $return . '"', false );
+					} else {
+						$return	= $this->config['language'][$result[1]];
+					}						
+				}
+			}
+			return $return;
 		}
 	}
 
