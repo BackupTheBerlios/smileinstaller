@@ -1,4 +1,5 @@
 <?php
+
 require_once "./include/config.php";
 $install		= new installer ( $configuration );
 $content		= $install->go();
@@ -26,5 +27,7 @@ if ( preg_match ( '|<body([^>]{1,})>|', $content, $result ) )
 		$content
 	);
 }
+
 echo $content;
+
 ?>

@@ -5,7 +5,7 @@ error_reporting(E_PARSE+E_ERROR);
 set_magic_quotes_runtime ( 0 );
 ////////////////////////////////////////////
 // Welcher Installer soll verwendet werden?
-	$configuration		= 'configgenerator';
+	$configuration		= 'demoinstaller';
 ////////////////////////////////////////////
 define ( 'ROOTPATH',				str_replace ( "\\", "/", 
 	dirname ( __FILE__ ) ) . '/../' . time() );

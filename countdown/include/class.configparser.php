@@ -12,6 +12,10 @@ class configparser
 		}
 		foreach ($settings['root']['pages']['page'] as $page)
 		{
+			$this->config['system']['totalPages']++;
+		}
+		foreach ($settings['root']['pages']['page'] as $page)
+		{
 			if ($this->config['system']['debug'] >= 5)
 				$this->_setError($pagenum, 'setConfig', 'Set page');
 			$this->setPageinfos($pagenum, $page);
@@ -19,6 +23,38 @@ class configparser
 			{
 				$this->config['system']['smarttemplate']['allPages'][$pagenum]['isActive']= 1;
 				$this->setPageactions($pagenum, $page['check']);
+				$this->setPagevariables($pagenum, $page['variable']);
+				if ($this->config['system']['pageerror'] == -1)
+				{
+					$this->checkPageAfter($pagenum);
+				}
+			}
+			$pagenum ++;
+		}
+		foreach ($this->config['pagesToAdd'] as $pagenum => $page)
+		{
+			if ($this->config['system']['debug'] >= 5)
+				$this->_setError($pagenum, 'setConfig', 'Set page');
+			$this->setPageinfos($pagenum, $page);
+			if ($this->config['system']['pageerror'] == -1)
+			{
+				$this->config['system']['smarttemplate']['allPages'][$pagenum]['isActive']= 1;
+				foreach ( $page['check'] as $checknum => $check )
+				{
+					if ( is_array ( $check['option'] ) )
+					{
+						$options	= ':' . implode ( ',', $check['option'] );
+					} else {
+						$options	= "";
+					}
+					$page['check'][$checknum]	= array (
+						'action'		=> $check['action'] . $options,
+						'required'		=> $check['required'],
+						'errormessage'	=> $check['errormessage']
+					);
+				}
+				$this->setPageactions($pagenum, $page['check']);
+				
 				$this->setPagevariables($pagenum, $page['variable']);
 				if ($this->config['system']['totalPages'] < $pagenum)
 				{
@@ -29,7 +65,7 @@ class configparser
 					$this->checkPageAfter($pagenum);
 				}
 			}
-			$pagenum ++;
+			#$pagenum ++;
 		}
 		if ($this->config['languageSet'] && $this->config['system']['pageerror'] == -1)
 		{

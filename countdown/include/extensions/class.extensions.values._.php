@@ -16,5 +16,8 @@ class extensions_values extends extensions_output_form
 		if ( $this->config['system']['debug'] >= 5 ) parent::_setError ( $pagenum, $varnum, '_value_Serverport' );		$return= array ('value' => getenv('SERVER_PORT'), 'isset' => true);
 		return $return;
 	}
+	function _value_TextToPagecheck ( $pagenum, $varnum )
+	{
+	}
 }
 ?>

@@ -1,5 +1,5 @@
 <?php
-class extensions_output_db extends extensions_checks_form
+class extensions_output_db extends extensions_output
 {
 	function _outputSQL($pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbname, $dbname_user, $sqlfile)
 	{
