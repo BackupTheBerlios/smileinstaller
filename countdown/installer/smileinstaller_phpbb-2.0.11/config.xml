@@ -1,0 +1,171 @@
+<pages>
+	<installer>
+		<title>[Install PHPbb2 2.0.11</title>
+		<nextstring>[next]</nextstring>
+		<finishedstring>Installation complete</finishedstring>
+		<finish>
+			<action>	!_createDirectory:$script_path,0777</action>
+			<required>	1</required>
+			<errormessage>
+				[Could not create directory]
+			</errormessage>
+		</finish>
+		<finish>
+			<action>	!_unpackScript:$script_path</action>
+			<required>	1</required>
+			<errormessage>
+				[Could not extract script]
+			</errormessage>
+		</finish>
+		<finish>
+			<action>	!_writeToFile:$script_path,/config.php,dbms+dbhost+dbname+dbuser+dbpasswd+table_prefix</action>
+			<required>	1</required>
+			<errormessage>
+				[Could not write variables]
+			</errormessage>
+		</finish>
+		<redirectTo>!_redirectTo:$script_path,/index.php</redirectTo>
+	</installer>
+	<page>
+		<title>	[License]</title>
+		<name>	[License agreement]</name>
+		<desc>	[]</desc>
+		<variable>
+			<name>			none1</name>
+			<htmlname>		[License]</htmlname>				
+			<htmldesc>		</htmldesc>
+			<required>		0</required>
+			<newline>		1</newline>
+			<formtype>		box</formtype>
+			<defaultvalue>	.license.txt</defaultvalue>
+		</variable>
+		<variable>
+			<name>			accept_license</name>
+			<htmlname>		[Accept license?]</htmlname>				
+			<htmldesc>		</htmldesc>
+			<required>		0</required>
+			<newline>		1</newline>
+			<formtype>		select</formtype>
+			<defaultvalue>	=[No],[Yes]</defaultvalue>
+			<check>
+				<required>	1</required>
+				<action>	!_checkFormspecific:[Yes]</action>
+				<errormessage>
+					[You must accept the license to install]
+				</errormessage>
+			</check>
+		</variable>
+	</page>
+	<page>
+		<title>		[Installation directory]</title>
+		<name>		[Installation directory]</name>
+		<desc>		[]</desc>
+		<variable>
+			<name>			script_path</name>
+			<htmlname>		[Path for PHPbb2]</htmlname>
+			<htmldesc>		[]</htmldesc>
+			<required>		1</required>
+			<newline>		1</newline>
+			<formtype>		select</formtype>
+			<defaultvalue>	!_getDemopaths</defaultvalue>
+			<check>		
+				<required>	1</required>
+				<action>	!_checkFormspecific</action>
+				<errormessage>
+					[Selected path is not available path]
+				</errormessage>
+			</check>
+			<check>		
+				<required>	1</required>
+				<action>	!_checkInstalldir</action>
+				<errormessage>
+					[Can not install in this directory]
+				</errormessage>
+			</check>
+		</variable>
+	</page>	
+	<page>
+		<title>	[Server]</title>
+		<name>	[Server]</name>
+		<desc>	[]</desc>
+		<variable>
+			<name>			server_name</name>
+			<htmlname>		[Server name]</htmlname>
+			<htmldesc>		[Name of the Webserver]</htmldesc>
+			<required>		1</required>
+			<newline>		1</newline>
+			<formtype>		input</formtype>
+			<defaultvalue>	!_getServername</defaultvalue>
+		</variable>
+		<variable>
+			<name>			server_port</name>
+			<htmlname>		[Server port]</htmlname>
+			<htmldesc>		[Port for HTTP]</htmldesc>
+			<required>		1</required>
+			<newline>		1</newline>
+			<formtype>		input</formtype>
+			<defaultvalue>	!_getServerport</defaultvalue>
+		</variable>
+
+
+		<variable>
+			<name>			dbms</name>
+			<htmlname>		[Databasetype]</htmlname>
+			<htmldesc>		[Which database do you use?]</htmldesc>
+			<required>		1</required>
+			<newline>		1</newline>
+			<formtype>		select</formtype>
+			<defaultvalue>	=mysql:MySQL 3.x,mysql4:MySQL 4.x,postgres:PostgreSQL 7.x,mssql:MS SQL Server 7/2000,msaccess:MS Access [ ODBC ],mssql-odbc:MS SQL Server [ ODBC ]</defaultvalue>
+		</variable>
+		<variable>
+			<name>			dbhost</name>
+			<htmlname>		[Database server]</htmlname>
+			<htmldesc>		[Hostname or IP of your databaseserver]</htmldesc>
+			<required>		1</required>
+			<newline>		1</newline>
+			<formtype>		input</formtype>
+			<defaultvalue>	=localhost</defaultvalue>
+		</variable>
+		<variable>
+			<name>			dbuser</name>
+			<htmlname>		[Username databaseserver]</htmlname>
+			<htmldesc>		[Username for your databaseserver]</htmldesc>
+			<required>		1</required>
+			<newline>		1</newline>
+			<formtype>		input</formtype>
+			<defaultvalue>	=phpbb2user</defaultvalue>
+		</variable>
+		<variable>
+			<name>			dbpasswd</name>
+			<htmlname>		[Password databaseserver]</htmlname>
+			<htmldesc>		[Password for your databaseserver]</htmldesc>
+			<required>		0</required>
+			<newline>		1</newline>
+			<formtype>		password</formtype>
+			<defaultvalue>	=</defaultvalue>
+		</variable>
+	</page>
+	<page>
+		<title>	[Select database]</title>
+		<name>	[Select database]</name>
+		<desc>	[]</desc>
+		<variable>
+			<name>			dbname</name>
+			<htmlname>		[Existing databases]</htmlname>
+			<htmldesc>		[Select an existing database]</htmldesc>
+			<required>		0</required>
+			<newline>		1</newline>
+			<formtype>		select</formtype>
+			<defaultvalue>	=getDatabases:$doFoo,$doBar</defaultvalue>
+		</variable>
+		<variable>
+			<name>			tableprefix</name>
+			<htmlname>		[Tableprefix]</htmlname>
+			<htmldesc>		[Prefix for PHPbb2's tables]</htmldesc>
+			<required>		1</required>
+			<newline>		1</newline>
+			<formtype>		input</formtype>
+			<defaultvalue>	=phpbb2</defaultvalue>
+		</variable>
+	</page>
+</pages>

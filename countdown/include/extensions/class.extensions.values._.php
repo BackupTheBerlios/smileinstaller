@@ -10,6 +10,22 @@
 			);
 			return $return;
 		}
+		function _getServername ( $pagenum, $varnum )
+		{
+			$return		= array (
+				'value'		=> getenv ( 'SERVER_NAME' ),
+				'isset'		=> true
+			);
+			return $return;
+		}
+		function _getServerport ( $pagenum, $varnum )
+		{
+			$return		= array (
+				'value'		=> getenv ( 'SERVER_PORT' ),
+				'isset'		=> true
+			);
+			return $return;
+		}
 	}
 
 ?>

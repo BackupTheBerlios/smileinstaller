@@ -1,0 +1,99 @@
+a:link {
+	color:					#000000;
+}
+body {
+	margin:					0px;
+	background:				#ffaa3b;
+}
+
+caption.title {
+	font-size:				20px;
+	color:					#000000;
+	background:				#ffbb3b;
+	white-space:			nowrap;
+	height:					50px;
+	max-height:				50px;
+	vertical-align:			middle;
+	text-align:				center;
+	font-weight:			bold;
+	padding:				3px;
+}
+
+td.content {
+	font-size:				14px;
+	color:					#FFFFFF;
+	white-space:			nowrap;
+	background:				#ffbb3b;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 3px solid; 
+	BORDER-BOTTOM:			#000000 3px solid;
+	BORDER-RIGHT:			#000000 3px solid;
+	BORDER-LEFT:			#000000 3px solid;
+	padding:				0px;
+	text-align:				center;
+	vertical-align:			top;
+}
+td.installeritem_0 {
+	white-space:			nowrap;
+	font-size:				14px;
+	color:					#FFFFFF;
+	background:				#ccbb3b;
+	vertical-align:			middle;
+	text-align:				center;
+	height:					50px;
+	max-height:				50px;
+	cursor: 				pointer;
+	padding:				10px;
+	BORDER-TOP:				#000000 1px solid;
+	BORDER-BOTTOM:			#000000 2px solid;
+	BORDER-LEFT:			#000000 1px solid;
+	BORDER-RIGHT:			#000000 2px solid;
+}
+td.installeritem_0:hover {
+	white-space:			nowrap;
+	font-size:				14px;
+	color:					#FFFFFF;
+	background:				#ccbb3b;
+	vertical-align:			middle;
+	text-align:				center;
+	height:					50px;
+	max-height:				50px;
+	cursor: 				pointer;
+	padding:				10px;
+	BORDER-TOP:				#000000 2px solid;
+	BORDER-BOTTOM:			#000000 1px solid;
+	BORDER-LEFT:			#000000 2px solid;
+	BORDER-RIGHT:			#000000 1px solid;
+}
+td.installeritem_1 {
+	white-space:			nowrap;
+	font-size:				14px;
+	color:					#FFFFFF;
+	background:				#ffaa00;
+	vertical-align:			middle;
+	text-align:				center;
+	height:					50px;
+	max-height:				50px;
+	cursor: 				pointer;
+	padding:				10px;
+	BORDER-TOP:				#000000 1px solid;
+	BORDER-BOTTOM:			#000000 2px solid;
+	BORDER-LEFT:			#000000 1px solid;
+	BORDER-RIGHT:			#000000 2px solid;
+}
+td.installeritem_1:hover {
+	white-space:			nowrap;
+	font-size:				14px;
+	color:					#FFFFFF;
+	background:				#ffaa00;
+	vertical-align:			middle;
+	text-align:				center;
+	height:					50px;
+	max-height:				50px;
+	cursor: 				pointer;
+	padding:				10px;
+	BORDER-TOP:				#000000 2px solid;
+	BORDER-BOTTOM:			#000000 1px solid;
+	BORDER-LEFT:			#000000 2px solid;
+	BORDER-RIGHT:			#000000 1px solid;
+}

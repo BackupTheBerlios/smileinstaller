@@ -57,6 +57,12 @@
 		}
 		function lang ( $key )
 		{
+			if ( !is_string ( $key ) )
+			{
+				if ( $this->config['system']['debug'] ){
+					$this->_setError ( 0, 0, 'lang: not a string: . ' . print_r ( $key, 1 ) );
+				}
+			} 
 			if ( !preg_match ( '|^\[([^\[]{0,})\]$|', trim ( $key ), $result ) )
 				return $key;
 			if ( !isset ( $this->config['language'][$result[1]] )

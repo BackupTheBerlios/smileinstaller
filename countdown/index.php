@@ -117,7 +117,7 @@
 	genTemplatedir ();
 	setTemplatevariables ();
 	stripPostvariables ();
-	$install	= new installer ( 'sample' );
+	$install	= new installer ( 'smileinstaller_phpbb-2.0.11' );
 	$content	= $install->go ();
 	unset ( $_top );
 	$tpl		= new smarttemplate ( './include/templates/debug.html' );

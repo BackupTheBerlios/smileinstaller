@@ -1,0 +1,142 @@
+table.contenttable, table.tabs_top {
+	background-color:		#000000;
+	width:					90%;
+}
+caption.title {
+	font-size:				15px;
+	color:					#000000;
+	background:				#ffaa3b;
+	white-space:			nowrap;
+	vertical-align:			middle;
+	text-align:				center;
+	font-weight:			bold;
+	padding:				3px;
+	border-bottom:			#000000 1px solid;
+}
+td.tabs_top {
+	font-size:				20px;
+	color:					#000000;
+	background:				#ffaa3b;
+	white-space:			nowrap;
+	height:					50px;
+	max-height:				50px;
+	vertical-align:			middle;
+	text-align:				center;
+	font-weight:			bold;
+	padding:				3px;
+}
+td.empty {
+	font-size:				1px;
+	color:					#000000;
+	background:				#ffaa3b;
+	white-space:			nowrap;
+	height:					10px;
+	max-height:				10px;
+	vertical-align:			middle;
+	text-align:				center;
+}
+td.contenttable {
+	font-size:				14px;
+	color:					#FFFFFF;
+	white-space:			nowrap;
+	background:				#ffbb3b;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 3px solid; 
+	BORDER-BOTTOM:			#000000 3px solid;
+	BORDER-RIGHT:			#000000 3px solid;
+	padding:				0px;
+	text-align:				center;
+	vertical-align:			top;
+	width:					90%;
+}
+td.contenttable_head {
+	font-size:				14px;
+	color:					#000000;
+	white-space:			nowrap;
+	background:				#c98400;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 0px solid;
+	BORDER-BOTTOM:			#000000 0px solid;
+	BORDER-LEFT:			#000000 0px solid;
+	BORDER-RIGHT:			#000000 0px solid;
+	height:					20px;
+	max-height:				20px;
+	vertical-align:			middle;
+	text-align:				center;
+	padding:				3px;
+	font-weight:			bold;
+}
+td.contenttable_foot {
+	font-size:				14px;
+	color:					#000000;
+	white-space:			nowrap;
+	background:				#c98400;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 0px solid;
+	BORDER-BOTTOM:			#000000 0px solid;
+	BORDER-LEFT:			#000000 0px solid;
+	BORDER-RIGHT:			#000000 0px solid;
+	height:					20px;
+	max-height:				20px;
+	vertical-align:			middle;
+	text-align:				right;
+	padding:				3px;
+	font-weight:			bold;
+}
+tr.contenttable_row_0 {
+	white-space:			nowrap;
+	font-size:				14px;
+	color:					#000000;
+	background:				#ccbb3b;
+	vertical-align:			top;
+	text-align:				left;
+	height:					22px;
+	padding:				2px;
+}
+tr.contenttable_row_0:hover {
+	white-space:			nowrap;
+	font-size:				14px;
+	color:					#000000;
+	background:				#aa9919;
+	vertical-align:			top;
+	text-align:				left;
+	height:					22px;
+	padding:				2px;
+}
+tr.contenttable_row_1 {
+	white-space:			nowrap;
+	font-size:				14px;
+	color:					#000000;
+	background:				#ffaa00;
+	vertical-align:			top;
+	text-align:				left;
+	height:					22px;
+	padding:				2px;
+}
+tr.contenttable_row_1:hover {
+	white-space:			nowrap;
+	font-size:				14px;
+	color:					#000000;
+	background:				#dd8800;
+	vertical-align:			top;
+	text-align:				left;
+	height:					22px;
+	padding:				2px;
+}
+font.contenttable_head_description {
+	font-size:				12px;
+	color:					#000000;
+	white-space:			nowrap;
+	background:				#c98400;
+	white-space:			nowrap;
+	BORDER-TOP:				#000000 0px solid;
+	BORDER-BOTTOM:			#000000 0px solid;
+	BORDER-LEFT:			#000000 0px solid;
+	BORDER-RIGHT:			#000000 0px solid;
+	height:					20px;
+	max-height:				20px;
+	vertical-align:			middle;
+	text-align:				center;
+	padding:				3px;
+	font-weight:			normal;
+}

@@ -25,7 +25,6 @@
 				[Could not write variables]
 			</errormessage>
 		</finish>
-		<redirectTo>	!_redirectTo:$smic_pma_absolute_uri</redirectTo>
 	</installer>
 	<page>
 		<title>	[License]</title>
