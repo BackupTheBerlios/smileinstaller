@@ -1,11 +1,11 @@
 <?php
-class installer extends smileinstaller_variable
+class installer
 {
-	// Erstellt alle Variablen die benoetigt werden. Keine Aktionen.	function installer ( $installer, $isExtension = false )
+	function installer ( $installer, $isExtension = false )
 	{
 		$this->config		= array 		(			'system' => array
 			(
-				'debug' => 0, 				'isExtension' => $isExtension, 				'errormessage' => '', 				'installer' => $installer, 				'installerlanguage' => "", 				'largest_row' => 0, 				'largest_row_cached' => 0, 				'totalPages' => -1, 				'currentPage' => 0, 				'explicit_page' => 0, 				'installerlanguages' => array 				(					'english' => 'Please select your language', 					'deutsch' => 'Bitte w&auml;hlen Sie Ihre Sprache', 					'français' => 'Veuillez choisir votre langue',				), 				'classname' => preg_replace('|([^a-zA-Z0-9])|', '_', $installer ),				'pageerror' => -1, 'allow_db' => false, 				'directories' => array 				(					'scriptdir' => addslashes(dirname(__FILE__)).'/../installer/'.$installer, 					'languagedir' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/languages',
+				'debug' => 0, 				'isExtension' => $isExtension, 				'errormessage' => '', 				'installer' => $installer, 				'installerlanguage' => "", 				'largest_row' => 0, 				'largest_row_cached' => 0, 				'totalPages' => -1, 				'currentPage' => 0, 				'explicit_page' => 0, 				'installerlanguages' => array 				(					'englisch' => 'Please select your language', 					'deutsch' => 'Bitte w&auml;hlen Sie Ihre Sprache', 					'franzoesisch' => 'Veuillez choisir votre langue',				), 				'classname' => preg_replace('|([^a-zA-Z0-9])|', '_', $installer ),				'pageerror' => -1, 'allow_db' => false, 				'directories' => array 				(					'scriptdir' => addslashes(dirname(__FILE__)).'/../installer/'.$installer, 					'languagedir' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/languages',
 				),
 				'supportedDatabases'	=> array
 				(
@@ -47,20 +47,18 @@ class installer extends smileinstaller_variable
 				),
 			), 			'files' => array 			(				'languageitems' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/languages/available', 				'extension' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/index.php', 				'config' => addslashes(dirname(__FILE__)).'/../installer/'.$installer.'/config.xml', 				'installertemplate' => addslashes(dirname(__FILE__)).'/templates/installer.html', 				'languagetemplate' => addslashes(dirname(__FILE__)).'/templates/language.html', 				'completetemplate' => addslashes(dirname(__FILE__)).'/templates/complete.html', 				'finishtemplate' => addslashes(dirname(__FILE__)).'/templates/finish.html',			), 			'varpattern' => '/^'.'([0-9]{1,10})\s{1,}'.'([12]{1})\s{1,}'.'([0-9]{1,})\s{1,}'.'([01]{1})\s{1,}'.'([01]{1})\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'varrequirepattern' => '/^'.'([0-9]{1,10})\s{1,}'.'([12]{1})\s{1,}'.'([0-9]{1,})\s{1,}'.'([01]{1})\s{1,}'.'([01]{1})\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'pagetextpattern' => '/^'.'([0-9]{1,})\s{1,}'.'"(pagetitle|pagename|pagedesc{1})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'pageactionpattern' => '/^'.'([0-9]{1,10})\s{1,}'.'([12]{1})\s{1,}'.'([0-9]{1,10})\s{1,}'.'"([^"]{1,})"\s{1,}'.'"([^"]{1,})"\s{0,}'.'/is', 			'languagelinepattern' => '/^'.'([^=]{1,})=(.*)'.'$/',		);
 	}
-	// Startet die Installation. Keine Aktionen.
 	function go()
 	{
 		if ( $this->config['system']['debug'] >= 5 ) $this->_setError('DEBUG', 'go', 'begin installation');
 		if ( $this->config['system']['isExtension'] )
 			die ( 'not an installer' );
-		$this->loadLanguageitems ();
+		$this->loadLanguages ();
 		$this->initializeExtension ();
 		$this->checkLanguagepage ();
 		$return		= $this->setConfig ();
 		$return		= $this->tpl->result ();
 		return $return;
 	}
-	// Erstellt eine neue Instanz von Erweiterungen
 	function initializeExtension()
 	{
 		if ( $this->config['system']['debug'] >= 5 ) $this->_setError ( 0, 0, 'initializeExtension ' . $this->config['files']['extension'], false );
@@ -291,7 +289,7 @@ class installer extends smileinstaller_variable
 	function setConfig()
 	{
 		$settings		= $this->loadConfig();
-		$this->setInstaller ( $settings['root']['pages']['installer'] );
+		$this->setInstallerdata ( $settings['root']['pages']['installer'] );
 		if ( isset ($settings['root']['pages']['installer']['page']['variable']) )
 		{
 			$settings['root']['pages']['installer']['page']= array ($settings['root']['pages']['installer']['page']);
@@ -373,7 +371,7 @@ class installer extends smileinstaller_variable
 		$return= $root->toArray();
 		return $return;
 	}
-	function setInstaller ( $installer )
+	function setInstallerdata ( $installer )
 	{
 		if (isset ($installer))
 		{
@@ -413,17 +411,6 @@ class installer extends smileinstaller_variable
 				'required' => $action['required'],
 				'errormessage' => $action['errormessage']
 			);
-		}
-	}
-	function setInstallerOnComplete ( $settings )
-	{
-		if ( !isset ( $settings['showVars'] ) )
-		{
-			$this->_setError ( 0, 0, 'setInstallerOnComplete showVars not set' );
-		}
-		if ( !isset ( $settings['string'] ) )
-		{
-			$this->_setError ( 0, 0, 'setInstallerOnComplete string not set' );
 		}
 	}
 	function setInstallerdataOnFinish ( $settings )
@@ -548,7 +535,7 @@ class installer extends smileinstaller_variable
 						$settings['root']['pages']['installer']['finish']
 					);
 				}
-				if ($this->finishActions($settings['root']['pages']['installer']['finish']))
+				if ($this->executeFinishActions($settings['root']['pages']['installer']['finish']))
 				{
 					$this->setFinish($settings['root']['pages']['installer']['redirectTo']);
 				}
@@ -761,58 +748,27 @@ class installer extends smileinstaller_variable
 		$usePage= -1;
 		if ($this->config['languageSet'])
 		{
-			if ($this->config['system']['pageerror'] == -1)
-			{
-				$this->config['system']['canFinish']= 1;
-			}
-			else
-			{
-				$this->config['system']['canFinish']= 0;
-			}
-			if (isset ($_POST['explicit_page']) 
-				&& is_numeric($_POST['explicit_page']))
-			{
-				if ($_POST['explicit_page'] > $this->config['system']['totalPages'])
-				{
-					$_POST['explicit_page']= $this->config['system']['totalPages'];
-				}
-				if ($this->config['system']['pageerror'] == -1)
-				{
-					$this->config['system']['pageerror']= $_POST['explicit_page'];
-				}
-				if ($_POST['explicit_page'] <= $this->config['system']['pageerror'])
-				{
-					$usePage= $_POST['explicit_page'];
-				}
-				else
-				{
-					$usePage= $this->config['system']['pageerror'];
-				}
-				$tpl= $this->config['files']['installertemplate'];
-			}
-			if ($this->config['system']['canFinish'] == 1 
-				&& ( $usePage == -1 || $usePage == $this->config['system']['totalPages'] ) )
-			{
-				if ($_POST['_doFinish'] != 1)
-				{
-					$tpl		= $this->config['files']['installertemplate'];
-					$usePage	= $this->config['system']['totalPages'];
-					$this->config['system']['smarttemplate']['setCompletepage']= 1;
-				}
-				else
-				{
-					echo "FINISH";
-					$tpl= $this->config['files']['completetemplate'];
-				}
-			}
-			else
-			{
-				$tpl= $this->config['files']['installertemplate'];
-				$usePage= $this->config['system']['pageerror'];
-			}
+			$usePage		= $this->getInstallerUsepage (); 
+			$tpl= $this->config['files']['installertemplate'];
 			$this->config['system']['smarttemplate']['allPages'][$usePage]['isCurrent']= 1;
 			$this->config['system']['smarttemplate']['displayPage']= $this->config['system']['smarttemplate']['allPages'][$usePage];
 			$this->tpl= new smarttemplate($tpl);
+			$this->config['system']['smarttemplate']['setValues']= $this->config['setValue'];
+			for ( $i = 0; $i <= $this->config['system']['totalPages']; $i++ )
+			{
+				for ( $j = 0; $j <= $this->config['system']['totalPages']; $j++ )
+				{
+					foreach ( $this->config['hiddenValue'][$j] as $hiddenValue )
+					{
+						$this->config['system']['smarttemplate']['allPages'][$i]['hiddenValue'][]	= $hiddenValue;
+						if ( $j != $i && $usePage == $i && $usePage < $this->config['system']['totalPages'] )
+						{
+							$this->config['system']['smarttemplate']['displayPage']['hiddenValue'][]	= $hiddenValue;
+						}
+					}
+				}
+			}
+
 		}
 		else
 		{
@@ -826,21 +782,6 @@ class installer extends smileinstaller_variable
 			}
 			$this->tpl= new smarttemplate($this->config['files']['languagetemplate']);
 		}
-		$this->config['system']['smarttemplate']['setValues']= $this->config['setValue'];
-		for ( $i = 0; $i <= $this->config['system']['totalPages']; $i++ )
-		{
-			for ( $j = 0; $j <= $this->config['system']['totalPages']; $j++ )
-			{
-				foreach ( $this->config['hiddenValue'][$j] as $hiddenValue )
-				{
-					$this->config['system']['smarttemplate']['allPages'][$i]['hiddenValue'][]	= $hiddenValue;
-					if ( $j != $i && $usePage == $i && $usePage < $this->config['system']['totalPages'] )
-					{
-						$this->config['system']['smarttemplate']['displayPage']['hiddenValue'][]	= $hiddenValue;
-					}
-				}
-			}
-		}
 		$this->config['system']['smarttemplate']['allPages'][$usePage]['isActive']	= 2;
 		$this->config['system']['smarttemplate']['currentPage']		= $this->config['system']['pageerror'];
 		$this->config['system']['smarttemplate']['errormessage']	= $this->config['system']['errormessage'];
@@ -850,7 +791,7 @@ class installer extends smileinstaller_variable
 		$this->config['system']['smarttemplate']['installer']['name']= $this->config['system']['installer'];
 		$this->tpl->assign('var', $this->config['system']['smarttemplate']);
 	}
-	function finishActions($checks, $pagenum= 0, $varnum= 0)
+	function executeFinishActions($checks, $pagenum= 0, $varnum= 0)
 	{
 		$return= true;
 		if ($this->config['system']['debug'] >= 5)
@@ -888,6 +829,191 @@ class installer extends smileinstaller_variable
 		$return= $this->parseItem($redirectTo, false, $code);
 		$this->config['installer']['info']['redirectTo']= $this->config['system']['smarttemplate']['installer']['redirectTo']= $return;
 	}
-
+	function getInstallerUsepage ()
+	{
+		if ($this->config['system']['pageerror'] == -1)
+		{
+			$this->config['system']['canFinish']= 1;
+		}
+		else
+		{
+			$this->config['system']['canFinish']= 0;
+		}
+		if (isset ($_POST['explicit_page']) 
+			&& is_numeric($_POST['explicit_page']))
+		{
+			if ($_POST['explicit_page'] > $this->config['system']['totalPages'])
+			{
+				$_POST['explicit_page']	= $this->config['system']['totalPages'];
+			}
+			if ($this->config['system']['pageerror'] == -1)
+			{
+				$this->config['system']['pageerror']= $_POST['explicit_page'];
+			}
+			if ($_POST['explicit_page'] <= $this->config['system']['pageerror'])
+			{
+				$usePage= $_POST['explicit_page'];
+			}
+			else
+			{
+				$usePage= $this->config['system']['pageerror'];
+			}
+		}
+		if ($this->config['system']['canFinish'] == 1 
+			&& ( $usePage == -1 || $usePage == $this->config['system']['totalPages'] ) )
+		{
+			if ($_POST['_doFinish'] != 1)
+			{
+				$usePage	= $this->config['system']['totalPages'];
+				$this->config['system']['smarttemplate']['setCompletepage']= 1;
+			}
+			else
+			{
+				die ( "EXECUTEFINISHACTIONS!" );
+			}
+		}
+		if ( !isset ( $usePage ) )
+		{
+			$usePage= $this->config['system']['pageerror'];
+		}
+		return $usePage;
+	}
+	function loadLanguages()
+	{
+		$languageitems= file($this->config['files']['languageitems']);
+		foreach ($languageitems as $languageitem)
+		{
+			$this->config['languageitems'][]= array ('itemname' => trim($languageitem));
+		}
+		if (isset ($_POST['setVar']))
+		{
+			$setVar= unserialize(urldecode($_POST['setVar']));
+			if (is_array($setVar))
+			{
+				foreach ($setVar as $varname => $varvalue)
+				{
+					$this->config['system']['setVar'][$varname]= $varvalue;
+				}
+			}
+		}
+	}
+	function checkLanguagepage()
+	{
+		$this->config['languageSet']= false;
+		if (!isset ($_POST['_installerlanguage']))
+			return false;
+		if (!$this->parseLanguagefile($_POST['_installerlanguage']))
+			return false;
+		$this->config['system']['installerlanguage']= $_POST['_installerlanguage'];
+		$this->config['languageSet']= true;
+		if (!isset ($this->config['pages']))
+			return false;
+		if (!is_array($this->config['pages']))
+			return false;
+		foreach ($this->config['pages'] as $pagenum => $pagedata)
+		{
+			$this->config['pages'][$pagenum]['installerlanguage']= $this->config['system']['installerlanguage'];
+		}
+	}
+	function parseLanguagefile($language)
+	{
+		$return= 0;
+		if (is_file($this->config['system']['directories']['languagedir'].'/'.$language.'.txt'))
+		{
+			$languagedata= file($this->config['system']['directories']['languagedir'].'/'.$language.'.txt');
+			foreach ($languagedata as $line)
+			{
+				if (preg_match($this->config['languagelinepattern'], trim($line), $result))
+				{
+					$this->config['language'][trim($result[1])]= trim($result[2]);
+				}
+			}
+			$return= 1;
+		}
+		return 1;
+	}
+	function lang($key)
+	{
+		if (!is_string($key))
+		{
+			if ($this->config['system']['debug'] >= 1)
+			{
+				$this->_setError(0, 0, 'lang: not a string: ". '.print_r($key, 1).'"', false);
+			}
+		}
+		else
+		{
+			if (!preg_match('|^\[(.*)\]$|', trim($key), $result))
+			{
+				$return= $key;
+				if ($this->config['system']['debug'] >= 1)
+					$this->_setError(0, 0, 'lang: No languagestring "'.$return.'"', false);
+			}
+			else
+			{
+				if (!isset ($this->config['language'][$result[1]]) || $this->config['language'][$result[1]] == "")
+				{
+					$return= $result[1];
+					if ($this->config['system']['debug'] >= 1)
+						$this->_setError(0, 0, 'lang: No languagedefinition "'.$return.'"', false);
+				}
+				else
+				{
+					$return= $this->config['language'][$result[1]];
+				}
+			}
+		}
+		return $return;
+	}
+	function checkVariable($pagenum, $varnum, $checks, $selectedValue)
+	{
+		$return= true;
+		if (is_array($checks))
+		{
+			if ($this->config['pages'][$pagenum]['data'][$varnum]['formtype'] != 'box' && $this->config['pages'][$pagenum]['data'][$varnum]['formtype'] != 'html')
+			{
+				if ($this->config['system']['debug'] >= 5)
+					$this->_setError($pagenum, 'checkVariable', "$pagenum, $varnum, $selectedValue");
+				foreach ($checks as $check)
+				{
+					$value= "";
+					$evalcode= "\$return = \$this->config['extension'] -> ".$this->parseItem($check['action']);
+					if ($this->config['system']['debug'] >= 5)
+						$this->_setError($pagenum, 'checkVariable', "execute $evalcode");
+					$return= $this->execute($evalcode, $pagenum, $varnum);
+					$value= $return['value'];
+					$ok= $return['isset'];
+					if ($this->config['system']['debug'] >= 5)
+						$this->lang($check['errormessage']);
+					if (!$ok)
+					{
+						if ($this->config['system']['debug'] >= 5)
+							$this->_setError($pagenum, 'checkVariable', "check false");
+						$return= false;
+						$this->_setError($pagenum, $varnum, $check['errormessage']);
+						break;
+					}
+					else
+					{
+						if ($this->config['system']['debug'] >= 5)
+							$this->_setError($pagenum, 'checkVariable', "check true");
+					}
+				}
+			}
+		}
+		return $return;
+	}
+	function execute($evalcode, $pagenum= false, $varnum= false)
+	{
+		$this->evalcode= $evalcode;
+		unset ($evalcode);
+		foreach ($this->config['executeEnvironment'] as $varname => $varvalue)
+		{
+			$$varname= $varvalue;
+		}
+		unset ($varname, $varvalue);
+		eval ($this->evalcode);
+		return $return;
+	}
 }
 ?>
