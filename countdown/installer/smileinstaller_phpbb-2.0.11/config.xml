@@ -187,8 +187,18 @@
 			<defaultvalue>	=</defaultvalue>
 			<autovalue>		=</autovalue>
 		</variable>
+		<variable>
+			<name>			testdb</name>
+			<htmlname>		[Database]</htmlname>
+			<htmldesc>		[Available database on this server]</htmldesc>
+			<required>		1</required>
+			<newline>		1</newline>
+			<formtype>		input</formtype>
+			<defaultvalue>	=</defaultvalue>
+			<autovalue>		=[Is very important!]</autovalue>
+		</variable>
 		<check>
-			<action>		!_check_SQLConnection:$dbms,$dbhost,$dbuser,$dbpasswd</action>
+			<action>		!_check_SQLConnection:$dbms,$dbhost,$dbuser,$dbpasswd,$testdb</action>
 			<required>		1</required>
 			<errormessage>
 				[Can't connect to database]

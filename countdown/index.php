@@ -1,10 +1,10 @@
 <?
 error_reporting(1);
 error_reporting(E_ALL);
-ini_set("display_errors", "1");
-define('ADODB_ERROR_LOG_TYPE',3);
-define('ROOTPATH', dirname(dirname(__FILE__).'*'));
-define('INSTALLERPATH', dirname(__FILE__));
+define ( 'display_errors', '1' );
+define ( 'ADODB_ERROR_LOG_TYPE', 2);
+define ( 'ROOTPATH', dirname(dirname(__FILE__).'*'));
+define ( 'INSTALLERPATH', dirname(__FILE__));
 // Ziparchiv des Scripts muss den neuen Pfad enthalten!
 ///////////////////////////////////////////////////////
 // Nichts quoten. Ganz schlecht!
@@ -117,7 +117,7 @@ $tpl= new smarttemplate('./include/templates/debug.html');
 $tpl->assign('var', array ('errors' => $catchedErrors, 'content' => $content));
 $debug= $tpl->result();
 unset ($_top);
-/*if ( preg_match ( '|<body([^>]{1,})>|', $content, $result ) )
+if ( preg_match ( '|<body([^>]{1,})>|', $content, $result ) )
 {
 	$content	= str_replace
 	( 
@@ -127,7 +127,7 @@ unset ($_top);
 	);
 } else {
 	$content		.= 'no debug added';
-}*/
+}
 removeTemplatedir();
 echo $content;
 ?>

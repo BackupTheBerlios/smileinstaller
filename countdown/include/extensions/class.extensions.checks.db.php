@@ -1,7 +1,7 @@
 <?
 class extensions_checks_db extends extensions_checks
 {
-	function _check_SQLConnection($pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass)
+	function _check_SQLConnection($pagenum, $varnum, $dbtype, $dbhost, $dbuser, $dbpass, $dbname )
 	{		if ( $this->config['system']['debug'] >= 0 ) parent::_setError ( $pagenum, $varnum, '_check_SQLConnection', false );		$return		= array
 		(
 			'value' => '',
@@ -9,8 +9,8 @@ class extensions_checks_db extends extensions_checks
 		);
 		if ( parent::_validateSupportedDatabase ( $dbtype ) )
 		{
-			$conn	= &ADONewConnection ( $dbtype );
-			$conn	->PConnect ( $dbhost, $dbuser, $dbpass );
+			$dsn	= "$dbtype://$dbuser:$dbpass@$dbhost/$dbname?persist";
+			$conn	= ADONewConnection ( $dsn );
 			$rs		= $conn->Execute('SHOW DATABASES');
 			if ( !$rs )
 			{
