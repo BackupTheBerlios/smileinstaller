@@ -60,6 +60,11 @@
 									<br>{var.displayPage.info.pagedesc}</font>
 								</td>
 							</tr>
+							<tr>
+								<td class="installeritem_0" colspan="2">
+									<br><br>
+								</td>
+							</tr>
 							<!-- BEGIN var.installerlanguages -->
 								<form action="index.php" name="language_{ROWCNT}" method="post">
 								<input type="hidden" name="_installerlanguage" value="{language}">
@@ -73,6 +78,11 @@
 										<div class="installersteptable_available_step_shadow" onclick="document.language_{ROWCNT}.submit()">{text}</div>
 										<div class="installersteptable_available_step"  onclick="document.language_{ROWCNT}.submit()"
 										>{text}</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="installersteprow" colspan="2">
+										<hr style="width: 50%; border: 1px #000000 solid;">
 									</td>
 								</tr>
 								</form>
