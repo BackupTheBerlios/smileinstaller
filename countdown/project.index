@@ -3,7 +3,7 @@ index.php	g$originalEh	o166	g$catchedErrors	o269	fonError	o468	g$catchedErrors	o
 include/class.extensions.php	cextensions	o13	m_none	o64	m_notNull	o131	m_injectVariable	o439	m_newPasswordcheck	o2121
 include/class.extensions.db.php	cextensions_db	o13	m_getTables	o69	m_checkConnection	o604	m_writesql	o978
 include/class.extensions.formspecific.php	cextensions_formspecific	o13	m_checkFormspecific	o75	m__checkFormSelect	o1019	m__checkFormCheckbox	o1892	m__checkFormInput	o2220	m__checkFormPassword	o2526
-include/class.configparser.php	cconfigparser	o11	mparseConfig	o38	mparseConfigoptionPos	o3875	mparseConfigoptionPage	o4744	mparseConfigoptionRequired	o4955	mparseConfigoptionStartval	o5116	mparseConfigoptionType	o5656	msetInstallerinfos	o5768
 include/class.extensions.file.php	cextensions_file	o13	m_value_rootdir	o77	m_checkWriteable	o228	m_createDirectory	o610
-installer/sample/index.php	csample	o13	mfinish	o57
+include/class.configparser.php	cconfigparser	o11	mparseConfig	o38	mparseConfigoptionPos	o3875	mparseConfigoptionPage	o4744	mparseConfigoptionRequired	o4955	mparseConfigoptionStartval	o5116	mparseConfigoptionType	o5656	msetInstallerinfos	o5768
 include/class.smileinstaller.php	cinstaller	o11	kinstaller	o56	mgo	o2701	mloadLanguageitems	o3214	minitializeExtension	o3766	msetPages	o4098	msetPagebefore	o4918	msetPageAfter	o5681	munsetPage	o6442	mcheckFinishedPage	o6647	msetVariable	o7197	munsetVariable	o10308	msetForm	o10755	mparseValueAsFunction	o14212	mparseFinishaction	o14992	mparseValue	o15610	mcheckExplicitPage	o16177	mcheckLanguagepage	o17621	mparseLanguagefile	o18305	msetForSmarttemplate	o18877	mexecuteEnvironment	o22118	mexecutePageenvironment	o22453	msetDefaultValue	o22801	msetAnyValue	o23841	mlang	o24637	mdoFinish	o24950	m_setError	o25450
+installer/sample/index.php	csample	o13	mfinish	o57

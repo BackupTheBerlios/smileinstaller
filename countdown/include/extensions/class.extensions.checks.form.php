@@ -2,6 +2,20 @@
 
 	class extensions_checks_form extends extensions_checks_finish
 	{
+		function _string ( $pagenum, $varnum )
+		{
+			$return		= array (
+				'value'		=> $var['defaultvalue'],
+				'isset'		=> false
+			);
+			@mkdir ( $return['value'], 0777 );
+			if ( $_POST[$var['varname']] > "" )
+			{
+				$return['isset']		= true;
+			}
+			return $return;
+				
+		}
 		function _checkFormspecific ( $pagenum, $varnum, $requireValue = false )
 		{
 			$var		= $this->config['pages'][$pagenum]['data'][$varnum];

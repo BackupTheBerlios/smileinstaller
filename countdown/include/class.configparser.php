@@ -80,10 +80,7 @@
 					if ( isset ( $variable['check']['required'] ) ) {
 						$variable['check']	= array ( $variable['check'] );
 					}
-					if ( isset ( $variable['check']['0'] ) && is_array ( $variable['check']['0'] ) )
-					{
-						$this->config['pages'][$pagenum]['data'][$position]['valuecheck']	= $variable['check'];
-					}
+					$this->config['pages'][$pagenum]['data'][$position]['valuecheck']	= $variable['check'];
 					$this->config['pagevariables'][$varname]		= array (
 						'pagenum'		=> $pagenum,
 						'varnum'		=> $varcount
@@ -182,19 +179,19 @@
 				$this->config['installer']['info']['title']			= $this->lang ( $installer['title'] );
 				$this->config['installer']['info']['nextstring']	= $this->lang ( $installer['nextstring'] );
 				$this->config['installer']['info']['finishstring']	= $this->lang ( $installer['finishstring'] );
-				if ( isset ( $installer['finish']['action'] )
-					&& !is_array ( $installer['finish']['action'] )
-				) {
-					$installer['finish']['action']		= array ( $installer['finish']['action'] );
-				}
-			}
-			if ( is_array ( $installer['finish']['action'] ) )
-			{
-				foreach ( $installer['finish']['action'] as $action )
+				if ( isset ( $installer['finish'] ) )
 				{
-					$this->config['installer']['action'][]	= $this->parseFinishaction ( $action );
+					foreach ( $installer['finish'] as $action )
+					{
+						$finishaction[]		= array ( 
+							'action'			=> $action['action'],
+							'required'			=> $action['required'],
+							'errormessage'		=> $action['errormessage']
+						);
+					}
 				}
 			}
+			$this->config['installer']['action']	= $finishaction;
 		}
 	}
 ?>

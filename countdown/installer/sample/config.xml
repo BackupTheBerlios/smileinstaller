@@ -61,7 +61,7 @@
 			<recheckable>	1</recheckable>
 			<formtype>		input</formtype>
 			<defaultvalue>	!_value_rootdir</defaultvalue>
-			<check>			
+			<check>		
 				<required>	1</required>
 				<action>	!_checkInstalldir</action>
 				<errormessage>
@@ -76,17 +76,18 @@
 			<newline>		1</newline>
 			<recheckable>	1</recheckable>
 			<formtype>		input</formtype>
-			<defaultvalue>	!_notNull</defaultvalue>
+			<defaultvalue>	=</defaultvalue>
+			<check>
+				<required>	1</required>
+				<action>	!_notNull</action>
+				<errormessage>[Url falsch?]</errormessage>
+			</check>
 		</variable>
 	</page>
 	<page>
 		<title>	[Datenbankserver auswaehlen]</title>
 		<name>	[]</name>
 		<desc>	[]</desc>
-		<checkbefore>
-			<required>	1</required>
-			<action>	!_none</action>
-		</checkbefore>
 		<variable>
 			<name>			dbhost</name>
 			<htmlname>		[Datenbankserver]</htmlname>
