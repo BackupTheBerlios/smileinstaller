@@ -2,6 +2,8 @@ table.maintable {
 	padding:				2px;
 	text-align:				2px;
 	min-height:				100%;
+	height:					100%
+	width:					100%;
 	background-color:		#d5d2cd;
 	border-right:			#000000 2px solid;
 	border-bottom:			#000000 2px solid;
