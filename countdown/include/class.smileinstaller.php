@@ -769,7 +769,8 @@ class installer extends smileinstaller_variable
 			{
 				$this->config['system']['canFinish']= 0;
 			}
-			if (isset ($_POST['explicit_page']) && is_numeric($_POST['explicit_page']))
+			if (isset ($_POST['explicit_page']) 
+				&& is_numeric($_POST['explicit_page']))
 			{
 				if ($_POST['explicit_page'] > $this->config['system']['totalPages'])
 				{
@@ -789,28 +790,25 @@ class installer extends smileinstaller_variable
 				}
 				$tpl= $this->config['files']['installertemplate'];
 			}
-			else
+			if ($this->config['system']['canFinish'] == 1 
+				&& ( $usePage == -1 || $usePage == $this->config['system']['totalPages'] ) )
 			{
-				if ($this->config['system']['canFinish'] == 1 && $usePage == -1)
+				if ($_POST['_doFinish'] != 1)
 				{
-					if ($_POST['_doFinish'] != 1)
-					{
-						$tpl		= $this->config['files']['installertemplate'];
-						$usePage	= $this->config['system']['totalPages'];
-						$this->config['system']['smarttemplate']['setCompletepage']= 1;
-						$this->config['system']['smarttemplate']['setValues']= $this->config['setValue'];
-					}
-					else
-					{
-						echo "FINISH";
-						$tpl= $this->config['files']['completetemplate'];
-					}
+					$tpl		= $this->config['files']['installertemplate'];
+					$usePage	= $this->config['system']['totalPages'];
+					$this->config['system']['smarttemplate']['setCompletepage']= 1;
 				}
 				else
 				{
-					$tpl= $this->config['files']['installertemplate'];
-					$usePage= $this->config['system']['pageerror'];
+					echo "FINISH";
+					$tpl= $this->config['files']['completetemplate'];
 				}
+			}
+			else
+			{
+				$tpl= $this->config['files']['installertemplate'];
+				$usePage= $this->config['system']['pageerror'];
 			}
 			$this->config['system']['smarttemplate']['allPages'][$usePage]['isCurrent']= 1;
 			$this->config['system']['smarttemplate']['displayPage']= $this->config['system']['smarttemplate']['allPages'][$usePage];
@@ -824,6 +822,7 @@ class installer extends smileinstaller_variable
 			}
 			$this->tpl= new smarttemplate($this->config['files']['languagetemplate']);
 		}
+		$this->config['system']['smarttemplate']['setValues']= $this->config['setValue'];
 		for ( $i = 0; $i <= $this->config['system']['totalPages']; $i++ )
 		{
 			for ( $j = 0; $j <= $this->config['system']['totalPages']; $j++ )
@@ -831,7 +830,7 @@ class installer extends smileinstaller_variable
 				foreach ( $this->config['hiddenValue'][$j] as $hiddenValue )
 				{
 					$this->config['system']['smarttemplate']['allPages'][$i]['hiddenValue'][]	= $hiddenValue;
-					if ( $j != $i && $usePage == $i )
+					if ( $j != $i && $usePage == $i && $usePage < $this->config['system']['totalPages'] )
 					{
 						$this->config['system']['smarttemplate']['displayPage']['hiddenValue'][]	= $hiddenValue;
 					}
